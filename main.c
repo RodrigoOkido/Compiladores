@@ -8,7 +8,7 @@ int main (int argc, char ** argv) {
 
   int tok;
   if (argc < 2) {
-    fprintf(stderr, "Please insert a file")
+    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa1 file_name\n");
     exit(1);
   }
 
@@ -17,7 +17,7 @@ int main (int argc, char ** argv) {
     exit(2);
   }
 
-  while (running) {
+  while (isRunning()) {
 
     tok = yylex();
     switch(tok){
