@@ -7,7 +7,7 @@ typedef struct hash_node {
 	struct hash_node *next;
 } HASH;
 
-HASH *Table[HASH_SIZE];
+HASH *table[HASH_SIZE];
 
 void hashInit(void);
 int hashAddress(char *text);
