@@ -1,0 +1,8 @@
+while (cat) {
+
+	print (28.6)
+}
+read
+'a'
+g
+read
