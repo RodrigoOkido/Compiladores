@@ -1,6 +1,6 @@
 #include "hash.h"
 
-HASH* Table[HASH_SIZE];
+HASH_NODE* Table[HASH_SIZE];
 
 
 void hashInit (void) {
@@ -22,8 +22,8 @@ int hashAddress (char *text) {
 }
 
 
-HASH* hashInsert (int type, char *text) {
-  HASH *newnode = 0;
+HASH_NODE* hashInsert (int type, char *text) {
+  HASH_NODE *newnode = 0;
   address = hashAddress(text);
   newnode = (HASH*) calloc(1,sizeof(HASH));
   newnode->text = calloc(strlen(yytext)+1, sizeof(char));
@@ -35,7 +35,7 @@ HASH* hashInsert (int type, char *text) {
 
 void hashPrint (void) {
   int i;
-  HASH *node;
+  HASH_NODE *node;
   for(i = 0; i < HASH_SIZE ; i++){
     for(node = Table[i]; node ; node = node->next)
       printf("Table[%d] has %s\n", i, node->text);
