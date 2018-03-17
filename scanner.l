@@ -2,7 +2,7 @@
 	#include "tokens.h"
 	#include "hash.h"
 
-	int lineNumber = 0;
+	int lineNumber = 1;
 	int running = 1;
 
 %}
@@ -30,7 +30,7 @@
 "=="		{ return OPERATOR_EQ; }
 "!="		{ return OPERATOR_NE; }
 "&&"		{ return OPERATOR_AND; }
-"\|\|"		{ return OPERATOR_OR; }
+"||"		{ return OPERATOR_OR; }
 
 
 
@@ -45,16 +45,16 @@
 "*"								      { return yytext[0]; }
 
 "\n"						  { ++lineNumber; }
+[ \t]
 "//".*
 "/*"						  {BEGIN(COMMENT); }
 
-<COMMENT>.
+.				          { return TOKEN_ERROR; }
+
 <COMMENT>"\n"		  { ++lineNumber; }
 <COMMENT>"*/"		  { BEGIN(INITIAL); }
+<COMMENT>.
 
-[ \t\r]+
-
-.				          { return TOKEN_ERROR; }
 
 %%
 
