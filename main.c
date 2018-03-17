@@ -22,37 +22,37 @@ int main (int argc, char ** argv) {
     tok = yylex();
     switch(tok){
       case KW_CHAR:
-				fprintf(stderr, "\nBYTE");
+				fprintf(stderr, "\nCHAR");
 				break;
 			case KW_INT:
-				fprintf(stderr, "\nSHORT");
+				fprintf(stderr, "\nINT");
 				break;
 			case KW_FLOAT:
-				fprintf(stderr, "\nLONG");
-				break;
-			case KW_IF:
 				fprintf(stderr, "\nFLOAT");
 				break;
+			case KW_IF:
+				fprintf(stderr, "\nIF");
+				break;
 			case KW_THEN:
-				fprintf(stderr, "\nDOUBLE");
-				break;
-			case KW_ELSE:
-				fprintf(stderr, "\nWHEN");
-				break;
-			case KW_WHILE:
 				fprintf(stderr, "\nTHEN");
 				break;
-			case KW_FOR:
+			case KW_ELSE:
 				fprintf(stderr, "\nELSE");
 				break;
-			case KW_READ:
+			case KW_WHILE:
 				fprintf(stderr, "\nWHILE");
 				break;
-			case KW_RETURN:
+			case KW_FOR:
 				fprintf(stderr, "\nFOR");
 				break;
-			case KW_PRINT:
+			case KW_READ:
 				fprintf(stderr, "\nREAD");
+				break;
+			case KW_RETURN:
+				fprintf(stderr, "\nRETURN");
+				break;
+			case KW_PRINT:
+				fprintf(stderr, "\nPRINT");
 				break;
 			case OPERATOR_LE:
 				fprintf(stderr, "\n(LE) <=");
