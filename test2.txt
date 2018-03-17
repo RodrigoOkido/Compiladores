@@ -1,0 +1,9 @@
+while (abacate = 1) {
+	abacate--;
+}
+return
+@
+45
+!
+4 < 8
+9 <= 22
