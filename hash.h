@@ -5,14 +5,14 @@ typedef struct hash_node {
 	char *text;
 	int type;
 	struct hash_node *next;
-} HASH_NODE;
+} HASH;
 
-HASH_NODE *table[HASH_SIZE];
+HASH *Table[HASH_SIZE];
 
-void hashInit();
+void hashInit(void);
 int hashAddress(char *text);
-HASH_NODE *hashInsert (char *text, int type);
-void hashPrint();
+HASH *hashInsert (int type, char *text);
+void hashPrint(void);
 
 void initMe();
 int getLineNumber();

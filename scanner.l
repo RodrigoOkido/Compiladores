@@ -34,11 +34,11 @@
 
 
 
-[a-zA-Z_]([a-zA-Z_0-9 ]*[a-zA-Z_0-9])?		{ hashInsert(yytext,TK_IDENTIFIER); return TK_IDENTIFIER; }
-[0-9]+						      { hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER; }
-[0-9]+\.[0-9]+					{ hashInsert(yytext,LIT_REAL); return LIT_REAL; }
-"'"[a-zA-Z0-9]"'"				{ hashInsert(yytext,LIT_CHAR); return LIT_CHAR; }
-\"[^\"\n]*\"					  { hashInsert(yytext,LIT_STRING); return LIT_STRING; }
+[a-zA-Z_]([a-zA-Z_0-9 ]*[a-zA-Z_0-9])?		{ hashInsert(TK_IDENTIFIER, yytext); return TK_IDENTIFIER; }
+[0-9]+						      { hashInsert(LIT_INTEGER,yytext); return LIT_INTEGER; }
+[0-9]+\.[0-9]+					{ hashInsert(LIT_REAL,yytext); return LIT_REAL; }
+"'"[a-zA-Z0-9]"'"				{ hashInsert(LIT_CHAR,yytext); return LIT_CHAR; }
+\"[^\"\n]*\"					  { hashInsert(LIT_STRING,yytext); return LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }
