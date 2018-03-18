@@ -31,69 +31,69 @@ int main (int argc, char ** argv) {
 				fprintf(stderr, "\nFLOAT");
 				break;
 			case KW_IF:
-				fprintf(stderr, "\nIF");
+				fprintf(stderr, "IF\n");
 				break;
 			case KW_THEN:
-				fprintf(stderr, "\nTHEN");
+				fprintf(stderr, "THEN\n");
 				break;
 			case KW_ELSE:
-				fprintf(stderr, "\nELSE");
+				fprintf(stderr, "ELSE\n");
 				break;
 			case KW_WHILE:
-				fprintf(stderr, "\nWHILE");
+				fprintf(stderr, "WHILE\n");
 				break;
 			case KW_FOR:
-				fprintf(stderr, "\nFOR");
+				fprintf(stderr, "FOR\n");
 				break;
 			case KW_READ:
-				fprintf(stderr, "\nREAD");
+				fprintf(stderr, "READ\n");
 				break;
 			case KW_RETURN:
-				fprintf(stderr, "\nRETURN");
+				fprintf(stderr, "RETURN\n");
 				break;
 			case KW_PRINT:
-				fprintf(stderr, "\nPRINT");
+				fprintf(stderr, "PRINT\n");
 				break;
 			case OPERATOR_LE:
-				fprintf(stderr, "\n(LE) <=");
+				fprintf(stderr, "(LE) <=\n");
 				break;
 			case OPERATOR_GE:
-				fprintf(stderr, "\n(GE) >=");
+				fprintf(stderr, "(GE) >=\n");
 				break;
 			case OPERATOR_EQ:
-				fprintf(stderr, "\n(EQ) ==");
+				fprintf(stderr, "(EQ) ==\n");
 				break;
 			case OPERATOR_NE:
-				fprintf(stderr, "\n(NE) !=");
+				fprintf(stderr, "(NE) !=\n");
 				break;
 			case OPERATOR_AND:
-				fprintf(stderr, "\n(AND) &&");
+				fprintf(stderr, "(AND) &&\n");
 				break;
 			case OPERATOR_OR:
-				fprintf(stderr, "\n(OR) ||");
+				fprintf(stderr, "(OR) ||\n");
 				break;
       case TK_IDENTIFIER:
-          printf("\nIDENTIFIER");
+          printf("IDENTIFIER\n");
           break;
       case LIT_INTEGER:
-          printf("\nINT");
+          printf("INT\n");
           break;
       case LIT_REAL:
-          printf("\nREAL");
+          printf("REAL\n");
           break;
       case LIT_CHAR:
-          printf("\nCHAR");
+          printf("CHAR\n");
           break;
       case LIT_STRING:
-          printf("\nSTRING");
+          printf("STRING\n");
           break;
       case TOKEN_ERROR:
-          printf("\nERRO in line %d",getLineNumber());
+          printf("ERRO in line %d\n",getLineNumber());
           break;
       case 0:
           break;
       default:
-          printf("\n%c",tok);
+          printf("%c\n",tok);
           break;
       }
 

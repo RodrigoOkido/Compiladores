@@ -6,8 +6,8 @@ abc
 %
 @
 long _var 1
-for(v = 0;v <= 10; v++){
-return (0)
+for(v = 0; v <= 10; v++){
+  return 0;
 }
 'c'
 c
@@ -21,3 +21,4 @@ c
 ;
 \
 3.3
+// comentarios

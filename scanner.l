@@ -10,7 +10,6 @@
 %x COMMENT
 
 %%
-
 "char"		{ return KW_CHAR; }
 "int"		{ return KW_INT; }
 "float"		{ return KW_FLOAT; }
@@ -30,24 +29,26 @@
 "=="		{ return OPERATOR_EQ; }
 "!="		{ return OPERATOR_NE; }
 "&&"		{ return OPERATOR_AND; }
-"||"		{ return OPERATOR_OR; }
+"\|\|"		{ return OPERATOR_OR; }
 
 
 
-[a-zA-Z_]([a-zA-Z_0-9 ]*[a-zA-Z_0-9])?		{ hashInsert(TK_IDENTIFIER, yytext); return TK_IDENTIFIER; }
+[A-Za-z_][A-Za-z_0-9]*	{ hashInsert(TK_IDENTIFIER, yytext); return TK_IDENTIFIER; }
 [0-9]+						      { hashInsert(LIT_INTEGER,yytext); return LIT_INTEGER; }
 [0-9]+\.[0-9]+					{ hashInsert(LIT_REAL,yytext); return LIT_REAL; }
 "'"[a-zA-Z0-9]"'"				{ hashInsert(LIT_CHAR,yytext); return LIT_CHAR; }
-\"[^\"\n]*\"					  { hashInsert(LIT_STRING,yytext); return LIT_STRING; }
+\"(\\.|[^\\"])*\"				{ hashInsert(LIT_STRING,yytext); return LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }
 "*"								      { return yytext[0]; }
 
+
 "\n"						  { ++lineNumber; }
-[ \t]
 "//".*
 "/*"						  {BEGIN(COMMENT); }
+
+[ \t\r]+
 
 .				          { return TOKEN_ERROR; }
 
