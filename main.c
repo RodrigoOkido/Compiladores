@@ -1,3 +1,9 @@
+/*
+  INF01147 Compiladores - Turma A - Marcelo Johann
+  Trabalho : ETAPA 1
+  Componentes : Lisiane Aguiar e Rodrigo Okido
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "tokens.h"
@@ -22,13 +28,13 @@ int main (int argc, char ** argv) {
     tok = yylex();
     switch(tok){
       case KW_CHAR:
-				fprintf(stderr, "\nCHAR");
+				fprintf(stderr, "CHAR\n");
 				break;
 			case KW_INT:
-				fprintf(stderr, "\nINT");
+				fprintf(stderr, "INT\n");
 				break;
 			case KW_FLOAT:
-				fprintf(stderr, "\nFLOAT");
+				fprintf(stderr, "FLOAT\n");
 				break;
 			case KW_IF:
 				fprintf(stderr, "IF\n");

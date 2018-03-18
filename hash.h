@@ -1,3 +1,8 @@
+/*
+  INF01147 Compiladores - Turma A - Marcelo Johann
+  Trabalho : ETAPA 1
+  Componentes : Lisiane Aguiar e Rodrigo Okido
+*/
 
 #define HASH_SIZE 997
 
