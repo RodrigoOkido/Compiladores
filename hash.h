@@ -1,6 +1,6 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 1
+  Trabalho : ETAPA 2
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 

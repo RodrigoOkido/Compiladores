@@ -1,5 +1,9 @@
-etapa1: lex.yy.o hash.o main.o
-	gcc lex.yy.o hash.o main.o -o etapa1
+etapa2: y.tab.o lex.yy.o hash.o main.o
+	gcc y.tab.o lex.yy.o hash.o main.o -o etapa2
+y.tab.o: y.tab.c
+		gcc -c y.tab.c
+y.tab.c: parser.y
+	yacc -d -r solved parser.y
 lex.yy.o: lex.yy.c
 	gcc lex.yy.c -c
 hash.o: hash.c

@@ -1,12 +1,15 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 1
+  Trabalho : ETAPA 2
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "tokens.h"
+#include "hash.h"
+#include "y.tab.h"
 
 extern FILE *yyin;
 
@@ -14,7 +17,7 @@ int main (int argc, char ** argv) {
 
   int tok;
   if (argc < 2) {
-    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa1 file_name\n");
+    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa2 file_name\n");
     exit(1);
   }
 
@@ -23,6 +26,11 @@ int main (int argc, char ** argv) {
     exit(2);
   }
 
+
+
+  yyparse();
+
+  /* CODE USED TO RUN ETAPA1
   while (isRunning()) {
 
     tok = yylex();
@@ -107,5 +115,9 @@ int main (int argc, char ** argv) {
 
   	printf("\nNumero total de linhas do arquivo: %d\n", getLineNumber());
   	hashPrint();
+
+    */
+
+    fprintf(stderr,"Programa compilou corretamente. \n");
    	exit(0);
 } // END_MAIN
