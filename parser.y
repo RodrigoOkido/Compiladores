@@ -37,18 +37,14 @@ int yyerror(char *msg);
 
 
 
+%%
 
 
+program : decl
 
-
-
-
-
-
-
-
-
-
+decl : dec decl
+	|
+	;
 
 
 
