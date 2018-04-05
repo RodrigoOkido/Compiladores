@@ -72,8 +72,32 @@ initvect : SYMBOL_LIT_INT
 	|
 	;
 
+block: '{'lcmd'}'
 
+lcmd: cmd ';' lcmd
+	|
+	;
 
+cmd : SYMBOL_IDENTIFIER '=' exp
+    | KW_WHILE '('exp')' cmd
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp to exp ')' cmd
+    | KW_IF '('exp')' KW_THEN cmd
+    | KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
+    ;
+
+exp : SYMBOL_IDENTIFIER
+    | SYMBOL_LIT_INTEGER
+    | exp '+' exp
+    | exp '-' exp
+    | exp '*' exp
+    | exp '/' exp
+    | exp OPERATOR_LE exp
+    | exp OPERATOR_GE exp
+	| exp OPERATOR_EQ exp
+	| exp OPERATOR_NE exp
+	| exp OPERATOR_AND exp
+	| exp OPERATOR_OR exp
+	;
 
 %%
 
