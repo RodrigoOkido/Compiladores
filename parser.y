@@ -87,6 +87,7 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 
 exp : SYMBOL_IDENTIFIER
     | SYMBOL_LIT_INTEGER
+    | SYMBOL_LIT_CHAR
     | exp '+' exp
     | exp '-' exp
     | exp '*' exp
