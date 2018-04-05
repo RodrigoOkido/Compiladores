@@ -11,6 +11,7 @@
 #include "y.tab.h"
 
 extern FILE *yyin;
+extern void hashPrint();
 
 int main (int argc, char ** argv) {
 
@@ -24,10 +25,10 @@ int main (int argc, char ** argv) {
     fprintf(stderr, "File not found or cannot be open %s", argv[1]);
     exit(2);
   }
-
+	
 
   yyparse();
-
+  hashPrint();
 
   fprintf(stderr,"Programa compilou corretamente. \n");
   exit(0);
