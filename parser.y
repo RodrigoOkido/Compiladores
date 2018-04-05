@@ -28,25 +28,49 @@ int yyerror(char *msg);
 %token OPERATOR_AND  274
 %token OPERATOR_OR   275
 
-%token TK_IDENTIFIER 280
-%token LIT_INTEGER   281
-%token LIT_REAL      282
-%token LIT_CHAR      285
-%token LIT_STRING    286
-%token TOKEN_ERROR   290
+%token SYMBOL_IDENTIFIER
+%token SYMBOL_LIT_INTEGER
+%token SYMBOL_LIT_REAL
+%token SYMBOL_LIT_CHAR
+%token SYMBOL_LIT_STRING
 
+%token TOKEN_ERROR 290
 
+%left OPERATOR_AND OPERATOR_OR '!'
+%left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE
+%left '+' '-'
+%left '*' '/'
 
 %%
 
 
 program : decl
 
+
 decl : dec decl
 	|
 	;
 
+dec : vardec
+	| fundec
+	;
 
+
+vardec : vartype SYMBOL_IDENTIFIER '=' value
+	| vartype SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INT ']' ':' initvect ';'
+
+
+vartype : KW_CHAR
+	| KW_INT
+	| KW_FLOAT
+	;
+
+
+initvect : SYMBOL_LIT_INT
+	| SYMBOL_LIT_REAL
+	| SYMBOL_LIT_CHAR
+	|
+	;
 
 
 
