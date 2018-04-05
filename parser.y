@@ -59,7 +59,7 @@ dec : vardec
 
 
 vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect
-	| '#'SYMBOL_IDENTIFIER
+	| '#'SYMBOL_IDENTIFIER '=' lit_value_or_initvect
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ':' lit_value_or_initvect  ';'
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 
@@ -105,11 +105,20 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| KW_RETURN exp
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-    | KW_WHILE '('exp')' cmd
-    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
-		|
+   		| KW_WHILE '('exp')' cmd
+    		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+		| vardec '=' exp
+		| SYMBOL_IDENTIFIER '['exp']' '=' exp
+		| KW_READ SYMBOL_IDENTIFIER
+		| KW_PRINT argprint
     ;
 
+argprint: elementsprint paramprint
+
+paramprint: ' ' elementsprint paramprint
+
+elementsprint: SYMBOL_LIT_STRING
+	    |  exp
 
 exp : SYMBOL_IDENTIFIER
     | SYMBOL_LIT_INTEGER
