@@ -121,18 +121,21 @@ elementsprint: SYMBOL_LIT_STRING
 	    |  exp
 
 exp : SYMBOL_IDENTIFIER
-    | SYMBOL_LIT_INTEGER
-    | SYMBOL_LIT_CHAR
-    | exp '+' exp
-    | exp '-' exp
-    | exp '*' exp
-    | exp '/' exp
-    | exp OPERATOR_LE exp
-    | exp OPERATOR_GE exp
+   	 	| SYMBOL_LIT_INTEGER
+   	 	| SYMBOL_LIT_CHAR
+    		| exp '+' exp
+    		| exp '-' exp
+    		| exp '*' exp
+    		| exp '/' exp
+    		| exp OPERATOR_LE exp
+    		| exp OPERATOR_GE exp
 		| exp OPERATOR_EQ exp
 		| exp OPERATOR_NE exp
 		| exp OPERATOR_AND exp
 		| exp OPERATOR_OR exp
+		| '&' SYMBOL_IDENTIFIER
+		| '#' SYMBOL_IDENTIFIER
+		| SYMBOL_IDENTIFIER '('funparaml')'
 		;
 
 
