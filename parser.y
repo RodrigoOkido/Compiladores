@@ -20,6 +20,7 @@ int yyerror(char *msg);
 %token KW_READ       266
 %token KW_RETURN     267
 %token KW_PRINT      268
+%token KW_TO				 269
 
 %token OPERATOR_LE   270
 %token OPERATOR_GE   271
@@ -51,13 +52,16 @@ decl : dec decl
 	|
 	;
 
+
 dec : vardec
 	| fundec
 	;
 
 
-vardec : vartype SYMBOL_IDENTIFIER '=' value
-	| vartype SYMBOL_IDENTIFIER '[' SYMBOL_LIT_INT ']' ':' initvect ';'
+vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect
+	| '#'SYMBOL_IDENTIFIER
+	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ':' lit_value_or_initvect  ';'
+	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 
 
 vartype : KW_CHAR
@@ -66,24 +70,46 @@ vartype : KW_CHAR
 	;
 
 
-initvect : SYMBOL_LIT_INT
+lit_value_or_initvect : SYMBOL_LIT_INT
 	| SYMBOL_LIT_REAL
 	| SYMBOL_LIT_CHAR
-	|
 	;
 
+
+fundec : vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
+
+
+funparaml : paramdecl paramrest
+
+
+paramdecl : vartype SYMBOL_IDENTIFIER
+
+
+paramrest : ',' paramdecl paramrest
+	| 
+	;
+
+
 block: '{'lcmd'}'
+
 
 lcmd: cmd ';' lcmd
 	|
 	;
 
+
 cmd : SYMBOL_IDENTIFIER '=' exp
+		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
+		| KW_READ SYMBOL_IDENTIFIER
+		| KW_PRINT argprint
+		| KW_RETURN exp
+		| KW_IF '('exp')' KW_THEN cmd
+		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
     | KW_WHILE '('exp')' cmd
-    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp to exp ')' cmd
-    | KW_IF '('exp')' KW_THEN cmd
-    | KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+		|
     ;
+
 
 exp : SYMBOL_IDENTIFIER
     | SYMBOL_LIT_INTEGER
@@ -94,11 +120,12 @@ exp : SYMBOL_IDENTIFIER
     | exp '/' exp
     | exp OPERATOR_LE exp
     | exp OPERATOR_GE exp
-	| exp OPERATOR_EQ exp
-	| exp OPERATOR_NE exp
-	| exp OPERATOR_AND exp
-	| exp OPERATOR_OR exp
-	;
+		| exp OPERATOR_EQ exp
+		| exp OPERATOR_NE exp
+		| exp OPERATOR_AND exp
+		| exp OPERATOR_OR exp
+		;
+
 
 %%
 
