@@ -30,7 +30,7 @@ int yyerror(char *msg);
 %token OPERATOR_OR   275
 
 %token SYMBOL_IDENTIFIER
-%token SYMBOL_LIT_INTEGER
+%token SYMBOL_LIT_INT
 %token SYMBOL_LIT_REAL
 %token SYMBOL_LIT_CHAR
 %token SYMBOL_LIT_STRING
@@ -121,7 +121,7 @@ elementsprint: SYMBOL_LIT_STRING
 	    |  exp
 
 exp : SYMBOL_IDENTIFIER
-   	 	| SYMBOL_LIT_INTEGER
+   	 	| SYMBOL_LIT_INT
    	 	| SYMBOL_LIT_CHAR
     		| exp '+' exp
     		| exp '-' exp

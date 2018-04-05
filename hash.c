@@ -28,6 +28,18 @@ int hashAddress (char *text) {
 
 }
 
+HASH *hashFind (char *text)
+{
+	int address;
+	HASH *node;
+	address = hashAddress(text);
+	for (node=table[address]; node; node=node->next){
+		if ((strcmp (node->text,text)) == 0){
+	 		return node;
+	 	}
+	}
+	return 0;
+}
 
 HASH *hashInsert (int type, char *text) {
   HASH *newnode = 0;
@@ -48,18 +60,6 @@ HASH *hashInsert (int type, char *text) {
 }
 
 
-HASH *hashFind (char *text)
-{
-	int address;
-	HASH *node;
-	address = hashAddress(text);
-	for (node=table[address]; node; node=node->next){
-		if ((strcmp (node->text,text)) == 0){
-	 		return node;
-	 	}
-	}
-	return 0;
-}
 
 
 void hashPrint (void) {

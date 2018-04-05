@@ -1,5 +1,5 @@
 %{
-	#include "tokens.h"
+	
 	#include "hash.h"
 	#include "y.tab.h"
 
@@ -34,11 +34,11 @@
 
 
 
-[A-Za-z_][A-Za-z_0-9]*	{ hashInsert(TK_IDENTIFIER, yytext); return TK_IDENTIFIER; }
-[0-9]+						      { hashInsert(LIT_INTEGER,yytext); return LIT_INTEGER; }
-[0-9]+\.[0-9]+					{ hashInsert(LIT_REAL,yytext); return LIT_REAL; }
-"'"[a-zA-Z0-9]"'"				{ hashInsert(LIT_CHAR,yytext); return LIT_CHAR; }
-\"(\\.|[^\\"])*\"				{ hashInsert(LIT_STRING,yytext); return LIT_STRING; }
+[A-Za-z_][A-Za-z_0-9]*	{ hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
+[0-9]+						      { hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
+[0-9]+\.[0-9]+					{ hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
+"'"[a-zA-Z0-9]"'"				{ hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
+\"(\\.|[^\\"])*\"				{ hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }
