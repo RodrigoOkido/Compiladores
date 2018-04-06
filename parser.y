@@ -126,10 +126,6 @@ elementsprint : SYMBOL_LIT_STRING
 			;
 
 
-returnexp : KW_RETURN exp
-	;
-
-
 exp : SYMBOL_IDENTIFIER
    	 	| SYMBOL_LIT_INT
    	 	| SYMBOL_LIT_CHAR
