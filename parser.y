@@ -62,7 +62,7 @@ vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect
 	| '#'SYMBOL_IDENTIFIER '=' lit_value_or_initvect
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ':' lit_value_or_initvect  ';'
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
-
+	;
 
 vartype : KW_CHAR
 	| KW_INT
@@ -77,23 +77,23 @@ lit_value_or_initvect : SYMBOL_LIT_INT
 
 
 fundec : vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
-
+	;
 
 funparaml : paramdecl paramrest
-
+	;
 
 paramdecl : vartype SYMBOL_IDENTIFIER
-
+	;
 
 paramrest : ',' paramdecl paramrest
-	| 
+	|
 	;
 
 
-block: '{'lcmd'}'
+block : '{'lcmd'}'
+	;
 
-
-lcmd: cmd ';' lcmd
+lcmd : cmd ';' lcmd
 	|
 	;
 
@@ -105,37 +105,47 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| KW_RETURN exp
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-   		| KW_WHILE '('exp')' cmd
-    		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+   	| KW_WHILE '('exp')' cmd
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| vardec '=' exp
 		| SYMBOL_IDENTIFIER '['exp']' '=' exp
 		| KW_READ SYMBOL_IDENTIFIER
 		| KW_PRINT argprint
     ;
 
-argprint: elementsprint paramprint
+argprint : elementsprint paramprint
+	;
 
-paramprint: ' ' elementsprint paramprint
 
-elementsprint: SYMBOL_LIT_STRING
+paramprint : ' ' elementsprint paramprint
+	;
+
+
+elementsprint : SYMBOL_LIT_STRING
 	    |  exp
+			;
+
+
+returnexp : KW_RETURN exp
+	;
+
 
 exp : SYMBOL_IDENTIFIER
    	 	| SYMBOL_LIT_INT
    	 	| SYMBOL_LIT_CHAR
-    		| exp '+' exp
-    		| exp '-' exp
-    		| exp '*' exp
-    		| exp '/' exp
-    		| exp OPERATOR_LE exp
-    		| exp OPERATOR_GE exp
-		| exp OPERATOR_EQ exp
-		| exp OPERATOR_NE exp
-		| exp OPERATOR_AND exp
-		| exp OPERATOR_OR exp
-		| '&' SYMBOL_IDENTIFIER
-		| '#' SYMBOL_IDENTIFIER
-		| SYMBOL_IDENTIFIER '('funparaml')'
+    	| exp '+' exp
+    	| exp '-' exp
+    	| exp '*' exp
+    	| exp '/' exp
+    	| exp OPERATOR_LE exp
+    	| exp OPERATOR_GE exp
+			| exp OPERATOR_EQ exp
+			| exp OPERATOR_NE exp
+			| exp OPERATOR_AND exp
+			| exp OPERATOR_OR exp
+			| '&' SYMBOL_IDENTIFIER
+			| '#' SYMBOL_IDENTIFIER
+			| SYMBOL_IDENTIFIER '('funparaml')'
 		;
 
 
