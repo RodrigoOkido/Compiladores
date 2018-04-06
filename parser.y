@@ -58,15 +58,20 @@ dec : vardec
 	;
 
 
-vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect
+vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
 	| '#'SYMBOL_IDENTIFIER '=' lit_value_or_initvect
-	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ':' lit_value_or_initvect  ';'
+	| vartype SYMBOL_IDENTIFIER'['SYMBOL_LIT_INT']'':' lit_value_or_initvect more_values ';'
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 	;
 
 vartype: KW_CHAR
 	| KW_INT
 	| KW_FLOAT
+	;
+
+
+more_values: lit_value_or_initvect more_values
+	|
 	;
 
 
