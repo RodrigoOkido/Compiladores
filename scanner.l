@@ -1,5 +1,5 @@
 %{
-	
+
 	#include "hash.h"
 	#include "y.tab.h"
 
@@ -22,7 +22,7 @@
 "read"		{ return KW_READ; }
 "return"		{ return KW_RETURN; }
 "print"		{ return KW_PRINT; }
-
+"to"		{ return KW_TO; }
 
 
 "<="		{ return OPERATOR_LE; }
@@ -34,11 +34,11 @@
 
 
 
-[A-Za-z_][A-Za-z_0-9]*	{ hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
-[0-9]+						      { hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
-[0-9]+\.[0-9]+					{ hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
-"'"[a-zA-Z0-9]"'"				{ hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
-\"(\\.|[^\\"])*\"				{ hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
+[A-Za-z_][A-Za-z_0-9]*	{ yylval.symbol = hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
+[0-9]+						      { yylval.symbol = hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
+[0-9]+\.[0-9]+					{ yylval.symbol = hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
+"'"[a-zA-Z0-9]"'"				{ yylval.symbol = hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
+\"(\\.|[^\\"])*\"				{ yylval.symbol = hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }

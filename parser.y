@@ -8,6 +8,7 @@ int yylex();
 int yyerror(char *msg);
 %}
 
+%union { HASH *symbol; }
 
 %token KW_CHAR       256
 %token KW_INT        257
@@ -29,11 +30,11 @@ int yyerror(char *msg);
 %token OPERATOR_AND  274
 %token OPERATOR_OR   275
 
-%token SYMBOL_IDENTIFIER
-%token SYMBOL_LIT_INT
-%token SYMBOL_LIT_REAL
-%token SYMBOL_LIT_CHAR
-%token SYMBOL_LIT_STRING
+%token<symbol> SYMBOL_IDENTIFIER
+%token<symbol> SYMBOL_LIT_INT
+%token<symbol> SYMBOL_LIT_REAL
+%token<symbol> SYMBOL_LIT_CHAR
+%token<symbol> SYMBOL_LIT_STRING
 
 %token TOKEN_ERROR 290
 
@@ -43,7 +44,6 @@ int yyerror(char *msg);
 %left '*' '/'
 
 %%
-
 
 program : decl
 
@@ -64,33 +64,33 @@ vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 	;
 
-vartype : KW_CHAR
+vartype: KW_CHAR
 	| KW_INT
 	| KW_FLOAT
 	;
 
 
-lit_value_or_initvect : SYMBOL_LIT_INT
+lit_value_or_initvect: SYMBOL_LIT_INT
 	| SYMBOL_LIT_REAL
 	| SYMBOL_LIT_CHAR
 	;
 
 
-fundec : vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
+fundec: vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
 	;
 
-funparaml : paramdecl paramrest
+funparaml: paramdecl paramrest
 	;
 
-paramdecl : vartype SYMBOL_IDENTIFIER
+paramdecl: vartype SYMBOL_IDENTIFIER
 	;
 
-paramrest : ',' paramdecl paramrest
+paramrest: ',' paramdecl paramrest
 	|
 	;
 
 
-block : '{'lcmd'}'
+block: '{'lcmd'}'
 	;
 
 lcmd : cmd ';' lcmd
@@ -101,29 +101,13 @@ lcmd : cmd ';' lcmd
 cmd : SYMBOL_IDENTIFIER '=' exp
 		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
 		| KW_READ SYMBOL_IDENTIFIER
-		| KW_PRINT argprint
 		| KW_RETURN exp
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
    	| KW_WHILE '('exp')' cmd
     | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| vardec '=' exp
-		| SYMBOL_IDENTIFIER '['exp']' '=' exp
-		| KW_READ SYMBOL_IDENTIFIER
-		| KW_PRINT argprint
     ;
-
-argprint : elementsprint paramprint
-	;
-
-
-paramprint : ' ' elementsprint paramprint
-	;
-
-
-elementsprint : SYMBOL_LIT_STRING
-	    |  exp
-			;
 
 
 exp : SYMBOL_IDENTIFIER

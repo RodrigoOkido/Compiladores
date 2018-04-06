@@ -17,6 +17,7 @@ HASH *table[HASH_SIZE];
 void hashInit(void);
 int hashAddress(char *text);
 HASH *hashInsert (int type, char *text);
+HASH *hashFind (char *text);
 void hashPrint(void);
 
 void initMe();

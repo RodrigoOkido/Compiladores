@@ -13,4 +13,4 @@ main.o: main.c
 lex.yy.c: scanner.l
 	lex scanner.l
 clean:
-	rm etapa1 lex.yy.c *.o
+	rm etapa2 lex.yy.c *.o y.tab.c y.tab.h y.output
