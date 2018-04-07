@@ -89,6 +89,7 @@ fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block
 	;
 
 funparaml: paramdecl paramrest
+	|
 	;
 
 paramdecl: vartype SYMBOL_IDENTIFIER
@@ -108,14 +109,14 @@ lcmd : cmd ';' lcmd
 
 
 cmd : SYMBOL_IDENTIFIER '=' exp
-		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp 
-		| KW_READ SYMBOL_IDENTIFIER 
-		| KW_RETURN exp 
-		| KW_WHILE '('exp')' cmd 
-		| KW_IF '('exp')' KW_THEN cmd 
+		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
+		| KW_READ SYMBOL_IDENTIFIER
+		| KW_RETURN exp
+		| KW_WHILE '('exp')' cmd
+		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
     		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
-		| vardec '=' exp 
+		| vardec '=' exp
 		|
     		;
 
