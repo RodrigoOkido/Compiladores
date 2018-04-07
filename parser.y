@@ -43,6 +43,10 @@ int yyerror(char *msg);
 %left '+' '-'
 %left '*' '/'
 
+
+
+
+
 %%
 
 program : decl
@@ -59,7 +63,7 @@ dec : vardec
 
 
 vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
-	| '#'SYMBOL_IDENTIFIER '=' lit_value_or_initvect
+	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
 	| vartype SYMBOL_IDENTIFIER'['SYMBOL_LIT_INT']'':' lit_value_or_initvect more_values ';'
 	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 	;
@@ -104,26 +108,26 @@ lcmd : cmd ';' lcmd
 
 
 cmd : SYMBOL_IDENTIFIER '=' exp
-		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
-		| KW_READ SYMBOL_IDENTIFIER
-		| KW_RETURN exp
-		| KW_IF '('exp')' KW_THEN cmd
+		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp 
+		| KW_READ SYMBOL_IDENTIFIER 
+		| KW_RETURN exp 
+		| KW_WHILE '('exp')' cmd 
+		| KW_IF '('exp')' KW_THEN cmd 
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-   	| KW_WHILE '('exp')' cmd
-    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
-		| vardec '=' exp
-    ;
+    		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+		| vardec '=' exp 
+    		;
 
 
 exp : SYMBOL_IDENTIFIER
    	 	| SYMBOL_LIT_INT
    	 	| SYMBOL_LIT_CHAR
-    	| exp '+' exp
-    	| exp '-' exp
-    	| exp '*' exp
-    	| exp '/' exp
-    	| exp OPERATOR_LE exp
-    	| exp OPERATOR_GE exp
+    		| exp '+' exp
+    		| exp '-' exp
+    		| exp '*' exp
+    		| exp '/' exp
+    		| exp OPERATOR_LE exp
+    		| exp OPERATOR_GE exp
 			| exp OPERATOR_EQ exp
 			| exp OPERATOR_NE exp
 			| exp OPERATOR_AND exp
