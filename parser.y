@@ -146,6 +146,12 @@ exp : SYMBOL_IDENTIFIER
     	| exp '/' exp
 			| exp '<' exp
 			| exp '>' exp
+			| '(' exp '+' exp ')'
+			| '(' exp '-' exp ')'
+			| '(' exp '*' exp ')'
+			| '(' exp '/' exp ')'
+			| '(' exp '<' exp ')'
+			| '(' exp '>' exp ')'
     	| exp OPERATOR_LE exp
     	| exp OPERATOR_GE exp
 			| exp OPERATOR_EQ exp
@@ -171,6 +177,8 @@ listParam : SYMBOL_LIT_INT
 	| SYMBOL_LIT_CHAR
 	| SYMBOL_LIT_REAL
 	| SYMBOL_IDENTIFIER
+	| '#' SYMBOL_IDENTIFIER
+	| '&' SYMBOL_IDENTIFIER
 	;
 
 
