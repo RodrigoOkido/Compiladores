@@ -120,14 +120,14 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| vardec '=' exp
 		| block
 		|
-    		;
+    ;
 
 
 argprint: printelement restprint
 	;
 
 
-restprint: ' ' printelement restprint
+restprint: printelement restprint
 	|
 	;
 
