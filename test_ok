@@ -3,13 +3,21 @@ char a = 'b';
 
 int v[10]: 0 0 0 0 0 0 0 0 0 0;
 
+int retornaNum (int num)
+{
+	return num;
+}
+
 float a() {
 
 i = ((3 * 7) / (5 / 2)) + (7 - 2 * (4>3));
 j = (4 + 3 * ((3*7-2+5)/(2<44)));
 
+a = retornaNum(5);
+print a;
 
 }
+
 
 int a() {
 {
