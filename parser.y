@@ -104,7 +104,7 @@ block: '{'lcmd'}'
 	;
 
 lcmd : cmd ';' lcmd
-	|
+	| cmd
 	;
 
 
@@ -116,8 +116,9 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| KW_WHILE '('exp')' cmd
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-    		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| vardec '=' exp
+		| block
 		|
     		;
 
@@ -139,12 +140,14 @@ printelement: exp
 exp : SYMBOL_IDENTIFIER
    	 	| SYMBOL_LIT_INT
    	 	| SYMBOL_LIT_CHAR
-    		| exp '+' exp
-    		| exp '-' exp
-    		| exp '*' exp
-    		| exp '/' exp
-    		| exp OPERATOR_LE exp
-    		| exp OPERATOR_GE exp
+    	| exp '+' exp
+    	| exp '-' exp
+    	| exp '*' exp
+    	| exp '/' exp
+			| exp '<' exp
+			| exp '>' exp
+    	| exp OPERATOR_LE exp
+    	| exp OPERATOR_GE exp
 			| exp OPERATOR_EQ exp
 			| exp OPERATOR_NE exp
 			| exp OPERATOR_AND exp
@@ -152,8 +155,23 @@ exp : SYMBOL_IDENTIFIER
 			| '&' SYMBOL_IDENTIFIER
 			| '#' SYMBOL_IDENTIFIER
 			| SYMBOL_IDENTIFIER '['exp']'
-			| SYMBOL_IDENTIFIER '('funparaml')'
+			| SYMBOL_IDENTIFIER '('paraml')'
 		;
+
+paraml: listParam newparam
+	|
+	;
+
+newparam : ',' listParam newparam
+	|
+	;
+
+
+listParam : SYMBOL_LIT_INT
+	| SYMBOL_LIT_CHAR
+	| SYMBOL_LIT_REAL
+	| SYMBOL_IDENTIFIER
+	;
 
 
 %%
