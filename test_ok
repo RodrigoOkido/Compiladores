@@ -1,6 +1,9 @@
+
 char a = 'b';
 
 int v[10]: 0 0 0 0 0 0 0 0 0 0;
+
+int func (int a,char t) {}
 
 float a() {}
 
