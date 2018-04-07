@@ -85,7 +85,7 @@ lit_value_or_initvect: SYMBOL_LIT_INT
 	;
 
 
-fundec: vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
+fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block
 	;
 
 funparaml: paramdecl paramrest
@@ -116,6 +116,7 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
     		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| vardec '=' exp 
+		|
     		;
 
 
