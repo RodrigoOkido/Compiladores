@@ -112,6 +112,7 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
 		| KW_READ SYMBOL_IDENTIFIER
 		| KW_RETURN exp
+		| KW_PRINT argprint
 		| KW_WHILE '('exp')' cmd
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
@@ -119,6 +120,20 @@ cmd : SYMBOL_IDENTIFIER '=' exp
 		| vardec '=' exp
 		|
     		;
+
+
+argprint: printelement restprint
+	;
+
+
+restprint: ' ' printelement restprint
+	|
+	;
+
+
+printelement: exp
+	| SYMBOL_LIT_STRING
+	;
 
 
 exp : SYMBOL_IDENTIFIER
@@ -136,6 +151,7 @@ exp : SYMBOL_IDENTIFIER
 			| exp OPERATOR_OR exp
 			| '&' SYMBOL_IDENTIFIER
 			| '#' SYMBOL_IDENTIFIER
+			| SYMBOL_IDENTIFIER '['exp']'
 			| SYMBOL_IDENTIFIER '('funparaml')'
 		;
 
