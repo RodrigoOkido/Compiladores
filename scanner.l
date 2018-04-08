@@ -3,6 +3,12 @@
 	#include "hash.h"
 	#include "y.tab.h"
 
+	#define SYMBOL_LIT_INT 1
+	#define SYMBOL_LIT_REAL 2
+	#define SYMBOL_LIT_CHAR 3
+	#define SYMBOL_LIT_STRING 4
+	#define SYMBOL_IDENTIFIER 5
+
 	int lineNumber = 1;
 	int running = 1;
 
@@ -34,11 +40,11 @@
 
 
 
-[A-Za-z_][A-Za-z_0-9]*	{ yylval.symbol = hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
-[0-9]+						      { yylval.symbol = hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
-[0-9]+\.[0-9]+					{ yylval.symbol = hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
-"'"[a-zA-Z0-9]"'"				{ yylval.symbol = hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
-\"(\\.|[^\\"])*\"				{ yylval.symbol = hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
+[A-Za-z_][A-Za-z_0-9]*	{hashInsert(SYMBOL_IDENTIFIER, yytext); return TK_IDENTIFIER; }
+[0-9]+						      {hashInsert(SYMBOL_LIT_INT,yytext); return LIT_INT; }
+[0-9]+\.[0-9]+					{hashInsert(SYMBOL_LIT_REAL,yytext); return LIT_REAL; }
+"'"[a-zA-Z0-9]"'"				{hashInsert(SYMBOL_LIT_CHAR,yytext); return LIT_CHAR; }
+\"(\\.|[^\\"])*\"				{hashInsert(SYMBOL_LIT_STRING,yytext); return LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }

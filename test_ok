@@ -20,6 +20,8 @@ read 2.5;
 read "testequalquercoisa";
 
 a = retornaNum(5);
+b = incn(&var, #ponteiro);
+
 print a;
 
 }

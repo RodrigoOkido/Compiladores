@@ -8,7 +8,6 @@ int yylex();
 int yyerror(char *msg);
 %}
 
-%union { HASH *symbol; }
 
 %token KW_CHAR       256
 %token KW_INT        257
@@ -30,11 +29,11 @@ int yyerror(char *msg);
 %token OPERATOR_AND  274
 %token OPERATOR_OR   275
 
-%token<symbol> SYMBOL_IDENTIFIER
-%token<symbol> SYMBOL_LIT_INT
-%token<symbol> SYMBOL_LIT_REAL
-%token<symbol> SYMBOL_LIT_CHAR
-%token<symbol> SYMBOL_LIT_STRING
+%token TK_IDENTIFIER 280
+%token LIT_INT 281
+%token LIT_REAL 282
+%token LIT_CHAR 283
+%token LIT_STRING 284
 
 %token TOKEN_ERROR 290
 
@@ -62,10 +61,10 @@ dec : vardec
 	;
 
 
-vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
-	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
-	| vartype SYMBOL_IDENTIFIER'['SYMBOL_LIT_INT']'':' lit_value_or_initvect more_values ';'
-	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
+vardec : vartype TK_IDENTIFIER '=' lit_value_or_initvect ';'
+	| vartype '#' TK_IDENTIFIER '=' lit_value_or_initvect ';'
+	| vartype TK_IDENTIFIER'['LIT_INT']'':' lit_value_or_initvect more_values ';'
+	| vartype TK_IDENTIFIER '['LIT_INT']' ';'
 	;
 
 vartype: KW_CHAR
@@ -79,20 +78,20 @@ more_values: lit_value_or_initvect more_values
 	;
 
 
-lit_value_or_initvect: SYMBOL_LIT_INT
-	| SYMBOL_LIT_REAL
-	| SYMBOL_LIT_CHAR
+lit_value_or_initvect: LIT_INT
+	| LIT_REAL
+	| LIT_CHAR
 	;
 
 
-fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block
+fundec: vartype TK_IDENTIFIER '('funparaml')' block
 	;
 
 funparaml: paramdecl paramrest
 	|
 	;
 
-paramdecl: vartype SYMBOL_IDENTIFIER
+paramdecl: vartype TK_IDENTIFIER
 	;
 
 paramrest: ',' paramdecl paramrest
@@ -108,25 +107,25 @@ lcmd : cmd ';' lcmd
 	;
 
 
-cmd : SYMBOL_IDENTIFIER '=' exp
-		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
+cmd : TK_IDENTIFIER '=' exp
+		| TK_IDENTIFIER '[' exp ']' '=' exp
 		| KW_READ return_read
 		| KW_RETURN exp
 		| KW_PRINT argprint
 		| KW_WHILE '('exp')' cmd
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+    | KW_FOR '(' TK_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| block
 		|
     ;
 
 
-return_read: SYMBOL_LIT_INT
-	| SYMBOL_LIT_REAL
-	| SYMBOL_LIT_CHAR
-	| SYMBOL_IDENTIFIER
-	| SYMBOL_LIT_STRING
+return_read: LIT_INT
+	| LIT_REAL
+	| LIT_CHAR
+	| TK_IDENTIFIER
+	| LIT_STRING
 	;
 
 
@@ -141,13 +140,13 @@ restprint: printelement restprint
 
 
 printelement: exp
-	| SYMBOL_LIT_STRING
+	| LIT_STRING
 	;
 
 
-exp : SYMBOL_IDENTIFIER
-   	 	| SYMBOL_LIT_INT
-   	 	| SYMBOL_LIT_CHAR
+exp : TK_IDENTIFIER
+   	 	| LIT_INT
+   	 	| LIT_CHAR
     	| exp '+' exp
     	| exp '-' exp
     	| exp '*' exp
@@ -162,10 +161,10 @@ exp : SYMBOL_IDENTIFIER
 			| exp OPERATOR_NE exp
 			| exp OPERATOR_AND exp
 			| exp OPERATOR_OR exp
-			| '&' SYMBOL_IDENTIFIER
-			| '#' SYMBOL_IDENTIFIER
-			| SYMBOL_IDENTIFIER '['exp']'
-			| SYMBOL_IDENTIFIER '('paraml')'
+			| '&' TK_IDENTIFIER
+			| '#' TK_IDENTIFIER
+			| TK_IDENTIFIER '['exp']'
+			| TK_IDENTIFIER '('paraml')'
 			;
 
 paraml: listParam newparam
@@ -177,12 +176,12 @@ newparam : ',' listParam newparam
 	;
 
 
-listParam : SYMBOL_LIT_INT
-	| SYMBOL_LIT_CHAR
-	| SYMBOL_LIT_REAL
-	| SYMBOL_IDENTIFIER
-	| '#' SYMBOL_IDENTIFIER
-	| '&' SYMBOL_IDENTIFIER
+listParam : LIT_INT
+	| LIT_CHAR
+	| LIT_REAL
+	| TK_IDENTIFIER
+	| '#' TK_IDENTIFIER
+	| '&' TK_IDENTIFIER
 	;
 
 
