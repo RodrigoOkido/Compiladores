@@ -108,7 +108,7 @@ lcmd : cmd ';' lcmd
 
 
 cmd : TK_IDENTIFIER '=' exp
-		| TK_IDENTIFIER '[' exp ']' '=' exp
+		| TK_IDENTIFIER '[' exp_num ']' '=' exp
 		| KW_READ return_read
 		| KW_RETURN exp
 		| KW_PRINT argprint
@@ -163,9 +163,18 @@ exp : TK_IDENTIFIER
 			| exp OPERATOR_OR exp
 			| '&' TK_IDENTIFIER
 			| '#' TK_IDENTIFIER
-			| TK_IDENTIFIER '['exp']'
+			| TK_IDENTIFIER '['exp_num']'
 			| TK_IDENTIFIER '('paraml')'
 			;
+
+exp_num : LIT_INT
+			| exp_num '+' exp_num
+			| exp_num '-' exp_num
+			| exp_num '*' exp_num
+			| exp_num '/' exp_num
+			| '('exp_num')'
+			;
+
 
 paraml: listParam newparam
 	|

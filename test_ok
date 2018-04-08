@@ -21,6 +21,7 @@ read "testequalquercoisa";
 
 a = retornaNum(5);
 b = incn(&var, #ponteiro);
+c = v[48];
 
 print a;
 
