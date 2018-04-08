@@ -110,17 +110,25 @@ lcmd : cmd ';' lcmd
 
 cmd : SYMBOL_IDENTIFIER '=' exp
 		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
-		| KW_READ SYMBOL_IDENTIFIER
+		| KW_READ return_read
 		| KW_RETURN exp
 		| KW_PRINT argprint
 		| KW_WHILE '('exp')' cmd
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
     | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
-		| vardec '=' exp
 		| block
 		|
     ;
+
+
+return_read: SYMBOL_LIT_INT
+	| SYMBOL_LIT_REAL
+	| SYMBOL_LIT_CHAR
+	| SYMBOL_IDENTIFIER
+	| SYMBOL_LIT_STRING
+	;
+
 
 
 argprint: printelement restprint
@@ -146,12 +154,8 @@ exp : SYMBOL_IDENTIFIER
     	| exp '/' exp
 			| exp '<' exp
 			| exp '>' exp
-			| '(' exp '+' exp ')'
-			| '(' exp '-' exp ')'
-			| '(' exp '*' exp ')'
-			| '(' exp '/' exp ')'
-			| '(' exp '<' exp ')'
-			| '(' exp '>' exp ')'
+			| exp '!' exp
+			| '('exp')'
     	| exp OPERATOR_LE exp
     	| exp OPERATOR_GE exp
 			| exp OPERATOR_EQ exp
@@ -162,7 +166,7 @@ exp : SYMBOL_IDENTIFIER
 			| '#' SYMBOL_IDENTIFIER
 			| SYMBOL_IDENTIFIER '['exp']'
 			| SYMBOL_IDENTIFIER '('paraml')'
-		;
+			;
 
 paraml: listParam newparam
 	|
