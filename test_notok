@@ -29,11 +29,7 @@ a[3] = v[10 5 9];
 
 a = v[10 5 9];
 
-int incn (int x, int n)
-  {
-	return (x+n);
 
-}
 
 int a() {
  };

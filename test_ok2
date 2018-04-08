@@ -1,7 +1,16 @@
+int v[10]: 0 0 0 0 0 0 0 0 0 0;
+
+float c () {
+	
+	if (a < b) then print "i" else print "j";
+
+}
 int t() {
 
 	while (i < 10) {
-		print "a";
+		print "aaa";
 	}
+	
+	
 
 }
