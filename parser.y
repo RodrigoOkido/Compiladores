@@ -116,7 +116,7 @@ cmd : TK_IDENTIFIER '=' exp
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
     | KW_FOR '(' TK_IDENTIFIER '=' exp KW_TO exp ')' cmd
-		| block
+		| block cmd
 		|
     ;
 
