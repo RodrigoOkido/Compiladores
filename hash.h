@@ -6,6 +6,10 @@
 
 #define HASH_SIZE 997
 
+#ifndef HASH_HEADER
+#define HASH_HEADER
+
+
 typedef struct hash_node {
 	char *text;
 	int type;
@@ -23,3 +27,5 @@ void hashPrint(void);
 void initMe();
 int getLineNumber();
 int isRunning();
+
+#endif
