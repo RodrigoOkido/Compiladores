@@ -1,4 +1,6 @@
 #include "ast.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 AST* astCreate(int type, HASH* symbol, AST* son0, AST* son1, AST* son2, AST* son3) {
 
@@ -43,3 +45,4 @@ void astPrint(AST *node, int level) {
 	}
 }
 
+//END OF FILE
