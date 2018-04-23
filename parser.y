@@ -132,12 +132,12 @@ paramrest: ',' paramdecl paramrest			{ $$ = astCreate(0,0,0,0,0,0); }
 block: '{'lcmd'}'			{ $$ = astCreate(0,0,0,0,0,0); }
 	;
 
-lcmd : cmd ';' lcmd			{ $$ = astCreate(0,0,0,0,0,0); }
-	| cmd			{ $$ = astCreate(0,0,0,0,0,0); }
+lcmd : cmd ';' lcmd			{ $$ = astCreate(AST_LCMD,0,$1,$2,0,0); }
+	| cmd			{ $$ = 0; }
 	;
 
 
-cmd : SYMBOL_IDENTIFIER '=' exp			{ $$ = astCreate(0,0,0,0,0,0); }
+cmd : SYMBOL_IDENTIFIER '=' exp			{ $$ = astCreate(AST_ASS,$1,$3,0,0,0); }
 		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp			{ $$ = astCreate(0,0,0,0,0,0); }
 		| KW_READ return_read			{ $$ = astCreate(0,0,0,0,0,0); }
 		| KW_RETURN exp			{ $$ = astCreate(0,0,0,0,0,0); }
@@ -174,11 +174,11 @@ printelement: exp			{ $$ = astCreate(0,0,0,0,0,0); }
 	;
 
 
-exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-   	 	| SYMBOL_LIT_INT			{ $$ = astCreate(0,0,0,0,0,0); }
-   	 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(0,0,0,0,0,0); }
-    	| exp '+' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-    	| exp '-' exp			{ $$ = astCreate(0,0,0,0,0,0); }
+exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+   	 	| SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+   	 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+    	| exp '+' exp			{ $$ = astCreate(AST_ADD,0,$1,$3,0,0); }
+    	| exp '-' exp			{ $$ = astCreate(AST_SUB,0,$1,$3,0,0); }
     	| exp '*' exp			{ $$ = astCreate(0,0,0,0,0,0); }
     	| exp '/' exp			{ $$ = astCreate(0,0,0,0,0,0); }
 			| exp '<' exp			{ $$ = astCreate(0,0,0,0,0,0); }
