@@ -1,5 +1,7 @@
 %{
+#include "ast.h"
 #include "hash.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,6 +10,10 @@ int yylex();
 int yyerror(char *msg);
 %}
 
+%union {
+	AST* ast;
+	HASH *symbol;
+}
 
 %token KW_CHAR       256
 %token KW_INT        257
@@ -29,13 +35,37 @@ int yyerror(char *msg);
 %token OPERATOR_AND  274
 %token OPERATOR_OR   275
 
-%token TK_IDENTIFIER 280
-%token LIT_INT 281
-%token LIT_REAL 282
-%token LIT_CHAR 283
-%token LIT_STRING 284
+%token<symbol> SYMBOL_IDENTIFIER 280
+%token<symbol> SYMBOL_LIT_INT 281
+%token<symbol> SYMBOL_LIT_REAL 282
+%token<symbol> SYMBOL_LIT_CHAR 283
+%token<symbol> SYMBOL_LIT_STRING 284
 
 %token TOKEN_ERROR 290
+
+%type<ast> program
+%type<ast> decl
+%type<ast> dec
+%type<ast> vardec
+%type<ast> vartype
+%type<ast> more_values
+%type<ast> lit_value_or_initvect
+%type<ast> fundec
+%type<ast> funparaml
+%type<ast> paramdecl
+%type<ast> paramrest
+%type<ast> block
+%type<ast> lcmd
+%type<ast> cmd
+%type<ast> return_read
+%type<ast> argprint
+%type<ast> restprint
+%type<ast> printelement
+%type<ast> exp
+%type<ast> paraml
+%type<ast> newparam
+%type<ast> listParam
+
 
 %left OPERATOR_AND OPERATOR_OR '!'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_NE
@@ -61,10 +91,10 @@ dec : vardec
 	;
 
 
-vardec : vartype TK_IDENTIFIER '=' lit_value_or_initvect ';'
-	| vartype '#' TK_IDENTIFIER '=' lit_value_or_initvect ';'
-	| vartype TK_IDENTIFIER'['LIT_INT']'':' lit_value_or_initvect more_values ';'
-	| vartype TK_IDENTIFIER '['LIT_INT']' ';'
+vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
+	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
+	| vartype SYMBOL_IDENTIFIER'['SYMBOL_LIT_INT']'':' lit_value_or_initvect more_values ';'
+	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'
 	;
 
 vartype: KW_CHAR
@@ -78,20 +108,20 @@ more_values: lit_value_or_initvect more_values
 	;
 
 
-lit_value_or_initvect: LIT_INT
-	| LIT_REAL
-	| LIT_CHAR
+lit_value_or_initvect: SYMBOL_LIT_INT
+	| SYMBOL_LIT_REAL
+	| SYMBOL_LIT_CHAR
 	;
 
 
-fundec: vartype TK_IDENTIFIER '('funparaml')' block
+fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block
 	;
 
 funparaml: paramdecl paramrest
 	|
 	;
 
-paramdecl: vartype TK_IDENTIFIER
+paramdecl: vartype SYMBOL_IDENTIFIER
 	;
 
 paramrest: ',' paramdecl paramrest
@@ -107,25 +137,25 @@ lcmd : cmd ';' lcmd
 	;
 
 
-cmd : TK_IDENTIFIER '=' exp
-		| TK_IDENTIFIER '[' exp_num ']' '=' exp
+cmd : SYMBOL_IDENTIFIER '=' exp
+		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp
 		| KW_READ return_read
 		| KW_RETURN exp
 		| KW_PRINT argprint
 		| KW_WHILE '('exp')' cmd
 		| KW_IF '('exp')' KW_THEN cmd
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd
-    | KW_FOR '(' TK_IDENTIFIER '=' exp KW_TO exp ')' cmd
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
 		| block cmd
 		|
     ;
 
 
-return_read: LIT_INT
-	| LIT_REAL
-	| LIT_CHAR
-	| TK_IDENTIFIER
-	| LIT_STRING
+return_read: SYMBOL_LIT_INT
+	| SYMBOL_LIT_REAL
+	| SYMBOL_LIT_CHAR
+	| SYMBOL_IDENTIFIER
+	| SYMBOL_LIT_STRING
 	;
 
 
@@ -140,13 +170,13 @@ restprint: printelement restprint
 
 
 printelement: exp
-	| LIT_STRING
+	| SYMBOL_LIT_STRING
 	;
 
 
-exp : TK_IDENTIFIER
-   	 	| LIT_INT
-   	 	| LIT_CHAR
+exp : SYMBOL_IDENTIFIER
+   	 	| SYMBOL_LIT_INT
+   	 	| SYMBOL_LIT_CHAR
     	| exp '+' exp
     	| exp '-' exp
     	| exp '*' exp
@@ -161,18 +191,10 @@ exp : TK_IDENTIFIER
 			| exp OPERATOR_NE exp
 			| exp OPERATOR_AND exp
 			| exp OPERATOR_OR exp
-			| '&' TK_IDENTIFIER
-			| '#' TK_IDENTIFIER
-			| TK_IDENTIFIER '['exp_num']'
-			| TK_IDENTIFIER '('paraml')'
-			;
-
-exp_num : LIT_INT
-			| exp_num '+' exp_num
-			| exp_num '-' exp_num
-			| exp_num '*' exp_num
-			| exp_num '/' exp_num
-			| '('exp_num')'
+			| '&' SYMBOL_IDENTIFIER
+			| '#' SYMBOL_IDENTIFIER
+			| SYMBOL_IDENTIFIER '['exp']'
+			| SYMBOL_IDENTIFIER '('paraml')'
 			;
 
 
@@ -185,12 +207,12 @@ newparam : ',' listParam newparam
 	;
 
 
-listParam : LIT_INT
-	| LIT_CHAR
-	| LIT_REAL
-	| TK_IDENTIFIER
-	| '#' TK_IDENTIFIER
-	| '&' TK_IDENTIFIER
+listParam : SYMBOL_LIT_INT
+	| SYMBOL_LIT_CHAR
+	| SYMBOL_LIT_REAL
+	| SYMBOL_IDENTIFIER
+	| '#' SYMBOL_IDENTIFIER
+	| '&' SYMBOL_IDENTIFIER
 	;
 
 
