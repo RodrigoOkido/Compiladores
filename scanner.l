@@ -35,11 +35,11 @@
 
 
 
-[A-Za-z_][A-Za-z_0-9]*	{yyval.symbol = hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
-[0-9]+						      {yyval.symbol = hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
-[0-9]+\.[0-9]+					{yyval.symbol = hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
-"'"[a-zA-Z0-9]"'"				{yyval.symbol = hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
-\"(\\.|[^\\"])*\"				{yyval.symbol = hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
+[A-Za-z_][A-Za-z_0-9]*	{yylval.symbol = hashInsert(SYMBOL_IDENTIFIER, yytext); return SYMBOL_IDENTIFIER; }
+[0-9]+						      {yylval.symbol = hashInsert(SYMBOL_LIT_INT,yytext); return SYMBOL_LIT_INT; }
+[0-9]+\.[0-9]+					{yylval.symbol = hashInsert(SYMBOL_LIT_REAL,yytext); return SYMBOL_LIT_REAL; }
+"'"[a-zA-Z0-9]"'"				{yylval.symbol = hashInsert(SYMBOL_LIT_CHAR,yytext); return SYMBOL_LIT_CHAR; }
+\"(\\.|[^\\"])*\"				{yylval.symbol = hashInsert(SYMBOL_LIT_STRING,yytext); return SYMBOL_LIT_STRING; }
 [,;:(){}+-/<>=!&$#]			{ return yytext[0]; }
 "["								      { return yytext[0]; }
 "]"								      { return yytext[0]; }
