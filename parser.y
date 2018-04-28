@@ -78,7 +78,7 @@ int yyerror(char *msg);
 
 %%
 
-program : decl			{  }
+program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);  }
 
 
 decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }

@@ -11,7 +11,8 @@
 #define MAX_SONS 4
 
 #include "hash.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 
 //BEGINNING
 #define AST_DEC			0
@@ -80,14 +81,11 @@
 #define AST_PRINT_ARG 50
 #define AST_PARAML 51
 
-#define ADT_CMD_WHILE 52
-
+#define AST_EXP_P 52
 #define AST_ENDER 53
-#define AST_EXP_P 54
 
 
-
-
+FILE *outputfile;
 
 
 typedef struct ast_node {
@@ -99,5 +97,7 @@ typedef struct ast_node {
 AST* astCreate(int type, HASH* symbol, AST* son0, AST* son1, AST* son2, AST* son3);
 
 void astPrint(AST *node, int level);
+
+void astGenerateFile(AST *node, FILE *output_file);
 
 #endif
