@@ -80,10 +80,9 @@
 #define AST_PRINT_ARG 50
 #define AST_PARAML 51
 
-
-
-
-
+#define AST_EXP_P 52
+#define AST_ENDER 53
+#define AST_CMD_WHILE 54
 
 typedef struct ast_node {
 	int type;

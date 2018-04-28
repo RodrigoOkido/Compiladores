@@ -1,10 +1,10 @@
 %{
-#include "ast.h"
-#include "hash.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "ast.h"
+#include "hash.h"
 
 int yylex();
 int yyerror(char *msg);
@@ -12,7 +12,7 @@ int yyerror(char *msg);
 
 %union {
 	AST* ast;
-	HASH *symbol;
+	HASH* symbol;
 }
 
 %token KW_CHAR       256
@@ -78,7 +78,7 @@ int yyerror(char *msg);
 
 %%
 
-program : decl			{ $$ = astCreate(AST_CMD_WHILE,0,$3,$5,0,0); }
+program : decl			{  }
 
 
 decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }
@@ -165,7 +165,7 @@ argprint: printelement restprint			{ $$ = astCreate(AST_PRINT_ARG,0,$1,$2,0,0); 
 
 
 restprint: printelement restprint			{ $$ = astCreate(AST_PRINT_ARG,0,$1,$2,0,0); }
-	|			{ $$ = $0; }
+	|			{ $$ = 0; }
 	;
 
 
@@ -199,11 +199,11 @@ exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 
 
 paraml: listParam newparam			{ $$ = astCreate(AST_PARAML,0,$1,$2,0,0); }
-	|			{ $$ = $0; }
+	|			{ $$ = 0; }
 	;
 
 newparam : ',' listParam newparam			{ $$ = astCreate(AST_PARAML,0,$2,$3,0,0); }
-	|			{ $$ = $0; }
+	|			{ $$ = 0; }
 	;
 
 
