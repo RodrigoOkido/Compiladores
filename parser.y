@@ -78,99 +78,99 @@ int yyerror(char *msg);
 
 %%
 
-program : decl		{ $$ = astCreate(AST_CMD_WHILE,0,$3,$5,0,0); }
+program : decl			{ $$ = astCreate(AST_CMD_WHILE,0,$3,$5,0,0); }
 
 
-decl : dec decl		{ $$ = astCreate(0,0,0,0,0,0); }
-	|
+decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }
+	|			{ $$ = 0; }
 	;
 
 
-dec : vardec			{ $$ = astCreate(0,0,0,0,0,0); }
-	| fundec				{ $$ = astCreate(0,0,0,0,0,0); }
+dec : vardec			{ $$ = $1; }
+	| fundec				{ $$ = $1; }
 	;
 
 
-vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(0,0,0,0,0,0); }
-	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'				{ $$ = astCreate(0,0,0,0,0,0); }
-	| vartype SYMBOL_IDENTIFIER'['SYMBOL_LIT_INT']'':' lit_value_or_initvect more_values ';'			{ $$ = astCreate(0,0,0,0,0,0); }
-	| vartype SYMBOL_IDENTIFIER '['SYMBOL_LIT_INT']' ';'		{ $$ = astCreate(AST_CMD_WHILE,0,$3,$5,0,0); }			{ $$ = astCreate(0,0,0,0,0,0); }
+vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VAR_DECL,$2,$1,$4,0,0); }
+	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,$5,0,0); }
+	| vartype SYMBOL_IDENTIFIER'['exp']'':' lit_value_or_initvect more_values ';'			{ $$ = astCreate(AST_VECTOR_DECL,$2,$1,$4,$7,0); }
+	| vartype SYMBOL_IDENTIFIER '['exp']' ';'			{ $$ = astCreate(AST_VECTOR_DECL_EMPTY,$2,$1,$4,0,0); }
 	;
 
-vartype: KW_CHAR			{ $$ = astCreate(0,0,0,0,0,0); }
-	| KW_INT			{ $$ = astCreate(0,0,0,0,0,0); }
-	| KW_FLOAT			{ $$ = astCreate(0,0,0,0,0,0); }
-	;
-
-
-more_values: lit_value_or_initvect more_values			{ $$ = astCreate(0,0,0,0,0,0); }
-	|			{ $$ = astCreate(0,0,0,0,0,0); }
+vartype: KW_CHAR			{ $$ = astCreate(AST_KW_CHAR,0,0,0,0,0); }
+	| KW_INT			{ $$ = astCreate(AST_KW_INT,0,0,0,0,0); }
+	| KW_FLOAT			{ $$ = astCreate(AST_KW_FLOAT,0,0,0,0,0); }
 	;
 
 
-lit_value_or_initvect: SYMBOL_LIT_INT			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_REAL			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_CHAR			{ $$ = astCreate(0,0,0,0,0,0); }
+more_values: lit_value_or_initvect more_values			{ $$ = astCreate(AST_MORE_VALUES,0,$1,$2,0,0); }
+	|			{ $$ = 0; }
 	;
 
 
-fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block			{ $$ = astCreate(0,0,0,0,0,0); }
-	;
-
-funparaml: paramdecl paramrest			{ $$ = astCreate(0,0,0,0,0,0); }
-	|			{ $$ = astCreate(0,0,0,0,0,0); }
-	;
-
-paramdecl: vartype SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-	;
-
-paramrest: ',' paramdecl paramrest			{ $$ = astCreate(0,0,0,0,0,0); }
-	|
+lit_value_or_initvect: SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	;
 
 
-block: '{'lcmd'}'			{ $$ = astCreate(0,0,0,0,0,0); }
+fundec: vartype SYMBOL_IDENTIFIER '('funparaml')' block			{ $$ = astCreate(AST_FUN_DECL,$2,$1,$4,$6,0); }
 	;
 
-lcmd : cmd ';' lcmd			{ $$ = astCreate(AST_LCMD,0,$1,$2,0,0); }
-	| cmd			{ $$ = 0; }
+funparaml: paramdecl paramrest			{ $$ = astCreate(AST_FUN_PARAML,0,$1,$2,0,0); }
+	|			{ $$ = 0; }
+	;
+
+paramdecl: vartype SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,$1,0,0,0); }
+	;
+
+paramrest: ',' paramdecl paramrest			{ $$ = astCreate(AST_FUN_PARAM,0,$2,$3,0,0); }
+	|			{ $$ = 0; }
 	;
 
 
-cmd : SYMBOL_IDENTIFIER '=' exp			{ $$ = astCreate(AST_ASS,$1,$3,0,0,0); }
-		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_READ return_read			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_RETURN exp			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_PRINT argprint			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_WHILE '('exp')' cmd			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_IF '('exp')' KW_THEN cmd			{ $$ = astCreate(0,0,0,0,0,0); }
-		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd			{ $$ = astCreate(0,0,0,0,0,0); }
-    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd			{ $$ = astCreate(0,0,0,0,0,0); }
-		| block cmd			{ $$ = astCreate(0,0,0,0,0,0); }
-		|			{ $$ = astCreate(0,0,0,0,0,0); }
+block: '{'lcmd'}'			{ $$ = astCreate(AST_BLOCK,0,$2,0,0,0); }
+	;
+
+lcmd : cmd ';' lcmd			{ $$ = astCreate(AST_LCMD,0,$1,$3,0,0); }
+	| cmd			{ $$ = $1; }
+	;
+
+
+cmd : SYMBOL_IDENTIFIER '=' exp			{ $$ = astCreate(AST_VAR_ATRIB,$1,$3,0,0,0); }
+		| SYMBOL_IDENTIFIER '[' exp ']' '=' exp			{ $$ = astCreate(AST_VECTOR_ATRIB,$1,$3,$6,0,0); }
+		| KW_READ return_read			{ $$ = astCreate(AST_KW_READ,0,$2,0,0,0); }
+		| KW_RETURN exp			{ $$ = astCreate(AST_KW_RETURN,0,$2,0,0,0); }
+		| KW_PRINT argprint			{ $$ = astCreate(AST_KW_PRINT,0,$2,0,0,0); }
+		| KW_WHILE '('exp')' cmd			{ $$ = astCreate(AST_KW_WHILE,0,$3,$5,0,0); }
+		| KW_IF '('exp')' KW_THEN cmd			{ $$ = astCreate(AST_KW_IF,0,$3,$6,0,0); }
+		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd			{ $$ = astCreate(AST_KW_IF,0,$3,$6,$8,0); }
+    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd			{ $$ = astCreate(AST_KW_FOR,$3,$5,$7,$9,0); }
+		| block cmd			{ $$ = astCreate(AST_NEW_BLOCK,0,$1,$2,0,0); }
+		|			{ $$ = 0; }
     ;
 
 
-return_read: SYMBOL_LIT_INT			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_REAL			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_CHAR			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_STRING			{ $$ = astCreate(0,0,0,0,0,0); }
+return_read: SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_STRING			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	;
 
 
 
-argprint: printelement restprint			{ $$ = astCreate(0,0,0,0,0,0); }
+argprint: printelement restprint			{ $$ = astCreate(AST_PRINT_ARG,0,$1,$2,0,0); }
 	;
 
 
-restprint: printelement restprint			{ $$ = astCreate(0,0,0,0,0,0); }
-	|			{ $$ = astCreate(0,0,0,0,0,0); }
+restprint: printelement restprint			{ $$ = astCreate(AST_PRINT_ARG,0,$1,$2,0,0); }
+	|			{ $$ = $0; }
 	;
 
 
-printelement: exp			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_STRING			{ $$ = astCreate(0,0,0,0,0,0); }
+printelement: exp			{ $$ = $1; }
+	| SYMBOL_LIT_STRING			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	;
 
 
@@ -179,40 +179,40 @@ exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
    	 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
     	| exp '+' exp			{ $$ = astCreate(AST_ADD,0,$1,$3,0,0); }
     	| exp '-' exp			{ $$ = astCreate(AST_SUB,0,$1,$3,0,0); }
-    	| exp '*' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-    	| exp '/' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp '<' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp '>' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp '!' exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| '('exp')'			{ $$ = astCreate(0,0,0,0,0,0); }
-    	| exp OPERATOR_LE exp			{ $$ = astCreate(0,0,0,0,0,0); }
-    	| exp OPERATOR_GE exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp OPERATOR_EQ exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp OPERATOR_NE exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp OPERATOR_AND exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| exp OPERATOR_OR exp			{ $$ = astCreate(0,0,0,0,0,0); }
-			| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-			| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-			| SYMBOL_IDENTIFIER '['exp']'			{ $$ = astCreate(0,0,0,0,0,0); }
-			| SYMBOL_IDENTIFIER '('paraml')'			{ $$ = astCreate(0,0,0,0,0,0); }
+    	| exp '*' exp			{ $$ = astCreate(AST_MUL,0,$1,$3,0,0); }
+    	| exp '/' exp			{ $$ = astCreate(AST_DIV,0,$1,$3,0,0); }
+			| exp '<' exp			{ $$ = astCreate(AST_LESS,0,$1,$3,0,0); }
+			| exp '>' exp			{ $$ = astCreate(AST_GREATER,0,$1,$3,0,0); }
+			| exp '!' exp			{ $$ = astCreate(AST_NEG,0,$1,$3,0,0); }
+			| '('exp')'			{ $$ = astCreate(AST_EXP_P,0,$2,0,0,0); }
+    	| exp OPERATOR_LE exp			{ $$ = astCreate(AST_LE,0,$1,$3,0,0); }
+    	| exp OPERATOR_GE exp			{ $$ = astCreate(AST_GE,0,$1,$3,0,0); }
+			| exp OPERATOR_EQ exp			{ $$ = astCreate(AST_EQ,0,$1,$3,0,0); }
+			| exp OPERATOR_NE exp			{ $$ = astCreate(AST_NE,0,$1,$3,0,0); }
+			| exp OPERATOR_AND exp			{ $$ = astCreate(AST_AND,0,$1,$3,0,0); }
+			| exp OPERATOR_OR exp			{ $$ = astCreate(AST_OR,0,$1,$3,0,0); }
+			| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_ENDER,$2,0,0,0,0); }
+			| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_POINTER,$2,0,0,0,0); }
+			| SYMBOL_IDENTIFIER '['exp']'			{ $$ = astCreate(AST_ARRAY_POS,$1,$3,0,0,0); }
+			| SYMBOL_IDENTIFIER '('paraml')'			{ $$ = astCreate(AST_FUNCALL,$1,$3,0,0,0); }
 			;
 
 
-paraml: listParam newparam			{ $$ = astCreate(0,0,0,0,0,0); }
-	|			{ $$ = astCreate(0,0,0,0,0,0); }
+paraml: listParam newparam			{ $$ = astCreate(AST_PARAML,0,$1,$2,0,0); }
+	|			{ $$ = $0; }
 	;
 
-newparam : ',' listParam newparam			{ $$ = astCreate(0,0,0,0,0,0); }
-	|			{ $$ = astCreate(0,0,0,0,0,0); }
+newparam : ',' listParam newparam			{ $$ = astCreate(AST_PARAML,0,$2,$3,0,0); }
+	|			{ $$ = $0; }
 	;
 
 
-listParam : SYMBOL_LIT_INT			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_CHAR			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_LIT_REAL			{ $$ = astCreate(0,0,0,0,0,0); }
-	| SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-	| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
-	| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(0,0,0,0,0,0); }
+listParam : SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+	| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,0,0,0,0); }
+	| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,0,0,0,0); }
 	;
 
 
