@@ -4,12 +4,10 @@
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 
+
 #include "ast.h"
-#include "hash.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-
 
 AST* astCreate(int type, HASH* symbol, AST* son0, AST* son1, AST* son2, AST* son3) {
 
@@ -77,10 +75,8 @@ void astPrint(AST *node, int level) {
 		case AST_NEW_BLOCK: fprintf(stderr, "AST_NEW_BLOCK"); break;
 		case AST_PRINT_ARG: fprintf(stderr, "AST_PRINT_ARG"); break;
 		case AST_PARAML: fprintf(stderr, "AST_PARAML"); break;
-		case AST_CMD_WHILE: fprintf(stderr, "AST_CMD_WHILE"); break;
-		case AST_EXP_P: fprintf(stderr, "AST_EXP_P"); break;	
-		
 
+		case AST_CMD_WHILE: fprintf(stderr, "AST_CMD_WHILE"); break;
 		default: fprintf(stderr, "UNKNOW"); break;
 
 	}
