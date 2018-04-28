@@ -249,25 +249,25 @@ void astGenerateFile(AST *node, FILE *output_file){
       case AST_KW_PRINT: fprintf(output_file, "PRINT ");
 						astGenerateFile(node->son[0], output_file);
 						break;
-      case AST_KW_WHILE: fprintf(output_file, "while ( ");
+      case AST_KW_WHILE: fprintf(output_file, "WHILE ( ");
 	          astGenerateFile(node->son[0], output_file);
 						fprintf(output_file, ")\n\t");
 						astGenerateFile(node->son[1], output_file);
 						break;
-			case AST_KW_IF: fprintf(output_file, "if (");
+			case AST_KW_IF: fprintf(output_file, "IF (");
 						astGenerateFile(node->son[0], output_file);
-						fprintf(output_file, ") then\n\t");
+						fprintf(output_file, ") THEN\n\t");
 						astGenerateFile(node->son[1], output_file);
 						fprintf(output_file, "\n");
 						if(node->son[2] != 0){
-							fprintf(output_file, "else\n\t");
+							fprintf(output_file, "ELSE\n\t");
 							astGenerateFile(node->son[2], output_file);
 						}
 					break;
-			case AST_KW_FOR:fprintf(output_file, "for (");
+			case AST_KW_FOR:fprintf(output_file, "FOR (");
 					fprintf(output_file, "%s = ", node->symbol->text);
 					astGenerateFile(node->son[0], output_file);
-					fprintf(output_file, " to ");
+					fprintf(output_file, " TO ");
 					astGenerateFile(node->son[1], output_file);
 					fprintf(output_file, " ) ");
 					astGenerateFile(node->son[2], output_file);
