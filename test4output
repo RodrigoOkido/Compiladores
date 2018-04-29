@@ -1,0 +1,8 @@
+FLOATa(){
+p = ( 3 / 1 ) / ( ( 3 + 2 ) ! ( 3 - 20 ) );
+READ i;
+
+}
+
+
+AST (AST_DEC  AST (AST_FUN_DECL   AST (AST_KW_FLOAT   AST (AST_BLOCK    AST (AST_LCMD     AST (AST_VAR_ATRIB      AST (AST_DIV       AST (AST_EXP_P        AST (AST_DIV         AST (AST_SYMBOL         AST (AST_SYMBOL       AST (AST_EXP_P        AST (AST_NEG         AST (AST_EXP_P          AST (AST_ADD           AST (AST_SYMBOL           AST (AST_SYMBOL         AST (AST_EXP_P          AST (AST_SUB           AST (AST_SYMBOL           AST (AST_SYMBOL     AST (AST_LCMD      AST (AST_KW_READ       AST (AST_SYMBOL 

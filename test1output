@@ -1,0 +1,31 @@
+CHARa = 'b';
+INTv[10] :  0;
+INTretornaNum(num INT num){
+RETURN num;
+
+}
+FLOATa(){
+i = ( ( 3 * 7 ) / ( 5 / 2 ) ) + ( 7 - 2 * ( 4 > 3 ) );
+j = ( 4 + 3 * ( ( 3 * 7 - 2 + 5 ) / ( 2 < 44 ) ) );
+p = ( 3 / 1 ) / ( ( 3 + 2 ) ! ( 3 - 20 ) );
+READ i;
+READ 1;
+READ 2.5;
+READ "testequalquercoisa";
+a = retornaNum(5);
+b = incn(var, ponteiro);
+c = v[48];
+PRINT a;
+
+}
+INTa(){
+{
+{
+;
+
+};
+
+}
+}
+
+AST (AST_DEC  AST (AST_VAR_DECL   AST (AST_KW_CHAR   AST (AST_SYMBOL  AST (AST_DEC   AST (AST_VECTOR_DECL    AST (AST_KW_INT    AST (AST_SYMBOL    AST (AST_SYMBOL   AST (AST_DEC    AST (AST_FUN_DECL     AST (AST_KW_INT     AST (AST_FUN_PARAML      AST (AST_SYMBOL       AST (AST_KW_INT     AST (AST_BLOCK      AST (AST_LCMD       AST (AST_KW_RETURN        AST (AST_SYMBOL    AST (AST_DEC     AST (AST_FUN_DECL      AST (AST_KW_FLOAT      AST (AST_BLOCK       AST (AST_LCMD        AST (AST_VAR_ATRIB         AST (AST_ADD          AST (AST_EXP_P           AST (AST_DIV            AST (AST_EXP_P             AST (AST_MUL              AST (AST_SYMBOL              AST (AST_SYMBOL            AST (AST_EXP_P             AST (AST_DIV              AST (AST_SYMBOL              AST (AST_SYMBOL          AST (AST_EXP_P           AST (AST_SUB            AST (AST_SYMBOL            AST (AST_MUL             AST (AST_SYMBOL             AST (AST_EXP_P              AST (AST_GREATER               AST (AST_SYMBOL               AST (AST_SYMBOL        AST (AST_LCMD         AST (AST_VAR_ATRIB          AST (AST_EXP_P           AST (AST_ADD            AST (AST_SYMBOL            AST (AST_MUL             AST (AST_SYMBOL             AST (AST_EXP_P              AST (AST_DIV               AST (AST_EXP_P                AST (AST_ADD                 AST (AST_SUB                  AST (AST_MUL                   AST (AST_SYMBOL                   AST (AST_SYMBOL                  AST (AST_SYMBOL                 AST (AST_SYMBOL               AST (AST_EXP_P                AST (AST_LESS                 AST (AST_SYMBOL                 AST (AST_SYMBOL         AST (AST_LCMD          AST (AST_VAR_ATRIB           AST (AST_DIV            AST (AST_EXP_P             AST (AST_DIV              AST (AST_SYMBOL              AST (AST_SYMBOL            AST (AST_EXP_P             AST (AST_NEG              AST (AST_EXP_P               AST (AST_ADD                AST (AST_SYMBOL                AST (AST_SYMBOL              AST (AST_EXP_P               AST (AST_SUB                AST (AST_SYMBOL                AST (AST_SYMBOL          AST (AST_LCMD           AST (AST_KW_READ            AST (AST_SYMBOL           AST (AST_LCMD            AST (AST_KW_READ             AST (AST_SYMBOL            AST (AST_LCMD             AST (AST_KW_READ              AST (AST_SYMBOL             AST (AST_LCMD              AST (AST_KW_READ               AST (AST_SYMBOL              AST (AST_LCMD               AST (AST_VAR_ATRIB                AST (AST_FUNCALL                 AST (AST_PARAML                  AST (AST_SYMBOL               AST (AST_LCMD                AST (AST_VAR_ATRIB                 AST (AST_FUNCALL                  AST (AST_PARAML                   AST (AST_SYMBOL                   AST (AST_PARAML                    AST (AST_SYMBOL                AST (AST_LCMD                 AST (AST_VAR_ATRIB                  AST (AST_ARRAY_POS                   AST (AST_SYMBOL                 AST (AST_LCMD                  AST (AST_KW_PRINT                   AST (AST_PRINT_ARG                    AST (AST_SYMBOL     AST (AST_DEC      AST (AST_FUN_DECL       AST (AST_KW_INT       AST (AST_BLOCK        AST (AST_NEW_BLOCK         AST (AST_BLOCK          AST (AST_LCMD           AST (AST_NEW_BLOCK            AST (AST_BLOCK             AST (AST_LCMD 
