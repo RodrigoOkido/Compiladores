@@ -124,7 +124,7 @@ funparaml: paramdecl paramrest			{ $$ = astCreate(AST_FUN_PARAML,0,$1,$2,0,0); }
 paramdecl: vartype SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,$1,0,0,0); }
 	;
 
-paramrest: ',' paramdecl paramrest			{ $$ = astCreate(AST_FUN_PARAM,0,$2,$3,0,0); }
+paramrest: ',' paramdecl paramrest			{ $$ = astCreate(AST_FUN_PARAMREST,0,$2,$3,0,0); }
 	|			{ $$ = 0; }
 	;
 
