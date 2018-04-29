@@ -1,32 +1,37 @@
-INTv[10] :  0;
-FLOATc(){
-IF (a < b) THEN
-	PRINT "i"
-ELSE
-	PRINT "j";
+int v[10] :  0 0 0 0 0 0 0 0 0 0;
+float c(){
+if (a < b) then
+	print "i"
+else
+	print "j";
 
 }
-INTt(){
-WHILE ( i < 10)
+
+int t(){
+while ( i < 10)
 	{
-PRINT "aaa";
+print "aaa";
 
 }
+
 }
-CHARa(maca INT macaCHAR, bananaFLOAT, pera){
-FOR (i = 0 TO 100 ) {
-PRINT i
-}j = maca;
-IF (j < 200) THEN
+
+char a(int  maca, char  banana, float  pera){
+for (i = 0 to 100 ) {
+print i
+}
+j = maca;
+if (j < 200) then
 	{
-RETURN error
-}PRINT j
+return error
+}
+print j
 ;
 a = 10;
-WHILE ( a > 0)
+while ( a > 0)
 	{
-PRINT a
-}RETURN false
+print a
+}
+return false
 }
 
-AST (AST_DEC  AST (AST_VECTOR_DECL   AST (AST_KW_INT   AST (AST_SYMBOL   AST (AST_SYMBOL  AST (AST_DEC   AST (AST_FUN_DECL    AST (AST_KW_FLOAT    AST (AST_BLOCK     AST (AST_LCMD      AST (AST_KW_IF       AST (AST_LESS        AST (AST_SYMBOL        AST (AST_SYMBOL       AST (AST_KW_PRINT        AST (AST_PRINT_ARG         AST (AST_SYMBOL       AST (AST_KW_PRINT        AST (AST_PRINT_ARG         AST (AST_SYMBOL   AST (AST_DEC    AST (AST_FUN_DECL     AST (AST_KW_INT     AST (AST_BLOCK      AST (AST_KW_WHILE       AST (AST_LESS        AST (AST_SYMBOL        AST (AST_SYMBOL       AST (AST_NEW_BLOCK        AST (AST_BLOCK         AST (AST_LCMD          AST (AST_KW_PRINT           AST (AST_PRINT_ARG            AST (AST_SYMBOL    AST (AST_DEC     AST (AST_FUN_DECL      AST (AST_KW_CHAR      AST (AST_FUN_PARAML       AST (AST_SYMBOL        AST (AST_KW_INT       AST (AST_FUN_PARAM        AST (AST_SYMBOL         AST (AST_KW_CHAR        AST (AST_FUN_PARAM         AST (AST_SYMBOL          AST (AST_KW_FLOAT      AST (AST_BLOCK       AST (AST_LCMD        AST (AST_KW_FOR         AST (AST_SYMBOL         AST (AST_SYMBOL         AST (AST_NEW_BLOCK          AST (AST_BLOCK           AST (AST_KW_PRINT            AST (AST_PRINT_ARG             AST (AST_SYMBOL          AST (AST_VAR_ATRIB           AST (AST_SYMBOL        AST (AST_LCMD         AST (AST_KW_IF          AST (AST_LESS           AST (AST_SYMBOL           AST (AST_SYMBOL          AST (AST_NEW_BLOCK           AST (AST_BLOCK            AST (AST_KW_RETURN             AST (AST_SYMBOL           AST (AST_KW_PRINT            AST (AST_PRINT_ARG             AST (AST_SYMBOL         AST (AST_LCMD          AST (AST_VAR_ATRIB           AST (AST_SYMBOL          AST (AST_KW_WHILE           AST (AST_GREATER            AST (AST_SYMBOL            AST (AST_SYMBOL           AST (AST_NEW_BLOCK            AST (AST_BLOCK             AST (AST_KW_PRINT              AST (AST_PRINT_ARG               AST (AST_SYMBOL            AST (AST_KW_RETURN             AST (AST_SYMBOL P

@@ -1,9 +1,8 @@
-FLOATc(){
-IF (a < b) THEN
-	PRINT "i"
-ELSE
-	PRINT "j";
+float c(){
+if (a < b) then
+	print "i"
+else
+	print "j";
 
 }
 
-AST (AST_DEC  AST (AST_FUN_DECL   AST (AST_KW_FLOAT   AST (AST_BLOCK    AST (AST_LCMD     AST (AST_KW_IF      AST (AST_LESS       AST (AST_SYMBOL       AST (AST_SYMBOL      AST (AST_KW_PRINT       AST (AST_PRINT_ARG        AST (AST_SYMBOL      AST (AST_KW_PRINT       AST (AST_PRINT_ARG        AST (AST_SYMBOL
