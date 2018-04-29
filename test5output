@@ -1,12 +1,12 @@
-INTretornaNum(num INT num){
-RETURN num;
+int retornaNum(int  num){
+return num;
 
 }
-FLOATa(){
+
+float a(){
 a = retornaNum(5);
-b = incn(var, ponteiro);
+b = incn(&var, #ponteiro);
 c = v[48];
 
 }
 
-AST (AST_DEC  AST (AST_FUN_DECL   AST (AST_KW_INT   AST (AST_FUN_PARAML    AST (AST_SYMBOL     AST (AST_KW_INT   AST (AST_BLOCK    AST (AST_LCMD     AST (AST_KW_RETURN      AST (AST_SYMBOL  AST (AST_DEC   AST (AST_FUN_DECL    AST (AST_KW_FLOAT    AST (AST_BLOCK     AST (AST_LCMD      AST (AST_VAR_ATRIB       AST (AST_FUNCALL        AST (AST_PARAML         AST (AST_SYMBOL      AST (AST_LCMD       AST (AST_VAR_ATRIB        AST (AST_FUNCALL         AST (AST_PARAML          AST (AST_SYMBOL          AST (AST_PARAML           AST (AST_SYMBOL       AST (AST_LCMD        AST (AST_VAR_ATRIB         AST (AST_ARRAY_POS          AST (AST_SYMBOL

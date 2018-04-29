@@ -1,6 +1,6 @@
-INTt(){
-a =  & var;
+int t(){
+a = &var;
+print "a" "b" "adad";
 
 }
 
-AST (AST_DEC  AST (AST_FUN_DECL   AST (AST_KW_INT   AST (AST_BLOCK    AST (AST_LCMD     AST (AST_VAR_ATRIB      AST (AST_ENDER 

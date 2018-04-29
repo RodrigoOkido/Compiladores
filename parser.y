@@ -48,7 +48,7 @@ int yyerror(char *msg);
 %type<ast> dec
 %type<ast> vardec
 %type<ast> vartype
-%type<ast> more_values
+
 %type<ast> lit_value_or_initvect
 %type<ast> fundec
 %type<ast> funparaml
@@ -93,7 +93,7 @@ dec : vardec			{ $$ = $1; }
 
 vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VAR_DECL,$2,$1,$4,0,0); }
 	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,$5,0,0); }
-	| vartype SYMBOL_IDENTIFIER'['exp']'':' lit_value_or_initvect more_values ';'			{ $$ = astCreate(AST_VECTOR_DECL,$2,$1,$4,$7,0); }
+	| vartype SYMBOL_IDENTIFIER'['exp']'':' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VECTOR_DECL,$2,$1,$4,$7,0); }
 	| vartype SYMBOL_IDENTIFIER '['exp']' ';'			{ $$ = astCreate(AST_VECTOR_DECL_EMPTY,$2,$1,$4,0,0); }
 	;
 
@@ -103,14 +103,13 @@ vartype: KW_CHAR			{ $$ = astCreate(AST_KW_CHAR,0,0,0,0,0); }
 	;
 
 
-more_values: lit_value_or_initvect more_values			{ $$ = astCreate(AST_MORE_VALUES,0,$1,$2,0,0); }
-	|			{ $$ = 0; }
-	;
 
 
-lit_value_or_initvect: SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
-	| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
-	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+
+lit_value_or_initvect: SYMBOL_LIT_INT lit_value_or_initvect			{ $$ = astCreate(AST_SYMBOL,$1,$2,0,0,0); }
+	| SYMBOL_LIT_REAL lit_value_or_initvect			{ $$ = astCreate(AST_SYMBOL,$1,$2,0,0,0); }
+	| SYMBOL_LIT_CHAR lit_value_or_initvect			{ $$ = astCreate(AST_SYMBOL,$1,$2,0,0,0); }
+	|   { $$ = 0; }
 	;
 
 
@@ -211,8 +210,8 @@ listParam : SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 	| SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
-	| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,0,0,0,0); }
-	| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$2,0,0,0,0); }
+	| '#' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_POINTER,$2,0,0,0,0); }
+	| '&' SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_ENDER,$2,0,0,0,0); }
 	;
 
 

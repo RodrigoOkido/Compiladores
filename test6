@@ -2,4 +2,5 @@ int t () {
 
 a = &var;
 
+print "a" "b" "adad";
 }
