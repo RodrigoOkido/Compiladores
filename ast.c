@@ -224,10 +224,10 @@ void astGenerateFile(AST *node, FILE *output_file){
             fprintf(output_file, " || ");
             astGenerateFile(node->son[1], output_file);
             break;
-      case AST_ENDER: fprintf(output_file, " & ");
+      case AST_ENDER: fprintf(output_file, "&");
             fprintf(output_file, "%s", node->symbol->text);
             break;
-      case AST_POINTER: fprintf(output_file, " # ");
+      case AST_POINTER: fprintf(output_file, "#");
             fprintf(output_file, "%s", node->symbol->text);
             break;
       case AST_ARRAY_POS: fprintf(output_file, "%s[", node->symbol->text);
@@ -238,37 +238,37 @@ void astGenerateFile(AST *node, FILE *output_file){
             astGenerateFile(node->son[0], output_file);
             fprintf(output_file, ")");
             break;
-      case AST_KW_CHAR: fprintf(output_file, "CHAR "); break;
-      case AST_KW_INT: fprintf(output_file, "INT "); break;
-      case AST_KW_FLOAT: fprintf(output_file, "FLOAT "); break;
-      case AST_KW_READ: fprintf(output_file, "READ ");
+      case AST_KW_CHAR: fprintf(output_file, "char "); break;
+      case AST_KW_INT: fprintf(output_file, "int "); break;
+      case AST_KW_FLOAT: fprintf(output_file, "float "); break;
+      case AST_KW_READ: fprintf(output_file, "read ");
 						astGenerateFile(node->son[0], output_file);
 						break;
-      case AST_KW_RETURN: fprintf(output_file, "RETURN ");
+      case AST_KW_RETURN: fprintf(output_file, "return ");
 						astGenerateFile(node->son[0], output_file);
 						break;
-      case AST_KW_PRINT: fprintf(output_file, "PRINT ");
+      case AST_KW_PRINT: fprintf(output_file, "print ");
 						astGenerateFile(node->son[0], output_file);
 						break;
-      case AST_KW_WHILE: fprintf(output_file, "WHILE ( ");
+      case AST_KW_WHILE: fprintf(output_file, "while ( ");
 	          astGenerateFile(node->son[0], output_file);
 						fprintf(output_file, ")\n\t");
 						astGenerateFile(node->son[1], output_file);
 						break;
-			case AST_KW_IF: fprintf(output_file, "IF (");
+			case AST_KW_IF: fprintf(output_file, "if (");
 						astGenerateFile(node->son[0], output_file);
-						fprintf(output_file, ") THEN\n\t");
+						fprintf(output_file, ") then\n\t");
 						astGenerateFile(node->son[1], output_file);
 						fprintf(output_file, "\n");
 						if(node->son[2] != 0){
-							fprintf(output_file, "ELSE\n\t");
+							fprintf(output_file, "else\n\t");
 							astGenerateFile(node->son[2], output_file);
 						}
 					break;
-			case AST_KW_FOR:fprintf(output_file, "FOR (");
+			case AST_KW_FOR:fprintf(output_file, "for (");
 					fprintf(output_file, "%s = ", node->symbol->text);
 					astGenerateFile(node->son[0], output_file);
-					fprintf(output_file, " TO ");
+					fprintf(output_file, " to ");
 					astGenerateFile(node->son[1], output_file);
 					fprintf(output_file, " ) ");
 					astGenerateFile(node->son[2], output_file);
@@ -278,7 +278,7 @@ void astGenerateFile(AST *node, FILE *output_file){
 					break;
 			case AST_PRINT_ARG: astGenerateFile(node->son[0], output_file);
 						if(node->son[1] != 0){
-							fprintf(output_file, ", ");
+							fprintf(output_file, " ");
 							astGenerateFile(node->son[1], output_file);
 						}
 					break;
