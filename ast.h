@@ -1,6 +1,6 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 3
+  Trabalho : ETAPA 4
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 
@@ -90,6 +90,7 @@ FILE *outputfile;
 
 typedef struct ast_node {
 	int type;
+	int line;
 	HASH *symbol;
 	struct ast_node *son[MAX_SONS];
 }AST;

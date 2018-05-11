@@ -4,7 +4,9 @@
 #include <stdlib.h>
 
 #include "ast.h"
+#include "semantic.h"
 #include "hash.h"
+
 
 int yylex();
 int yyerror(char *msg);
@@ -78,8 +80,8 @@ int yyerror(char *msg);
 
 %%
 
-program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);  }
-
+program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);
+										set_Declarations($1);}
 
 decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }
 	|			{ $$ = 0; }

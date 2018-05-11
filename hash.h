@@ -1,8 +1,9 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 3
+  Trabalho : ETAPA 4
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
+
 
 #define HASH_SIZE 997
 
@@ -10,9 +11,20 @@
 #define HASH_HEADER
 
 
+#define SYMBOL_VAR 3
+#define SYMBOL_VEC 4
+#define SYMBOL_FUNC 5
+
+#define DATATYPE_CHAR 6
+#define DATATYPE_INT 7
+#define DATATYPE_FLOAT 8
+
+
 typedef struct hash_node {
 	char *text;
 	int type;
+  int datatype;
+	int line;
 	struct hash_node *next;
 } HASH;
 

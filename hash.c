@@ -1,8 +1,9 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 3
+  Trabalho : ETAPA 4
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,9 +53,10 @@ HASH *hashInsert (int type, char *text) {
   newnode = (HASH*) calloc(1,sizeof(HASH));
   newnode->text = (char *) calloc(strlen(text)+1, sizeof(char));
   strcpy(newnode->text,text);
-
   newnode->type = type;
   newnode->next = table[address];
+  newnode->datatype = 0;
+  newnode->line = getLineNumber();
   table[address] = newnode;
   return newnode;
 }

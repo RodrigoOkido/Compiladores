@@ -1,8 +1,9 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 3
+  Trabalho : ETAPA 4
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
+
 
 #include "ast.h"
 #include "hash.h"
@@ -15,6 +16,7 @@ AST* astCreate(int type, HASH* symbol, AST* son0, AST* son1, AST* son2, AST* son
 	newnode = (AST*) calloc (1,sizeof(AST));
 	newnode->type = type;
 	newnode->symbol = symbol;
+	newnode->line = getLineNumber();
 	newnode->son[0] = son0;
 	newnode->son[1] = son1;
 	newnode->son[2] = son2;

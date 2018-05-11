@@ -1,15 +1,18 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 3
+  Trabalho : ETAPA 4
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "ast.h"
 #include "hash.h"
+#include "semantic.h"
 #include "y.tab.h"
+
 
 extern FILE *yyin;
 extern void hashPrint();
@@ -35,6 +38,11 @@ int main (int argc, char ** argv) {
 
   yyparse();
   //hashPrint();
+  if(semanticError > 0){
+    fprintf(stderr,"Program have %d semantic errors. Need recheck... \n", getSemanticErrorsNumber());
+    exit(4);
+  }
+
 
   fprintf(stderr,"Programa compilou corretamente. \n");
   exit(0);
