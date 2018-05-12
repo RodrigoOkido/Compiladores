@@ -18,14 +18,20 @@ int getSemanticErrorsNumber(){
 
 
 
-int isNodeReal(AST *node){
+int checkNodeNumType(AST *node){
   if(!node) return -1;
 
   //literas, variables, access to array and function can be float or integer
   if(node->type == AST_SYMBOL || node->type == AST_ARRAY_POS || node->type == AST_FUNCALL) {
       if(node->symbol->datatype == DATATYPE_FLOAT || node->symbol->type == SYMBOL_LIT_REAL) {
-        return 0;
-      } else {
+        return 1;
+      }
+
+      else if(node->symbol->datatype == DATATYPE_INT || node->symbol->type == SYMBOL_LIT_INT || node->symbol->type == SYMBOL_LIT_CHAR) {
+        return 2;
+      }
+
+      else {
         return -1;
       }
   }
@@ -36,40 +42,12 @@ int isNodeReal(AST *node){
 
   //arithmetical operations require more checks
   if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV)
-      return isNodeReal(node->son[0]) || isNodeReal(node->son[1]);
+      return checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]);
 
   //expressions between parentesis must be checked
   if(node->type == AST_EXP_P)
-      isNodeReal(node->son[0]);
+      checkNodeNumType(node->son[0]);
 }
-
-
-
-int isNodeInt(AST *node){
-  if(!node) return -1;
-
-  //literals, variables, access to array and function can be float or integer
-  if(node->type == AST_SYMBOL || node->type == AST_ARRAY_POS || node->type == AST_FUNCALL){
-      if(node->symbol->datatype == DATATYPE_INT || node->symbol->type == SYMBOL_LIT_INT || node->symbol->type == SYMBOL_LIT_CHAR) {
-        return 0;
-      } else {
-        return -1;
-      }
-  }
-  //logical operators dont return integer
-  if(node->type == AST_LESS || node->type == AST_GREATER || node->type == AST_NEG || node->type == AST_LE || node->type == AST_GE
-    || node->type == AST_EQ || node->type == AST_NE || node->type == AST_AND || node->type == AST_OR)
-      return -1;
-
-  //arithmetical operations require more checks
-  if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV)
-      return isNodeInt(node->son[0]) && isNodeInt(node->son[1]);
-
-  //expressions between parentesis must be checked
-  if(node->type == AST_EXP_P)
-      isNodeInt(node->son[0]);
-}
-
 
 
 
@@ -160,6 +138,7 @@ void check_id_undeclared(){
 
 void check_operands(AST* node) {
 
+  //If node is NULL return
   if(!node) return;
 
 
@@ -221,12 +200,135 @@ void check_operands(AST* node) {
 
 
 
+void check_declaration_usage(AST* node){
+
+  //If node is NULL return
+  if(!node) return;
+
+
+  	//check if variables calls are calling variables
+    if(node->type == AST_VAR_ATRIB) {
+      if(node->symbol->type != SYMBOL_VAR){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s must be a variable\n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      //check if the variable and expression are the same type
+      if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+
+      else if (node->symbol->datatype == DATATYPE_FLOAT) {
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+    }
+
+
+    //check if vectors calls are calling vectors
+    if(node->type == AST_VECTOR_ATRIB) {
+      if(node->symbol->type != SYMBOL_VEC){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s must be a vector\n",node->line, node->symbol->text);
+        semanticError++;
+      }
+      //check if the vector and expression are the same type
+      if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+
+      else if (node->symbol->datatype == DATATYPE_FLOAT) {
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+
+    }
+
+    //check if vectors calls are calling vectors and if it's index is valid
+    if(node->type == AST_ARRAY_POS){
+      if(node->symbol->type != SYMBOL_VEC){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s must be a vector\n",  node->line, node->symbol->text);
+        semanticError++;
+      }
+      else check_vectorIndex(node);
+    }
+
+    //check if functions calls are calling functions and if it's arguments are valid
+    if(node->type == AST_FUNCALL){
+      if(node->symbol->type != SYMBOL_FUNC){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s must be a function\n",  node->line, node->symbol->text);
+        semanticError++;
+      }
+      //else semanticCheckFuncParam(node->son[0], node->symbol->text, node->line);
+    }
+
+    //check if variables declarations and literal are the same type
+    if(node->type == AST_VAR_DECL){
+      if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+        if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 2){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+
+      else if (node->symbol->datatype == DATATYPE_FLOAT) {
+        if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 1){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and expression type do not agree\n", node->line);
+          semanticError++;
+        }
+      }
+    }
+
+    //check if vectors declarations and literals are the same type
+    if(node->type == AST_VECTOR_DECL){
+      AST* current_node;
+      current_node = node->son[2];
+      int pos = 0;
+
+      while(current_node != NULL){
+        if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+          if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 2){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and literal_%d type do not agree\n", node->line, pos+1);
+            semanticError++;
+          }
+        }
+
+        else if (node->symbol->datatype == DATATYPE_FLOAT) {
+          if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d: vector and literal_%d type do not agree\n", node->line, pos+1);
+            semanticError++;
+          }
+        }
+          current_node = current_node->son[0];
+          pos++;
+      }
+    }
+
+
+
+    int i;
+    for(i=0; i<MAX_SONS; i++){
+      check_declaration_usage(node->son[i]);
+    }
+}
+
+
+
 void check_vectorIndex(AST* node) {
-    if(isNodeInt(node->son[0]) < 0){
+    if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) == 1){
         fprintf(stderr, "[ERROR] Semantic Error in line %d: vector index is not Integer.\n", node->line);
         semanticError++;
     }
 }
+
 
 
 
@@ -240,7 +342,7 @@ void check_returnType(AST* node) {
     if(node->type == AST_KW_RETURN) {
         //check the type of the expression that is being returned
         //in this case, the defined types are interchangeable
-        if(isNodeReal(node->son[0]) < 0 && isNodeInt(node->son[0]) < 0 ) {
+        if(checkNodeNumType(node->son[0]) < 0) {
             fprintf(stderr, "[ERROR] Semantic Error in line %d: return type not valid.\n", node->line);
         		semanticError++;
             return;

@@ -18,11 +18,9 @@ extern int semanticError;
 //Return the number of semantic errors.
 int getSemanticErrorsNumber();
 
-//Check if the node is an Integer.
-int isNodeInt(AST *node);
-
-//Check if the node is an Real.
-int isNodeReal(AST *node);
+//Check if the node is an Integer or a Real.
+//@return 1 if node is type REAL, 2 if is INT, -1 otherwise.
+int checkNodeNumType(AST *node);
 
 //Check all declarations in program.
 void set_Declarations(AST* node);
@@ -32,6 +30,10 @@ void check_id_undeclared();
 
 //Check if operands types are correct.
 void check_operands(AST* node);
+
+//Checks if all declarations are in correct use.
+//Guarantee if the type is the same of the expression.
+void check_declaration_usage(AST* node);
 
 //Check if all index of an vector are Integers.
 void check_vectorIndex(AST* node);
