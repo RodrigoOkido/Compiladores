@@ -68,21 +68,25 @@
 //SPECIAL CHARACTERS
 #define AST_KW_CHAR		40
 #define AST_KW_INT		41
-#define AST_KW_FLOAT 	42
-#define AST_KW_READ		43
-#define AST_KW_RETURN	44
-#define AST_KW_PRINT	45
-#define AST_KW_WHILE 46
-#define AST_KW_IF	47
-#define AST_KW_FOR 48
-#define AST_NEW_BLOCK 49
+#define AST_KW_FLOAT 		42
+#define AST_KW_DOUBLE          	43
+#define AST_KW_SHORT		44
+#define AST_KW_BYTE		45
+#define AST_KW_LONG		46
+#define AST_KW_READ		47
+#define AST_KW_RETURN	48
+#define AST_KW_PRINT	49
+#define AST_KW_WHILE 	50
+#define AST_KW_IF	51
+#define AST_KW_FOR 52
+#define AST_NEW_BLOCK 53
 
 //PARAMETERS
-#define AST_PRINT_ARG 50
-#define AST_PARAML 51
+#define AST_PRINT_ARG 54
+#define AST_PARAML 55
 
-#define AST_EXP_P 52
-#define AST_ENDER 53
+#define AST_EXP_P 56
+#define AST_ENDER 57
 
 
 FILE *outputfile;

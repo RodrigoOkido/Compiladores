@@ -17,6 +17,22 @@ int getSemanticErrorsNumber(){
 }
 
 
+void checkNodePointerType (AST *node) {
+	
+	// we can have pt = pt + inteiro, we cant have pt = pt + pt
+   if(!node) return;
+
+   if (node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL ) { 
+
+	    int leftOperandType = node->son[0]->type;
+	    int rightOperandType = node->son[1]->type;
+
+		if (leftOperandType == AST_POINTER && rightOperandType == AST_POINTER) {
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+     			 semanticError++;
+		} 
+
+}
 
 int checkNodeNumType(AST *node){
   if(!node) return -1;
@@ -330,7 +346,10 @@ void check_vectorIndex(AST* node) {
 }
 
 
+void check_pointer (AST* node) {
 
+}
+		
 
 void check_returnType(AST* node) {
     if(!node) return;

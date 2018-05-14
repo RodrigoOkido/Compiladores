@@ -19,6 +19,11 @@
 #define DATATYPE_INT 7
 #define DATATYPE_FLOAT 8
 
+#define SYMBOL_SCALAR 9
+#define SYMBOL_FUNCTION 10
+#define SYMBOL_VECTOR 11
+#define SYMBOL_POINTER 12
+
 
 typedef struct hash_node {
 	char *text;
