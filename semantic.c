@@ -22,7 +22,7 @@ void checkNodePointerType (AST *node) {
 	// we can have pt = pt + inteiro, we cant have pt = pt + pt
    if(!node) return;
 
-   if (node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL ) { 
+   if (node->type == AST_ADD) { 
 
 	    int leftOperandType = node->son[0]->type;
 	    int rightOperandType = node->son[1]->type;
