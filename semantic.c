@@ -17,7 +17,7 @@ int getSemanticErrorsNumber(){
 }
 
 
-void checkNodePointerType (AST *node) {
+void checkPointerChildType (AST *node) {
 	
 	// we can have pt = pt + inteiro, we cant have pt = pt + pt
    if(!node) return;
@@ -28,9 +28,18 @@ void checkNodePointerType (AST *node) {
 	    int rightOperandType = node->son[1]->type;
 
 		if (leftOperandType == AST_POINTER && rightOperandType == AST_POINTER) {
+		   
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
-		} 
+		}
+		else if (leftOperandType == AST_POINTER && (rightOperandType != AST_KW_INT) )  {
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+     			 semanticError++;
+		}
+		else if (rightOperandType == AST_POINTER  && (lefttOperandType != AST_KW_INT) ) {
+		    	 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+     			 semanticError++;
+		}
 
 }
 
