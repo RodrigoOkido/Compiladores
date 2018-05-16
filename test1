@@ -5,7 +5,7 @@ char a = 'b';
 
 int v[10]: 6 1 0 0 9 0 7 0 0 0;
 char g = 'a'; 
-int v[g];
+int v[25];
 int h = 0;
 
 
@@ -35,7 +35,7 @@ read "testequalquercoisa";
 
 a = retornaNum(5);
 b = incn(&var, #ponteiro);
-c = v[48];
+c = v['a'];
 
 
 print a;
