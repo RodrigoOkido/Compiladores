@@ -21,7 +21,7 @@ int main (int argc, char ** argv) {
 
   int tok;
   if (argc < 3) {
-    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa2 file_name output_filename\n");
+    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa4 file_name output_filename\n");
     exit(1);
   }
 

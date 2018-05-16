@@ -36,11 +36,15 @@ void checkPointerChildType (AST *node) {
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
-		else if (rightOperandType == AST_POINTER  && (lefttOperandType != AST_KW_INT) ) {
+		else if (rightOperandType == AST_POINTER  && (leftOperandType != AST_KW_INT) ) {
 		    	 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
-
+    }
+   else { // we cant have pt = pt * 1 or pt = pt / 2 (?)
+	fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+     	 semanticError++;
+	}
 }
 
 int checkNodeNumType(AST *node){
@@ -105,12 +109,16 @@ void set_Declarations(AST* node){
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 
     }
-  }
+  } 
+// aquiiii
+
   if(node->type == AST_FUN_DECL){
     if(node->symbol->type != SYMBOL_IDENTIFIER){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
+      fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->symbol->text);
       semanticError++;
     }
+  
+
     else{
       node->symbol->type = SYMBOL_FUNC;
 	    //addFunction(node->symbol);
@@ -118,8 +126,29 @@ void set_Declarations(AST* node){
       if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 
+    } 
+  
+}
+
+
+  if(node->type == AST_POINTER_VAR_DECL){
+    if(node->symbol->type != SYMBOL_IDENTIFIER){
+      fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->symbol->text);
+      semanticError++;
     }
-  }
+  
+
+    else{
+      node->symbol->type = SYMBOL_VAR;
+	    //addFunction(node->symbol);
+      if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+      if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+      if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+
+    } 
+  
+}
+
   //Para declaração dos argumentos das funções como variaveis válidas
   if(node->type == AST_FUN_PARAML || node->type == AST_FUN_PARAMREST){
     if(node->son[0]->symbol->type != SYMBOL_IDENTIFIER){
@@ -136,7 +165,6 @@ void set_Declarations(AST* node){
 	    // func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
     }
   }
-
 
   int i;
   for(i=0; i<MAX_SONS; i++){
@@ -357,7 +385,32 @@ void check_vectorIndex(AST* node) {
 
 void check_pointer (AST* node) {
 
+ if(!node) return;
+
+ if(node->type == AST_POINTER_VAR_DECL) {
+
+  	  if(node->symbol->type != SYMBOL_IDENTIFIER){
+
+   	   fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
+    	  semanticError++;
+
+    	  }
+	   else if (node->symbol->type = SYMBOL_VAR) { // pode ponteiro float?
+	     
+	      		if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+	      		if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+	      		if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+			/* else {
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d. \n", node->line, node->son[0]->symbol->text);
+	      		 semanticError++;
+			} */ 
+	   }
+  
+  	  checkPointerChildType (node->son[0]);
+ }
+ 
 }
+
 		
 
 void check_returnType(AST* node) {

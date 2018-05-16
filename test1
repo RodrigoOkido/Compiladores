@@ -1,18 +1,30 @@
 
+int # pt = 4;
+
 char a = 'b';
 
 int v[10]: 6 1 0 0 9 0 7 0 0 0;
+char g = 'a'; 
+int v[g];
+int h = 0;
 
-int v[10];
 
+int b = 0; 
+int c = 0;
+
+int # ponteiro = 7;
+int var = 0;
 int retornaNum (int num)
 {
 	return num;
 }
 
-float a() {
+int incn (int variavel, int ponteiro) {
+}
 
-i = ((3 * 7) / (5 / 2)) + (7 - 2 * (4>3));
+float a(int v) {
+
+i = b < 4;
 j = (4 + 3 * ((3*7-2+5)/(2<44)));
 p = (3 / 1) / ((3+2) ! (3-20));
 
@@ -24,6 +36,7 @@ read "testequalquercoisa";
 a = retornaNum(5);
 b = incn(&var, #ponteiro);
 c = v[48];
+
 
 print a;
 

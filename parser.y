@@ -81,7 +81,12 @@ int yyerror(char *msg);
 %%
 
 program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);
-										set_Declarations($1);}
+				 set_Declarations($1);
+				check_declaration_usage($1);
+				check_id_undeclared();
+				check_operands($1);
+				//check_declaration_usage($1);
+}
 
 decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }
 	|			{ $$ = 0; }
