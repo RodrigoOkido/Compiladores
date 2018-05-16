@@ -1,4 +1,8 @@
 int v[10] :  0 0 0 0 0 0 0 0 0 0;
+int i = 0;
+int j = 0;
+int b = 17;
+int a = 10;
 float c(){
 if (a < b) then
 	print "i"
@@ -16,14 +20,15 @@ print "aaa";
 
 }
 
-char a(int  maca, char  banana, float  pera){
+char acd(int  maca, char  banana, float  pera){
 for (i = 0 to 100 ) {
 print i
 }
 j = maca;
 if (j < 200) then
 	{
-return error
+return 1;
+
 }
 print j
 ;
@@ -32,6 +37,6 @@ while ( a > 0)
 	{
 print a
 }
-return false
+return 0
 }
 
