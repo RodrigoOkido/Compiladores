@@ -41,7 +41,7 @@ void checkPointerChildType (AST *node) {
      			 semanticError++;
 		}
     }
-   else { // we cant have pt = pt * 1 or pt = pt / 2 (?)
+   else { 
 	fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
      	 semanticError++;
 	}
@@ -110,7 +110,7 @@ void set_Declarations(AST* node){
 
     }
   } 
-// aquiiii
+
 
   if(node->type == AST_FUN_DECL){
     if(node->symbol->type != SYMBOL_IDENTIFIER){
