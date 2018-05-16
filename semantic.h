@@ -11,6 +11,24 @@
 #include "ast.h"
 #include "y.tab.h"
 
+#define MAX_NUM_PARAM 10
+
+typedef struct function_data{
+	int numParam;
+	int paramType[MAX_NUM_PARAM];
+	HASH* function;
+	struct function_data *next;
+}FUNC_DATA_NODE;
+
+
+typedef struct function_list{
+	FUNC_DATA_NODE *first;
+	FUNC_DATA_NODE *last;
+}FUNC_LIST;
+
+FUNC_LIST func_list;
+
+
 
 //Variable which will increment at each semantic error.
 extern int semanticError;
@@ -40,3 +58,12 @@ void check_vectorIndex(AST* node);
 
 //Check the return types.
 void check_returnType(AST* node);
+
+//Check all the functions parameters
+void checkFuncParam(AST* node, char* function_name, int line);
+
+//Add all functions.
+void addFunction(HASH* function);
+
+//Find the function by name.
+FUNC_DATA_NODE* findFunction(char* function_name);

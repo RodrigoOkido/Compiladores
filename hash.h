@@ -23,6 +23,7 @@
 #define SYMBOL_FUNCTION 10
 #define SYMBOL_VECTOR 11
 #define SYMBOL_POINTER 12
+#define SYMBOL_ENDER 13
 
 
 typedef struct hash_node {

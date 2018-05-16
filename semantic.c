@@ -18,31 +18,31 @@ int getSemanticErrorsNumber(){
 
 
 void checkPointerChildType (AST *node) {
-	
+
 	// we can have pt = pt + inteiro, we cant have pt = pt + pt
    if(!node) return;
 
-   if (node->type == AST_ADD) { 
+   if (node->type == AST_ADD) {
 
 	    int leftOperandType = node->son[0]->type;
 	    int rightOperandType = node->son[1]->type;
 
 		if (leftOperandType == AST_POINTER && rightOperandType == AST_POINTER) {
-		   
-			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d: the left/right operand %s is an pointer  \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
 		else if (leftOperandType == AST_POINTER && (rightOperandType != AST_KW_INT) )  {
-			 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d: the right operand %s is not an integer \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
 		else if (rightOperandType == AST_POINTER  && (leftOperandType != AST_KW_INT) ) {
-		    	 fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+		    	 fprintf(stderr, "[ERROR] Semantic Error in line %d: the left operand %s is not an integer \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
     }
-   else { 
-	fprintf(stderr, "[ERROR] Semantic Error in line %d \n", node->line, node->son[0]->symbol->text);
+   else {
+	     fprintf(stderr, "[ERROR] Semantic Error in line %d : the left or right operand %s are not compatible. \n", node->line, node->son[0]->symbol->text);
      	 semanticError++;
 	}
 }
@@ -56,7 +56,8 @@ int checkNodeNumType(AST *node){
         return 1;
       }
 
-      else if(node->symbol->datatype == DATATYPE_INT || node->symbol->type == SYMBOL_LIT_INT || node->symbol->type == SYMBOL_LIT_CHAR) {
+      else if(node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_CHAR || node->symbol->type == SYMBOL_LIT_INT || node->symbol->type == SYMBOL_LIT_CHAR
+         || node->symbol->type == SYMBOL_POINTER || node->symbol->type == SYMBOL_ENDER) {
         return 2;
       }
 
@@ -97,6 +98,7 @@ void set_Declarations(AST* node){
 
     }
   }
+
   if(node->type == AST_VECTOR_DECL){
     if(node->symbol->type != SYMBOL_IDENTIFIER){
       fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
@@ -109,7 +111,7 @@ void set_Declarations(AST* node){
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 
     }
-  } 
+  }
 
 
   if(node->type == AST_FUN_DECL){
@@ -117,17 +119,17 @@ void set_Declarations(AST* node){
       fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->symbol->text);
       semanticError++;
     }
-  
+
 
     else{
       node->symbol->type = SYMBOL_FUNC;
-	    //addFunction(node->symbol);
+	    addFunction(node->symbol);
       if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
       if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 
-    } 
-  
+    }
+
 }
 
 
@@ -136,18 +138,18 @@ void set_Declarations(AST* node){
       fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->symbol->text);
       semanticError++;
     }
-  
+
 
     else{
       node->symbol->type = SYMBOL_VAR;
-	    //addFunction(node->symbol);
+	    addFunction(node->symbol);
       if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
       if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 
-    } 
-  
-}
+    }
+
+  }
 
   //Para declaração dos argumentos das funções como variaveis válidas
   if(node->type == AST_FUN_PARAML || node->type == AST_FUN_PARAMREST){
@@ -161,10 +163,11 @@ void set_Declarations(AST* node){
       if(node->son[0]->son[0]->type == AST_KW_INT) node->son[0]->symbol->datatype = DATATYPE_INT;
       if(node->son[0]->son[0]->type == AST_KW_FLOAT) node->son[0]->symbol->datatype = DATATYPE_FLOAT;
 
-	    // func_list.last->numParam ++;
-	    // func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
+	    func_list.last->numParam ++;
+	    func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
     }
   }
+
 
   int i;
   for(i=0; i<MAX_SONS; i++){
@@ -320,7 +323,7 @@ void check_declaration_usage(AST* node){
         fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s must be a function\n",  node->line, node->symbol->text);
         semanticError++;
       }
-      //else semanticCheckFuncParam(node->son[0], node->symbol->text, node->line);
+      else checkFuncParam(node->son[0], node->symbol->text, node->line);
     }
 
     //check if variables declarations and literal are the same type
@@ -396,22 +399,22 @@ void check_pointer (AST* node) {
 
     	  }
 	   else if (node->symbol->type = SYMBOL_VAR) { // pode ponteiro float?
-	     
+
 	      		if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
 	      		if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
 	      		if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
 			/* else {
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d. \n", node->line, node->son[0]->symbol->text);
 	      		 semanticError++;
-			} */ 
+			} */
 	   }
-  
+
   	  checkPointerChildType (node->son[0]);
  }
- 
+
 }
 
-		
+
 
 void check_returnType(AST* node) {
     if(!node) return;
@@ -433,4 +436,81 @@ void check_returnType(AST* node) {
     for(int i=0; i<MAX_SONS; i++) {
         check_returnType(node->son[i]);
     }
+}
+
+
+
+void checkFuncParam(AST* node, char* function_name, int line){
+	AST* current_node;
+	current_node = node;
+	int param_count = 0;
+
+	FUNC_DATA_NODE* func_data;
+	func_data = findFunction(function_name);
+  if(func_data == NULL) return;
+
+	int numParam = func_data->numParam;
+
+	while(current_node!=NULL && param_count<=numParam){
+
+      //verify if the parameter is type real
+      if(func_data->paramType[param_count] == DATATYPE_FLOAT )
+  			if(checkNodeNumType(current_node->son[0]) != 1){
+  				fprintf(stderr, "[ERROR] Semantic Error in line %d: invalid function parameter type (parameter %i)\n",line, param_count + 1);
+    			semanticError++;
+  			}
+      //verify if the parameter is type integer
+      if(func_data->paramType[param_count] == DATATYPE_INT || func_data->paramType[param_count] == DATATYPE_CHAR || func_data->paramType[param_count] == SYMBOL_POINTER  || func_data->paramType[param_count] == SYMBOL_ENDER  )
+        if(checkNodeNumType(current_node->son[0]) != 2 ){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d: invalid function parameter type (parameter %i)\n",line, param_count + 1);
+          semanticError++;
+        }
+
+
+			param_count++;
+			current_node = current_node->son[1];
+	}
+
+	if(param_count > numParam){
+		fprintf(stderr, "[ERROR] Semantic Error in line %d: too many arguments at %s\n", line, function_name);
+  		semanticError++;
+	}
+	if(param_count < numParam){
+		fprintf(stderr, "[ERROR] Semantic Error in line %d: missing arguments at %s\n", line, function_name);
+  		semanticError++;
+	}
+}
+
+
+
+void addFunction(HASH* function){
+	FUNC_DATA_NODE* newNode;
+	newNode = (FUNC_DATA_NODE*) calloc(1, sizeof(FUNC_DATA_NODE));
+	newNode->function = function;
+	newNode->numParam = 0;
+	newNode->next = NULL;
+
+	if(func_list.first == NULL){
+		func_list.first = newNode;
+		func_list.last = newNode;
+	}
+	else{
+		func_list.last->next = newNode;
+		func_list.last = newNode;
+	}
+}
+
+
+
+FUNC_DATA_NODE* findFunction(char* function_name){
+	FUNC_DATA_NODE* current_func = func_list.first;
+  int found = 0;
+
+	while(current_func != NULL && found == 0){
+		if(strcmp(current_func->function->text, function_name) == 0)
+			found = 1;
+		else
+			current_func = current_func->next;
+	}
+  return current_func;
 }
