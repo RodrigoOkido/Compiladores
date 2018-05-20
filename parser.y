@@ -52,6 +52,7 @@ int yyerror(char *msg);
 %type<ast> vartype
 
 %type<ast> lit_value_or_initvect
+%type<ast> lit_value_pointer
 %type<ast> fundec
 %type<ast> funparaml
 %type<ast> paramdecl
@@ -100,10 +101,11 @@ dec : vardec			{ $$ = $1; }
 
 
 vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VAR_DECL,$2,$1,$4,0,0); }
-	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,$5,0,0); }
+	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,0,0,0); }
 	| vartype SYMBOL_IDENTIFIER'['exp']'':' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VECTOR_DECL,$2,$1,$4,$7,0); }
 	| vartype SYMBOL_IDENTIFIER '['exp']' ';'			{ $$ = astCreate(AST_VECTOR_DECL_EMPTY,$2,$1,$4,0,0); }
 	;
+
 
 vartype: KW_CHAR			{ $$ = astCreate(AST_KW_CHAR,0,0,0,0,0); }
 	| KW_INT			{ $$ = astCreate(AST_KW_INT,0,0,0,0,0); }
@@ -111,8 +113,11 @@ vartype: KW_CHAR			{ $$ = astCreate(AST_KW_CHAR,0,0,0,0,0); }
 	;
 
 
-
-
+lit_value_pointer: SYMBOL_LIT_INT { $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+		| SYMBOL_LIT_REAL { $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+		| SYMBOL_LIT_CHAR { $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+		| { $$ = 0; }
+		;
 
 lit_value_or_initvect: SYMBOL_LIT_INT lit_value_or_initvect			{ $$ = astCreate(AST_SYMBOL,$1,$2,0,0,0); }
 	| SYMBOL_LIT_REAL lit_value_or_initvect			{ $$ = astCreate(AST_SYMBOL,$1,$2,0,0,0); }
