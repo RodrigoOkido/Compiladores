@@ -78,6 +78,7 @@ void astPrint(AST *node, int level) {
 		case AST_PRINT_ARG: fprintf(stderr, "AST_PRINT_ARG,\n"); break;
 		case AST_PARAML: fprintf(stderr, "AST_PARAML,\n"); break;
 		case AST_EXP_P: fprintf(stderr, "AST_EXP_P,\n"); break;
+		case AST_POINTER_ATRIB: fprintf(stderr, "AST_POINTER_ATRIB,\n"); break;
 
 
 		default: fprintf(stderr, "UNKNOW"); break;
@@ -173,6 +174,10 @@ void astGenerateFile(AST *node, FILE *output_file){
 						astGenerateFile(node->son[0], output_file);
 						fprintf(output_file, "] = ");
 						astGenerateFile(node->son[1], output_file);
+						break;
+			case AST_POINTER_ATRIB: fprintf(output_file, "%s = ", node->symbol->text);
+						astGenerateFile(node->son[0], output_file);
+
 						break;
 			case AST_ADD: astGenerateFile(node->son[0], output_file);
             fprintf(output_file, " + ");

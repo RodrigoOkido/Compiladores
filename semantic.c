@@ -47,6 +47,38 @@ void checkPointerChildType (AST *node) {
 	}
 }
 
+/*
+void check_pointer (AST* node) {
+
+
+ if(!node) return;
+
+ if(node->type == AST_POINTER_ATRIB) {
+
+  	  if(node->symbol->type != SYMBOL_IDENTIFIER){
+
+   	   fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
+    	  semanticError++;
+
+    	  }
+	//   else if (node->symbol->type == SYMBOL_VAR) { // pode ponteiro float?
+	node->symbol->type = SYMBOL_VAR;
+
+	if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+	if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+	if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+			 else {
+			 fprintf(stderr, "[ERROR] Semantic Error in line %d. \n", node->line, node->son[0]->symbol->text);
+	      		 semanticError++;
+			} 
+	   
+
+  	  checkPointerChildType (node->son[0]);
+ }
+
+}
+
+*/
 int checkNodeNumType(AST *node){
   if(!node) return -1;
 
@@ -86,6 +118,8 @@ void set_Declarations(AST* node){
   if(!node) return;
   //process this node
   if(node->type == AST_VAR_DECL){
+
+
     if(node->symbol->type != SYMBOL_IDENTIFIER){
       fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
       semanticError++;
@@ -167,6 +201,7 @@ void set_Declarations(AST* node){
 	    func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
     }
   }
+
 
 
   int i;
@@ -308,6 +343,20 @@ void check_declaration_usage(AST* node){
 
     }
 
+
+	if(node->type == AST_POINTER_ATRIB) {
+/*
+		printf("%d", node->symbol->type);
+		if(node->symbol->type != SYMBOL_VAR) {
+		   fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: identifier %s must be a variable\n",node->line, node->symbol->text);
+        semanticError++;
+		}
+		else */ checkPointerChildType(node->son[0]);
+	}
+
+
+
+
     //check if vectors calls are calling vectors and if it's index is valid
     if(node->type == AST_ARRAY_POS){
       if(node->symbol->type != SYMBOL_VEC){
@@ -386,33 +435,6 @@ void check_vectorIndex(AST* node) {
 }
 
 
-void check_pointer (AST* node) {
-
- if(!node) return;
-
- if(node->type == AST_POINTER_VAR_DECL) {
-
-  	  if(node->symbol->type != SYMBOL_IDENTIFIER){
-
-   	   fprintf(stderr, "[ERROR] Semantic Error in line %d: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
-    	  semanticError++;
-
-    	  }
-	   else if (node->symbol->type = SYMBOL_VAR) { // pode ponteiro float?
-
-	      		if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-	      		if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-	      		if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
-			/* else {
-			 fprintf(stderr, "[ERROR] Semantic Error in line %d. \n", node->line, node->son[0]->symbol->text);
-	      		 semanticError++;
-			} */
-	   }
-
-  	  checkPointerChildType (node->son[0]);
- }
-
-}
 
 
 

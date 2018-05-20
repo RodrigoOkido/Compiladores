@@ -88,6 +88,8 @@
 #define AST_EXP_P 56
 #define AST_ENDER 57
 
+// new
+#define AST_POINTER_ATRIB 58
 
 FILE *outputfile;
 
