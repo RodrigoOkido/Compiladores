@@ -47,7 +47,7 @@ void checkPointerChildType (AST *node) {
 	}
 }
 
-/*
+
 void check_pointer (AST* node) {
 
 
@@ -61,24 +61,26 @@ void check_pointer (AST* node) {
     	  semanticError++;
 
     	  }
-	//   else if (node->symbol->type == SYMBOL_VAR) { // pode ponteiro float?
-	node->symbol->type = SYMBOL_VAR;
+	else if (node->symbol->type == SYMBOL_VAR) { // pode ponteiro float?
 
-	if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-	if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-	if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
-			 else {
+
+    	if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+    	if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+    	//if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+      /*
+       else {
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d. \n", node->line, node->son[0]->symbol->text);
 	      		 semanticError++;
-			} 
-	   
+			}*/
+
 
   	  checkPointerChildType (node->son[0]);
  }
 
 }
+}
 
-*/
+
 int checkNodeNumType(AST *node){
   if(!node) return -1;
 
@@ -345,13 +347,12 @@ void check_declaration_usage(AST* node){
 
 
 	if(node->type == AST_POINTER_ATRIB) {
-/*
 		printf("%d", node->symbol->type);
 		if(node->symbol->type != SYMBOL_VAR) {
 		   fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: identifier %s must be a variable\n",node->line, node->symbol->text);
         semanticError++;
 		}
-		else */ checkPointerChildType(node->son[0]);
+		else  checkPointerChildType(node->son[0]);
 	}
 
 

@@ -1,4 +1,4 @@
-int v[10] :  0 0 0 0 0 0 0 0 0 0;
+int v[int ] :  0 0 0 0 0 0 0 0 0 0;
 int i = 0;
 int j = 0;
 int b = 17;
@@ -12,7 +12,7 @@ else
 }
 
 int t(){
-while ( i < 10)
+while ( i < int )
 	{
 print "aaa";
 
@@ -21,22 +21,22 @@ print "aaa";
 }
 
 char acd(int  maca, char  banana, float  pera){
-for (i = 0 to 100 ) {
+for (i = int  to int  ) {
 print i
 }
 j = maca;
-if (j < 200) then
+if (j < int ) then
 	{
-return 1;
+return int ;
 
 }
 print j
 ;
-a = 10;
-while ( a > 0)
+a = int ;
+while ( a > int )
 	{
 print a
 }
-return 0
+return int 
 }
 

@@ -83,12 +83,12 @@ int yyerror(char *msg);
 
 program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);
 				 set_Declarations($1);
-				
 				check_id_undeclared();
 				check_declaration_usage($1);
 				check_operands($1);
-				check_returnType($1); 
-				
+				check_pointer($1);
+				check_returnType($1);
+
 }
 
 decl : dec decl			{ $$ = astCreate(AST_DEC,0,$1,$2,0,0); }
@@ -102,8 +102,8 @@ dec : vardec			{ $$ = $1; }
 	;
 
 
-vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VAR_DECL,$2,$1,0,0,0); }
-	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,0,0,0); }
+vardec : vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VAR_DECL,$2,$1,$4,0,0); }
+	| vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';'				{ $$ = astCreate(AST_POINTER_VAR_DECL,$3,$1,$5,0,0); }
 	| vartype SYMBOL_IDENTIFIER'['exp']'':' lit_value_or_initvect ';'			{ $$ = astCreate(AST_VECTOR_DECL,$2,$1,$4,$7,0); }
 	| vartype SYMBOL_IDENTIFIER '['exp']' ';'			{ $$ = astCreate(AST_VECTOR_DECL_EMPTY,$2,$1,$4,0,0); }
 	;
@@ -116,7 +116,6 @@ vartype: KW_CHAR			{ $$ = astCreate(AST_KW_CHAR,0,0,0,0,0); }
 
 
 lit_value_pointer: SYMBOL_LIT_INT { $$ = astCreate(AST_KW_INT,$1,0,0,0,0); }
-		| SYMBOL_LIT_REAL { $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 		| SYMBOL_LIT_CHAR { $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
 		| { $$ = 0; }
 		;
