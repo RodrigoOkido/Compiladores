@@ -22,7 +22,7 @@ void checkPointerChildType (AST *node) {
 	// we can have pt = pt + inteiro, we cant have pt = pt + pt
    if(!node) return;
 
-   if (node->type == AST_ADD) {
+   if (node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL ) {
 
 	    int leftOperandType = node->son[0]->type;
 	    int rightOperandType = node->son[1]->type;
@@ -32,11 +32,11 @@ void checkPointerChildType (AST *node) {
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d: the left/right operand %s is an pointer  \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
-		else if (leftOperandType == AST_POINTER && (rightOperandType != AST_KW_INT) )  {
+		else if (leftOperandType == AST_POINTER && (rightOperandType != AST_SYMBOL) )  {
 			 fprintf(stderr, "[ERROR] Semantic Error in line %d: the right operand %s is not an integer \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
-		else if (rightOperandType == AST_POINTER  && (leftOperandType != AST_KW_INT) ) {
+		else if (rightOperandType == AST_POINTER  && (leftOperandType != AST_SYMBOL) ) {
 		    	 fprintf(stderr, "[ERROR] Semantic Error in line %d: the left operand %s is not an integer \n", node->line, node->son[0]->symbol->text);
      			 semanticError++;
 		}
@@ -178,7 +178,6 @@ void set_Declarations(AST* node){
 
     else{
       node->symbol->type = SYMBOL_VAR;
-	    addFunction(node->symbol);
       if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
       if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
       if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;

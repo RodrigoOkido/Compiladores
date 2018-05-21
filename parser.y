@@ -189,7 +189,7 @@ printelement: exp			{ $$ = $1; }
 
 
 exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
-   	 	| SYMBOL_LIT_INT			{ $$ = astCreate(AST_KW_INT,$1,0,0,0,0); }
+   	 	| SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
    	 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
     	| exp '+' exp			{ $$ = astCreate(AST_ADD,0,$1,$3,0,0); }
     	| exp '-' exp			{ $$ = astCreate(AST_SUB,0,$1,$3,0,0); }
