@@ -282,11 +282,12 @@ void check_operands(AST* node) {
       }
   }
 
-
+  /*
   int i;
   for(i=0; i<MAX_SONS; i++) {
       check_operands(node->son[i]);
   }
+  */
 
 }
 

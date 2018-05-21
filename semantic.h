@@ -36,6 +36,9 @@ extern int semanticError;
 //Return the number of semantic errors.
 int getSemanticErrorsNumber();
 
+//Check the pointers.
+void check_pointer (AST* node);
+
 //Check if the node is an Integer or a Real.
 //@return 1 if node is type REAL, 2 if is INT, -1 otherwise.
 int checkNodeNumType(AST *node);
