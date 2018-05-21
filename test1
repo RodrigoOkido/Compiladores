@@ -13,7 +13,7 @@ int v[10];
 int retornaNum (int num)
 {
 
-	# pt2 = 1 + #t;
+	# pt2 = #t + #t;
 
 	return num;
 }
