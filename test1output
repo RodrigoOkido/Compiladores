@@ -7,7 +7,7 @@ int #t = int ;
 int v[10] :  6 1 0 0 9 0 7 0 0 0;
 int v[10];
 int retornaNum(int  num){
-pt2 = 1;
+pt2 = 1 + #t;
 return num;
 
 }
