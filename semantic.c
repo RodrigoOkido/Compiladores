@@ -352,6 +352,21 @@ void check_declaration_usage(AST* node){
 		   fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: identifier %s must be a variable\n",node->line, node->symbol->text);
         semanticError++;
 		}
+    //check if the vector and expression are the same type
+    if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+      if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+        semanticError++;
+      }
+    }
+
+    else if (node->symbol->datatype == DATATYPE_FLOAT) {
+      if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+        semanticError++;
+      }
+    }
+    
 		else  checkPointerChildType(node->son[0]);
 	}
 
