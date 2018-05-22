@@ -85,7 +85,7 @@ int checkNodeNumType(AST *node){
   if(!node) return -1;
 
   //literas, variables, access to array and function can be float or integer
-  if(node->type == AST_SYMBOL || node->type == AST_ARRAY_POS || node->type == AST_FUNCALL) {
+  if(node->type == AST_SYMBOL || node->type == AST_ARRAY_POS || node->type == AST_FUNCALL || node->type == AST_ENDER || node->type == AST_POINTER) {
       if(node->symbol->datatype == DATATYPE_FLOAT || node->symbol->type == SYMBOL_LIT_REAL) {
         return 1;
       }
