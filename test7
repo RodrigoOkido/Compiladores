@@ -1,5 +1,7 @@
+int a = 3;
+
 int t () {
 
-a = #pointer;
+a = 5 + 6;
 
 }

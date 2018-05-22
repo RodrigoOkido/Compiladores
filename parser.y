@@ -86,7 +86,7 @@ program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);
 				check_id_undeclared();
 				check_declaration_usage($1);
 				check_operands($1);
-				check_pointer($1);
+				//check_pointer($1);
 				check_returnType($1);
 
 }
@@ -159,7 +159,7 @@ cmd : SYMBOL_IDENTIFIER '=' exp			{ $$ = astCreate(AST_VAR_ATRIB,$1,$3,0,0,0); }
 		| KW_WHILE '('exp')' cmd			{ $$ = astCreate(AST_KW_WHILE,0,$3,$5,0,0); }
 		| KW_IF '('exp')' KW_THEN cmd			{ $$ = astCreate(AST_KW_IF,0,$3,$6,0,0); }
 		| KW_IF '('exp')' KW_THEN cmd KW_ELSE cmd			{ $$ = astCreate(AST_KW_IF,0,$3,$6,$8,0); }
-   		| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd			{ $$ = astCreate(AST_KW_FOR,$3,$5,$7,$9,0); }
+   	| KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd			{ $$ = astCreate(AST_KW_FOR,$3,$5,$7,$9,0); }
 		| block cmd			{ $$ = astCreate(AST_NEW_BLOCK,0,$1,$2,0,0); }
 		|			{ $$ = 0; }
     ;
@@ -191,6 +191,7 @@ printelement: exp			{ $$ = $1; }
 exp : SYMBOL_IDENTIFIER			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
    	 	| SYMBOL_LIT_INT			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
    	 	| SYMBOL_LIT_CHAR			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
+			| SYMBOL_LIT_REAL			{ $$ = astCreate(AST_SYMBOL,$1,0,0,0,0); }
     	| exp '+' exp			{ $$ = astCreate(AST_ADD,0,$1,$3,0,0); }
     	| exp '-' exp			{ $$ = astCreate(AST_SUB,0,$1,$3,0,0); }
     	| exp '*' exp			{ $$ = astCreate(AST_MUL,0,$1,$3,0,0); }

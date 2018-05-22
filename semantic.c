@@ -18,7 +18,7 @@ int getSemanticErrorsNumber(){
 
 
 void checkPointerChildType (AST *node) {
-
+  fprintf(stderr, "[ERROR] ENTREI NA CHECKPOINTER\n");
 	// we can have pt = pt + inteiro, we cant have pt = pt + pt
    if(!node) return;
 
@@ -89,12 +89,10 @@ int checkNodeNumType(AST *node){
       if(node->symbol->datatype == DATATYPE_FLOAT || node->symbol->type == SYMBOL_LIT_REAL) {
         return 1;
       }
-
       else if(node->symbol->datatype == DATATYPE_INT || node->symbol->datatype == DATATYPE_CHAR || node->symbol->type == SYMBOL_LIT_INT || node->symbol->type == SYMBOL_LIT_CHAR
          || node->symbol->type == SYMBOL_POINTER || node->symbol->type == SYMBOL_ENDER) {
-        return 2;
+        return 0;
       }
-
       else {
         return -1;
       }
@@ -105,9 +103,12 @@ int checkNodeNumType(AST *node){
       return -1;
 
   //arithmetical operations require more checks
-  if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV)
-      return checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]);
-
+  if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV){
+      if (checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]) == 1)
+        return checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]);
+      else
+        return checkNodeNumType(node->son[0]) && checkNodeNumType(node->son[1]);
+  }
   //expressions between parentesis must be checked
   if(node->type == AST_EXP_P)
       checkNodeNumType(node->son[0]);
@@ -121,86 +122,83 @@ void set_Declarations(AST* node){
   //process this node
   if(node->type == AST_VAR_DECL){
 
+      if(node->symbol->type != SYMBOL_IDENTIFIER){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      else{
+        node->symbol->type = SYMBOL_VAR;
+        if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+        if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+        if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+      }
 
-    if(node->symbol->type != SYMBOL_IDENTIFIER){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
-      semanticError++;
-    }
-    else{
-      node->symbol->type = SYMBOL_VAR;
-      if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-      if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-      if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
-
-    }
   }
 
-  if(node->type == AST_VECTOR_DECL){
-    if(node->symbol->type != SYMBOL_IDENTIFIER){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
-      semanticError++;
-    }
-    else{
-      node->symbol->type = SYMBOL_VEC;
-      if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-      if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-      if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+  if(node->type == AST_VECTOR_DECL || node->type == AST_VECTOR_DECL_EMPTY){
+      if(node->symbol->type != SYMBOL_IDENTIFIER){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      else{
+        node->symbol->type = SYMBOL_VEC;
+        if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+        if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+        if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+      }
 
-    }
   }
 
 
   if(node->type == AST_FUN_DECL){
-    if(node->symbol->type != SYMBOL_IDENTIFIER && node->symbol->type != SYMBOL_VAR){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d [FUN_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
-      semanticError++;
-    }
 
-
-    else{
-      node->symbol->type = SYMBOL_FUNC;
-	    addFunction(node->symbol);
-      if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-      if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-      if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
-
-    }
+      if(node->symbol->type != SYMBOL_IDENTIFIER && node->symbol->type != SYMBOL_VAR){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [FUN_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      else{
+        node->symbol->type = SYMBOL_FUNC;
+  	    addFunction(node->symbol);
+        if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+        if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+        if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+      }
 
 }
 
 
   if(node->type == AST_POINTER_VAR_DECL){
-    if(node->symbol->type != SYMBOL_IDENTIFIER){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_VAR_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
-      semanticError++;
-    }
 
-
-    else{
-      node->symbol->type = SYMBOL_VAR;
-      if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
-      if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
-      if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
-
-    }
+      if(node->symbol->type != SYMBOL_IDENTIFIER){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_VAR_DECL]: identifier %s already declared. \n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      else{
+        node->symbol->type = SYMBOL_VAR;
+        if(node->son[0]->type == AST_KW_CHAR) node->symbol->datatype = DATATYPE_CHAR;
+        if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
+        if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
+      }
 
   }
 
   //Para declaração dos argumentos das funções como variaveis válidas
   if(node->type == AST_FUN_PARAML || node->type == AST_FUN_PARAMREST){
-    if(node->son[0]->symbol->type != SYMBOL_IDENTIFIER){
-      fprintf(stderr, "[ERROR] Semantic Error in line %d [PARAM]: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
-      semanticError++;
-    }
-    else{
-      node->son[0]->symbol->type = SYMBOL_VAR;
-      if(node->son[0]->son[0]->type == AST_KW_CHAR) node->son[0]->symbol->datatype = DATATYPE_CHAR;
-      if(node->son[0]->son[0]->type == AST_KW_INT) node->son[0]->symbol->datatype = DATATYPE_INT;
-      if(node->son[0]->son[0]->type == AST_KW_FLOAT) node->son[0]->symbol->datatype = DATATYPE_FLOAT;
 
-	    func_list.last->numParam ++;
-	    func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
-    }
+      if(node->son[0]->symbol->type != SYMBOL_IDENTIFIER){
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [PARAM]: identifier %s already declared. \n", node->line, node->symbol->text);
+        semanticError++;
+      }
+      else{
+        node->son[0]->symbol->type = SYMBOL_VAR;
+        if(node->son[0]->son[0]->type == AST_KW_CHAR) node->son[0]->symbol->datatype = DATATYPE_CHAR;
+        if(node->son[0]->son[0]->type == AST_KW_INT) node->son[0]->symbol->datatype = DATATYPE_INT;
+        if(node->son[0]->son[0]->type == AST_KW_FLOAT) node->son[0]->symbol->datatype = DATATYPE_FLOAT;
+
+  	    func_list.last->numParam ++;
+  	    func_list.last->paramType[func_list.last->numParam - 1] = node->son[0]->symbol->datatype;
+      }
+
   }
 
 
@@ -301,137 +299,136 @@ void check_declaration_usage(AST* node){
 
   	//check if variables calls are calling variables
     if(node->type == AST_VAR_ATRIB) {
-      if(node->symbol->type != SYMBOL_VAR ){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: identifier %s must be a variable\n", node->line, node->symbol->text);
-        semanticError++;
-      }
-      //check if the variable and expression are the same type
-      if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: variable and expression type do not agree\n", node->line);
+        if(node->symbol->type != SYMBOL_VAR ){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: identifier %s must be a variable\n", node->line, node->symbol->text);
           semanticError++;
         }
-      }
+        //check if the variable and expression are the same type
+        if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 0){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: variable and expression type do not agree\n", node->line);
+            semanticError++;
+          }
+        }
 
-      else if (node->symbol->datatype == DATATYPE_FLOAT) {
-        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: variable and expression type do not agree\n", node->line);
-          semanticError++;
+        if (node->symbol->datatype == DATATYPE_FLOAT) {
+          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_ATRIB]: variable and expression type do not agree\n", node->line);
+            semanticError++;
+          }
         }
-      }
     }
 
 
     //check if vectors calls are calling vectors
     if(node->type == AST_VECTOR_ATRIB) {
-      if(node->symbol->type != SYMBOL_VEC){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: identifier %s must be a vector\n",node->line, node->symbol->text);
-        semanticError++;
-      }
+        if(node->symbol->type != SYMBOL_VEC){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: identifier %s must be a vector\n",node->line, node->symbol->text);
+          semanticError++;
+        }
+        //check if the vector and expression are the same type
+        if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 0){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+            semanticError++;
+          }
+        }
+
+        else if (node->symbol->datatype == DATATYPE_FLOAT) {
+          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+            semanticError++;
+          }
+        }
+
+    }
+
+
+	if(node->type == AST_POINTER_ATRIB) {
+  		printf("%d", node->symbol->type);
+  		if(node->symbol->type != SYMBOL_VAR) {
+  		   fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: identifier %s must be a variable\n",node->line, node->symbol->text);
+          semanticError++;
+  		}
       //check if the vector and expression are the same type
       if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+
+        if((checkNodeNumType(node->son[0]->son[0]) < 0 || checkNodeNumType(node->son[0]->son[0]) != 0) && (checkNodeNumType(node->son[0]->son[1]) < 0 || checkNodeNumType(node->son[0]->son[1]) != 0 ) &&
+        (checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 0 )){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: pointer and expression type do not agree\n", node->line);
           semanticError++;
         }
       }
 
       else if (node->symbol->datatype == DATATYPE_FLOAT) {
         if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: pointer and expression type do not agree\n", node->line);
           semanticError++;
         }
       }
-
-    }
-
-
-	if(node->type == AST_POINTER_ATRIB) {
-		printf("%d", node->symbol->type);
-		if(node->symbol->type != SYMBOL_VAR) {
-		   fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: identifier %s must be a variable\n",node->line, node->symbol->text);
-        semanticError++;
-		}
-    //check if the vector and expression are the same type
-    if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-
-      if((checkNodeNumType(node->son[0]->son[0]) < 0 || checkNodeNumType(node->son[0]->son[0]) != 2 ) && (checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 2 )){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: pointer and expression type do not agree\n", node->line);
-        semanticError++;
-      }
-    }
-
-    else if (node->symbol->datatype == DATATYPE_FLOAT) {
-      if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [POINTER_ATRIB]: pointer and expression type do not agree\n", node->line);
-        semanticError++;
-      }
-    }
-
-		else  checkPointerChildType(node->son[0]);
-	}
+  }
 
 
 
 
     //check if vectors calls are calling vectors and if it's index is valid
     if(node->type == AST_ARRAY_POS){
-      if(node->symbol->type != SYMBOL_VEC){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [ARRAY_POS]: identifier %s must be a vector\n",  node->line, node->symbol->text);
-        semanticError++;
-      }
-      else check_vectorIndex(node);
+        if(node->symbol->type != SYMBOL_VEC){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [ARRAY_POS]: identifier %s must be a vector\n",  node->line, node->symbol->text);
+          semanticError++;
+        }
+        else check_vectorIndex(node);
     }
 
     //check if functions calls are calling functions and if it's arguments are valid
     if(node->type == AST_FUNCALL){
-      if(node->symbol->type != SYMBOL_FUNC){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [FUNCALL]: identifier %s must be a function\n",  node->line, node->symbol->text);
-        semanticError++;
-      }
-      else checkFuncParam(node->son[0], node->symbol->text, node->line);
+        if(node->symbol->type != SYMBOL_FUNC){
+          fprintf(stderr, "[ERROR] Semantic Error in line %d [FUNCALL]: identifier %s must be a function\n",  node->line, node->symbol->text);
+          semanticError++;
+        }
+        else checkFuncParam(node->son[0], node->symbol->text, node->line);
     }
 
     //check if variables declarations and literal are the same type
     if(node->type == AST_VAR_DECL){
-      if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-        if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 2){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: variable declaration and expression type do not agree\n", node->line);
-          semanticError++;
-        }
-      }
-
-      else if (node->symbol->datatype == DATATYPE_FLOAT) {
-        if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 1){
-          fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: variable declaration and expression type do not agree\n", node->line);
-          semanticError++;
-        }
-      }
-    }
-
-    //check if vectors declarations and literals are the same type
-    if(node->type == AST_VECTOR_DECL){
-      AST* current_node;
-      current_node = node->son[2];
-      int pos = 0;
-
-      while(current_node != NULL){
         if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-          if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 2){
-            fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: vector and literal_%d type do not agree\n", node->line, pos+1);
+          if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 0){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: variable declaration and expression type do not agree\n", node->line);
             semanticError++;
           }
         }
 
         else if (node->symbol->datatype == DATATYPE_FLOAT) {
-          if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 1){
-            fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: vector and literal_%d type do not agree\n", node->line, pos+1);
+          if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d [VAR_DECL]: variable declaration and expression type do not agree\n", node->line);
             semanticError++;
           }
         }
-          current_node = current_node->son[0];
-          pos++;
-      }
+    }
+
+    //check if vectors declarations and literals are the same type
+    if(node->type == AST_VECTOR_DECL){
+        AST* current_node;
+        current_node = node->son[2];
+        int pos = 0;
+
+        while(current_node != NULL){
+          if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
+            if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 0){
+              fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: vector and literal_%d type do not agree\n", node->line, pos+1);
+              semanticError++;
+            }
+          }
+
+          else if (node->symbol->datatype == DATATYPE_FLOAT) {
+            if(checkNodeNumType(current_node) < 0 || checkNodeNumType(current_node) != 1){
+              fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_DECL]: vector and literal_%d type do not agree\n", node->line, pos+1);
+              semanticError++;
+            }
+          }
+            current_node = current_node->son[0];
+            pos++;
+        }
     }
 
 
@@ -500,7 +497,7 @@ void checkFuncParam(AST* node, char* function_name, int line){
   			}
       //verify if the parameter is type integer
       if(func_data->paramType[param_count] == DATATYPE_INT || func_data->paramType[param_count] == DATATYPE_CHAR || func_data->paramType[param_count] == SYMBOL_POINTER  || func_data->paramType[param_count] == SYMBOL_ENDER  )
-        if(checkNodeNumType(current_node->son[0]) != 2 ){
+        if(checkNodeNumType(current_node->son[0]) != 0 ){
           fprintf(stderr, "[ERROR] Semantic Error in line %d: invalid function parameter type (parameter %i)\n",line, param_count + 1);
           semanticError++;
         }

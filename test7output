@@ -1,6 +1,6 @@
-INTt(){
-a =  # pointer;
+int a = 3;
+int t(){
+a = 5 + 6;
 
 }
 
-AST (AST_DEC  AST (AST_FUN_DECL   AST (AST_KW_INT   AST (AST_BLOCK    AST (AST_LCMD     AST (AST_VAR_ATRIB      AST (AST_POINTER
