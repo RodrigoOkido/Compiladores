@@ -189,7 +189,7 @@ void set_Declarations(AST* node){
   if(node->type == AST_FUN_PARAML || node->type == AST_FUN_PARAMREST){
 
       if(node->son[0]->symbol->type != SYMBOL_IDENTIFIER){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d [PARAM]: identifier %s already declared. \n", node->line, node->symbol->text);
+        fprintf(stderr, "[ERROR] Semantic Error in line %d [PARAM]: identifier %s already declared. \n", node->line, node->son[0]->symbol->text);
         semanticError++;
       }
       else{
