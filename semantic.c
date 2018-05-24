@@ -98,19 +98,22 @@ int checkNodeNumType(AST *node){
       }
   }
   //logical operators dont return real
-  if(node->type == AST_LESS || node->type == AST_GREATER || node->type == AST_NEG || node->type == AST_LE || node->type == AST_GE
+  else if(node->type == AST_LESS || node->type == AST_GREATER || node->type == AST_NEG || node->type == AST_LE || node->type == AST_GE
      || node->type == AST_EQ || node->type == AST_NE || node->type == AST_AND || node->type == AST_OR)
       return -1;
 
   //arithmetical operations require more checks
-  if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV){
-      if (checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]) == 1)
+  else if(node->type == AST_ADD || node->type == AST_SUB || node->type == AST_MUL || node->type == AST_DIV){
+      if(checkNodeNumType(node->son[1]) == -1 || checkNodeNumType(node->son[0]) == -1 ){
+        return -1;
+      }
+      else if (checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]) == 1)
         return checkNodeNumType(node->son[0]) || checkNodeNumType(node->son[1]);
       else
         return checkNodeNumType(node->son[0]) && checkNodeNumType(node->son[1]);
   }
   //expressions between parentesis must be checked
-  if(node->type == AST_EXP_P)
+  else if(node->type == AST_EXP_P)
       checkNodeNumType(node->son[0]);
 }
 
@@ -120,6 +123,7 @@ void set_Declarations(AST* node){
 
   if(!node) return;
   //process this node
+
   if(node->type == AST_VAR_DECL){
 
       if(node->symbol->type != SYMBOL_IDENTIFIER){
@@ -146,7 +150,6 @@ void set_Declarations(AST* node){
         if(node->son[0]->type == AST_KW_INT) node->symbol->datatype = DATATYPE_INT;
         if(node->son[0]->type == AST_KW_FLOAT) node->symbol->datatype = DATATYPE_FLOAT;
       }
-
   }
 
 
@@ -326,16 +329,19 @@ void check_declaration_usage(AST* node){
           fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: identifier %s must be a vector\n",node->line, node->symbol->text);
           semanticError++;
         }
+
+        check_vectorIndex(node);
+
         //check if the vector and expression are the same type
         if(node->symbol->datatype == DATATYPE_CHAR || node->symbol->datatype == DATATYPE_INT ){
-          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 0){
+          if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 0){
             fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
             semanticError++;
           }
         }
 
         else if (node->symbol->datatype == DATATYPE_FLOAT) {
-          if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) != 1){
+          if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) != 1){
             fprintf(stderr, "[ERROR] Semantic Error in line %d [VECTOR_ATRIB]: vector and expression type do not agree\n", node->line);
             semanticError++;
           }
@@ -407,8 +413,10 @@ void check_declaration_usage(AST* node){
     }
 
     //check if vectors declarations and literals are the same type
-    if(node->type == AST_VECTOR_DECL){
+    if(node->type == AST_VECTOR_DECL || node->type == AST_VECTOR_DECL_EMPTY){
+        check_vectorIndex(node);
         AST* current_node;
+
         current_node = node->son[2];
         int pos = 0;
 
@@ -442,9 +450,25 @@ void check_declaration_usage(AST* node){
 
 
 void check_vectorIndex(AST* node) {
-    if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) == 1){
-        fprintf(stderr, "[ERROR] Semantic Error in line %d: vector index is not Integer.\n", node->line);
-        semanticError++;
+    //IF SON[0] IS TO CHECK THE AST_ARRAY_POS INDEX. IF SON[1] IS TO CHECK THE VECTOR_DECL INDEX.
+    if (node->type == AST_ARRAY_POS){
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) == 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d: vector index is not Integer.\n", node->line);
+            semanticError++;
+        }
+    }
+    else if (node->type == AST_VECTOR_DECL || node->type == AST_VECTOR_DECL_EMPTY){
+        if(checkNodeNumType(node->son[1]) < 0 || checkNodeNumType(node->son[1]) == 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d: vector index is not Integer.\n", node->line);
+            semanticError++;
+        }
+    }
+
+    else if (node->type == AST_VECTOR_ATRIB) {
+        if(checkNodeNumType(node->son[0]) < 0 || checkNodeNumType(node->son[0]) == 1){
+            fprintf(stderr, "[ERROR] Semantic Error in line %d: vector index is not Integer.\n", node->line);
+            semanticError++;
+        }
     }
 }
 

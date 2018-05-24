@@ -12,25 +12,28 @@ char i = 'a';
 
 int x[8]: 0 0 0 0 0 0 0 0;
 int v[10];
+float nup[3];
+char ch[10];
 
 int incn(int address, int pointer){
-
+	c = 5.3;
 
 }
 
-int retornaNum (int num)
+int retornaNum (int n, char s)
 {
 
 	# pt2 = #t + 1;
 	# pt1 = 4 + #t;
 	# pt3 = 20;
+	b = 3;
 
-	return num;
+	return b;
 }
 
 float fun() {
 
-p = 7 + 5;
+p = 2 + (5 * 4) + (3 + 1);
 b = ((3 * 8) / (4 / 2)) + (7 - 2 * 28);
 
 read i;
@@ -38,9 +41,14 @@ read 1;
 read 2.5;
 read "testequalquercoisa";
 
-a = retornaNum(5);
+a = retornaNum(5, 's');
 b = incn(p, a);
 c = 3.3;
+
+a = v[10];
+v[4] = 3;
+nup[1] = 4.4;
+ch[2] = 'a';
 
 print a;
 
