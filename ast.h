@@ -91,6 +91,8 @@
 // new
 #define AST_POINTER_ATRIB 58
 
+#define AST_ASS 59
+
 FILE *outputfile;
 
 

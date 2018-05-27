@@ -42,6 +42,9 @@ HASH *hashInsert (int type, char *text);
 HASH *hashFind (char *text);
 void hashPrint(void);
 
+HASH* makeTemp(void); //new
+HASH* makeLabel(void); // new
+
 void initMe();
 int getLineNumber();
 int isRunning();
