@@ -99,7 +99,7 @@ TAC* codeGenerator(AST* node) {
 	int i;
 	TAC* result = 0;
 	TAC* code[MAX_SONS];
-	if (!node) return;
+	if (!node) return 0;
 	for(i = 0; i < MAX_SONS; ++i) {
 
 		code[i] = codeGenerator(node->son[i]);
