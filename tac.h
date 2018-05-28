@@ -16,18 +16,30 @@
 #define TAC_SUB 	3
 #define TAC_MUL 	4
 #define TAC_DIV 	5
-#define TAC_ASS 	6
-#define TAC_LESS 7
-#define TAC_GREATER 8
-#define TAC_NEG 9
-#define TAC_LE 10
-#define TAC_GE 11
-#define TAC_EQ 12
-#define TAC_NE 13
-#define TAC_AND 14
-#define TAC_OR 15
-#define TAC_IFZ		16
-#define TAC_LABEL	17
+
+#define TAC_LESS 6
+#define TAC_GREATER 7
+#define TAC_NEG 8
+
+#define TAC_LE 9
+#define TAC_GE 10
+#define TAC_EQ 11
+#define TAC_NE 12
+#define TAC_AND 13
+#define TAC_OR 14
+
+#define TAC_ASS 15
+#define TAC_READ 16
+#define TAC_PRINT 17
+#define TAC_RET 18
+
+#define TAC_IFZ		19
+#define TAC_LABEL	20
+
+#define TAC_JZ 25
+#define TAC_JUMP 26
+
+
 
 typedef struct tac {
 
@@ -49,6 +61,9 @@ TAC* codeGenerator(AST* node);
 
 //Function makeIfThen.
 TAC* makeIfThen (TAC* code0, TAC* code1);
+
+//Function makeWhile.
+TAC* makeWhile(TAC* code0, TAC* code1);
 
 //Function makeBinOp.
 TAC* makeBinOp(int type, TAC* code0, TAC* code1);

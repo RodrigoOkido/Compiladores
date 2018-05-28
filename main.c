@@ -21,7 +21,7 @@ int main (int argc, char ** argv) {
 
   int tok;
   if (argc < 3) {
-    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa4 file_name output_filename\n");
+    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa5 file_name output_filename\n");
     exit(1);
   }
 
@@ -32,18 +32,21 @@ int main (int argc, char ** argv) {
 
   if (!(outputfile = fopen(argv[2],"w")))
   {
-    fprintf(stderr, "Something wrong to open the outputfile %s. \n", argv[2]);
+    fprintf(stderr, "\nSomething wrong to open the outputfile %s. \n", argv[2]);
     exit(2);
   }
 
   yyparse();
+
+  fclose(outputfile);
+
   //hashPrint();
   if(semanticError > 0){
-    fprintf(stderr,"Program have %d semantic errors. Need recheck... \n", getSemanticErrorsNumber());
+    fprintf(stderr,"\nProgram have %d semantic errors. Need recheck... \n", getSemanticErrorsNumber());
     exit(4);
   }
 
 
-  fprintf(stderr,"Programa compilou corretamente. \n");
+  fprintf(stderr,"\nPrograma compilou corretamente. \n");
   exit(0);
 } // END_MAIN
