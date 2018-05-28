@@ -17,10 +17,17 @@
 #define TAC_MUL 	4
 #define TAC_DIV 	5
 #define TAC_ASS 	6
-#define TAC_GREATER     7
-#define TAC_LESS	8
-#define TAC_IFZ		9
-#define TAC_LABEL	10
+#define TAC_LESS 7
+#define TAC_GREATER 8
+#define TAC_NEG 9
+#define TAC_LE 10
+#define TAC_GE 11
+#define TAC_EQ 12
+#define TAC_NE 13
+#define TAC_AND 14
+#define TAC_OR 15
+#define TAC_IFZ		16
+#define TAC_LABEL	17
 
 typedef struct tac {
 
@@ -33,23 +40,32 @@ struct tac *next;
 
 } TAC;
 
+
+//Function tacCreate.
 TAC* tacCreate(int type, HASH* res, HASH* op1, HASH* op2);
 
-void tacPrintSingle(TAC* tac);
-
-void tacPrintBack(TAC* tac);
-
+//Function codeGenerator.
 TAC* codeGenerator(AST* node);
 
-TAC* tacPrintReverse(TAC* last);
-
-void tacPrintForward(TAC* tac);
-
+//Function makeIfThen.
 TAC* makeIfThen (TAC* code0, TAC* code1);
 
+//Function makeBinOp.
 TAC* makeBinOp(int type, TAC* code0, TAC* code1);
 
+//Function tacJoin.
 TAC* tacJoin (TAC* l1, TAC* l2);
 
-#endif
+//Function tacPrintSingle.
+void tacPrintSingle(TAC* tac);
 
+//Function tacPrintBack.
+void tacPrintBack(TAC* tac);
+
+//Function tacPrintReverse.
+TAC* tacPrintReverse(TAC* last);
+
+//Function tacPrintForward.
+void tacPrintForward(TAC* tac);
+
+#endif

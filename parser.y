@@ -6,6 +6,7 @@
 #include "ast.h"
 #include "semantic.h"
 #include "hash.h"
+#include "tac.h"
 
 
 int yylex();
@@ -88,6 +89,7 @@ program : decl			{astPrint($1,0);  astGenerateFile($1, outputfile);
 				check_operands($1);
 				//check_pointer($1);
 				check_returnType($1);
+				tacPrintForward(tacPrintReverse(codeGenerator($1)));
 
 }
 
