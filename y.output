@@ -1,0 +1,2590 @@
+Terminals unused in grammar
+
+   TOKEN_ERROR
+
+
+State 22 conflicts: 1 shift/reduce
+State 154 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: decl
+
+    2 decl: dec decl
+    3     | %empty
+
+    4 dec: vardec
+    5    | fundec
+
+    6 vardec: vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
+    7       | vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';'
+    8       | vartype SYMBOL_IDENTIFIER '[' exp ']' ':' lit_value_or_initvect ';'
+    9       | vartype SYMBOL_IDENTIFIER '[' exp ']' ';'
+
+   10 vartype: KW_CHAR
+   11        | KW_INT
+   12        | KW_FLOAT
+
+   13 lit_value_pointer: SYMBOL_LIT_INT
+   14                  | SYMBOL_LIT_CHAR
+   15                  | %empty
+
+   16 lit_value_or_initvect: SYMBOL_LIT_INT lit_value_or_initvect
+   17                      | SYMBOL_LIT_REAL lit_value_or_initvect
+   18                      | SYMBOL_LIT_CHAR lit_value_or_initvect
+   19                      | %empty
+
+   20 fundec: vartype SYMBOL_IDENTIFIER '(' funparaml ')' block
+
+   21 funparaml: paramdecl paramrest
+   22          | %empty
+
+   23 paramdecl: vartype SYMBOL_IDENTIFIER
+
+   24 paramrest: ',' paramdecl paramrest
+   25          | %empty
+
+   26 block: '{' lcmd '}'
+
+   27 lcmd: cmd ';' lcmd
+   28     | cmd
+
+   29 cmd: SYMBOL_IDENTIFIER '=' exp
+   30    | SYMBOL_IDENTIFIER '[' exp ']' '=' exp
+   31    | '#' SYMBOL_IDENTIFIER '=' exp
+   32    | KW_READ return_read
+   33    | KW_RETURN exp
+   34    | KW_PRINT argprint
+   35    | KW_WHILE '(' exp ')' cmd
+   36    | KW_IF '(' exp ')' KW_THEN cmd
+   37    | KW_IF '(' exp ')' KW_THEN cmd KW_ELSE cmd
+   38    | KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+   39    | block cmd
+   40    | %empty
+
+   41 return_read: SYMBOL_LIT_INT
+   42            | SYMBOL_LIT_REAL
+   43            | SYMBOL_LIT_CHAR
+   44            | SYMBOL_IDENTIFIER
+   45            | SYMBOL_LIT_STRING
+
+   46 argprint: printelement restprint
+
+   47 restprint: printelement restprint
+   48          | %empty
+
+   49 printelement: exp
+   50             | SYMBOL_LIT_STRING
+
+   51 exp: SYMBOL_IDENTIFIER
+   52    | SYMBOL_LIT_INT
+   53    | SYMBOL_LIT_CHAR
+   54    | SYMBOL_LIT_REAL
+   55    | exp '+' exp
+   56    | exp '-' exp
+   57    | exp '*' exp
+   58    | exp '/' exp
+   59    | exp '<' exp
+   60    | exp '>' exp
+   61    | exp '!' exp
+   62    | '(' exp ')'
+   63    | exp OPERATOR_LE exp
+   64    | exp OPERATOR_GE exp
+   65    | exp OPERATOR_EQ exp
+   66    | exp OPERATOR_NE exp
+   67    | exp OPERATOR_AND exp
+   68    | exp OPERATOR_OR exp
+   69    | '&' SYMBOL_IDENTIFIER
+   70    | '#' SYMBOL_IDENTIFIER
+   71    | SYMBOL_IDENTIFIER '[' exp ']'
+   72    | SYMBOL_IDENTIFIER '(' paraml ')'
+
+   73 paraml: listParam newparam
+   74       | %empty
+
+   75 newparam: ',' listParam newparam
+   76         | %empty
+
+   77 listParam: SYMBOL_LIT_INT
+   78          | SYMBOL_LIT_CHAR
+   79          | SYMBOL_LIT_REAL
+   80          | SYMBOL_IDENTIFIER
+   81          | '#' SYMBOL_IDENTIFIER
+   82          | '&' SYMBOL_IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 61
+'#' (35) 7 31 70 81
+'&' (38) 69 82
+'(' (40) 20 35 36 37 38 62 72
+')' (41) 20 35 36 37 38 62 72
+'*' (42) 57
+'+' (43) 55
+',' (44) 24 75
+'-' (45) 56
+'/' (47) 58
+':' (58) 8
+';' (59) 6 7 8 9 27
+'<' (60) 59
+'=' (61) 6 7 29 30 31 38
+'>' (62) 60
+'[' (91) 8 9 30 71
+']' (93) 8 9 30 71
+'{' (123) 26
+'}' (125) 26
+KW_CHAR (256) 10
+KW_INT (257) 11
+KW_FLOAT (259) 12
+KW_IF (261) 36 37
+KW_THEN (262) 36 37
+KW_ELSE (263) 37
+KW_WHILE (264) 35
+KW_FOR (265) 38
+KW_READ (266) 32
+KW_RETURN (267) 33
+KW_PRINT (268) 34
+KW_TO (269) 38
+OPERATOR_LE (270) 63
+OPERATOR_GE (271) 64
+OPERATOR_EQ (272) 65
+OPERATOR_NE (273) 66
+OPERATOR_AND (274) 67
+OPERATOR_OR (275) 68
+SYMBOL_IDENTIFIER (280) 6 7 8 9 20 23 29 30 31 38 44 51 69 70 71 72
+    80 81 82
+SYMBOL_LIT_INT (281) 13 16 41 52 77
+SYMBOL_LIT_REAL (282) 17 42 54 79
+SYMBOL_LIT_CHAR (283) 14 18 43 53 78
+SYMBOL_LIT_STRING (284) 45 50
+TOKEN_ERROR (290)
+error (291)
+
+
+Nonterminals, with rules where they appear
+
+$accept (46)
+    on left: 0
+program (47)
+    on left: 1, on right: 0
+decl (48)
+    on left: 2 3, on right: 1 2
+dec (49)
+    on left: 4 5, on right: 2
+vardec (50)
+    on left: 6 7 8 9, on right: 4
+vartype (51)
+    on left: 10 11 12, on right: 6 7 8 9 20 23
+lit_value_pointer (52)
+    on left: 13 14 15, on right: 7
+lit_value_or_initvect (53)
+    on left: 16 17 18 19, on right: 6 8 16 17 18
+fundec (54)
+    on left: 20, on right: 5
+funparaml (55)
+    on left: 21 22, on right: 20
+paramdecl (56)
+    on left: 23, on right: 21 24
+paramrest (57)
+    on left: 24 25, on right: 21 24
+block (58)
+    on left: 26, on right: 20 39
+lcmd (59)
+    on left: 27 28, on right: 26 27
+cmd (60)
+    on left: 29 30 31 32 33 34 35 36 37 38 39 40, on right: 27 28 35
+    36 37 38 39
+return_read (61)
+    on left: 41 42 43 44 45, on right: 32
+argprint (62)
+    on left: 46, on right: 34
+restprint (63)
+    on left: 47 48, on right: 46 47
+printelement (64)
+    on left: 49 50, on right: 46 47
+exp (65)
+    on left: 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68
+    69 70 71 72, on right: 8 9 29 30 31 33 35 36 37 38 49 55 56 57
+    58 59 60 61 62 63 64 65 66 67 68 71
+paraml (66)
+    on left: 73 74, on right: 72
+newparam (67)
+    on left: 75 76, on right: 73 75
+listParam (68)
+    on left: 77 78 79 80 81 82, on right: 73 75
+
+
+State 0
+
+    0 $accept: . program $end
+
+    KW_CHAR   shift, and go to state 1
+    KW_INT    shift, and go to state 2
+    KW_FLOAT  shift, and go to state 3
+
+    $default  reduce using rule 3 (decl)
+
+    program  go to state 4
+    decl     go to state 5
+    dec      go to state 6
+    vardec   go to state 7
+    vartype  go to state 8
+    fundec   go to state 9
+
+
+State 1
+
+   10 vartype: KW_CHAR .
+
+    $default  reduce using rule 10 (vartype)
+
+
+State 2
+
+   11 vartype: KW_INT .
+
+    $default  reduce using rule 11 (vartype)
+
+
+State 3
+
+   12 vartype: KW_FLOAT .
+
+    $default  reduce using rule 12 (vartype)
+
+
+State 4
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 10
+
+
+State 5
+
+    1 program: decl .
+
+    $default  reduce using rule 1 (program)
+
+
+State 6
+
+    2 decl: dec . decl
+
+    KW_CHAR   shift, and go to state 1
+    KW_INT    shift, and go to state 2
+    KW_FLOAT  shift, and go to state 3
+
+    $default  reduce using rule 3 (decl)
+
+    decl     go to state 11
+    dec      go to state 6
+    vardec   go to state 7
+    vartype  go to state 8
+    fundec   go to state 9
+
+
+State 7
+
+    4 dec: vardec .
+
+    $default  reduce using rule 4 (dec)
+
+
+State 8
+
+    6 vardec: vartype . SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';'
+    7       | vartype . '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';'
+    8       | vartype . SYMBOL_IDENTIFIER '[' exp ']' ':' lit_value_or_initvect ';'
+    9       | vartype . SYMBOL_IDENTIFIER '[' exp ']' ';'
+   20 fundec: vartype . SYMBOL_IDENTIFIER '(' funparaml ')' block
+
+    SYMBOL_IDENTIFIER  shift, and go to state 12
+    '#'                shift, and go to state 13
+
+
+State 9
+
+    5 dec: fundec .
+
+    $default  reduce using rule 5 (dec)
+
+
+State 10
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 11
+
+    2 decl: dec decl .
+
+    $default  reduce using rule 2 (decl)
+
+
+State 12
+
+    6 vardec: vartype SYMBOL_IDENTIFIER . '=' lit_value_or_initvect ';'
+    8       | vartype SYMBOL_IDENTIFIER . '[' exp ']' ':' lit_value_or_initvect ';'
+    9       | vartype SYMBOL_IDENTIFIER . '[' exp ']' ';'
+   20 fundec: vartype SYMBOL_IDENTIFIER . '(' funparaml ')' block
+
+    '='  shift, and go to state 14
+    '['  shift, and go to state 15
+    '('  shift, and go to state 16
+
+
+State 13
+
+    7 vardec: vartype '#' . SYMBOL_IDENTIFIER '=' lit_value_pointer ';'
+
+    SYMBOL_IDENTIFIER  shift, and go to state 17
+
+
+State 14
+
+    6 vardec: vartype SYMBOL_IDENTIFIER '=' . lit_value_or_initvect ';'
+
+    SYMBOL_LIT_INT   shift, and go to state 18
+    SYMBOL_LIT_REAL  shift, and go to state 19
+    SYMBOL_LIT_CHAR  shift, and go to state 20
+
+    $default  reduce using rule 19 (lit_value_or_initvect)
+
+    lit_value_or_initvect  go to state 21
+
+
+State 15
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' . exp ']' ':' lit_value_or_initvect ';'
+    9       | vartype SYMBOL_IDENTIFIER '[' . exp ']' ';'
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 29
+
+
+State 16
+
+   20 fundec: vartype SYMBOL_IDENTIFIER '(' . funparaml ')' block
+
+    KW_CHAR   shift, and go to state 1
+    KW_INT    shift, and go to state 2
+    KW_FLOAT  shift, and go to state 3
+
+    $default  reduce using rule 22 (funparaml)
+
+    vartype    go to state 30
+    funparaml  go to state 31
+    paramdecl  go to state 32
+
+
+State 17
+
+    7 vardec: vartype '#' SYMBOL_IDENTIFIER . '=' lit_value_pointer ';'
+
+    '='  shift, and go to state 33
+
+
+State 18
+
+   16 lit_value_or_initvect: SYMBOL_LIT_INT . lit_value_or_initvect
+
+    SYMBOL_LIT_INT   shift, and go to state 18
+    SYMBOL_LIT_REAL  shift, and go to state 19
+    SYMBOL_LIT_CHAR  shift, and go to state 20
+
+    $default  reduce using rule 19 (lit_value_or_initvect)
+
+    lit_value_or_initvect  go to state 34
+
+
+State 19
+
+   17 lit_value_or_initvect: SYMBOL_LIT_REAL . lit_value_or_initvect
+
+    SYMBOL_LIT_INT   shift, and go to state 18
+    SYMBOL_LIT_REAL  shift, and go to state 19
+    SYMBOL_LIT_CHAR  shift, and go to state 20
+
+    $default  reduce using rule 19 (lit_value_or_initvect)
+
+    lit_value_or_initvect  go to state 35
+
+
+State 20
+
+   18 lit_value_or_initvect: SYMBOL_LIT_CHAR . lit_value_or_initvect
+
+    SYMBOL_LIT_INT   shift, and go to state 18
+    SYMBOL_LIT_REAL  shift, and go to state 19
+    SYMBOL_LIT_CHAR  shift, and go to state 20
+
+    $default  reduce using rule 19 (lit_value_or_initvect)
+
+    lit_value_or_initvect  go to state 36
+
+
+State 21
+
+    6 vardec: vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect . ';'
+
+    ';'  shift, and go to state 37
+
+
+State 22
+
+   51 exp: SYMBOL_IDENTIFIER .
+   71    | SYMBOL_IDENTIFIER . '[' exp ']'
+   72    | SYMBOL_IDENTIFIER . '(' paraml ')'
+
+    '['  shift, and go to state 38
+    '('  shift, and go to state 39
+
+    '('       [reduce using rule 51 (exp)]
+    $default  reduce using rule 51 (exp)
+
+
+State 23
+
+   52 exp: SYMBOL_LIT_INT .
+
+    $default  reduce using rule 52 (exp)
+
+
+State 24
+
+   54 exp: SYMBOL_LIT_REAL .
+
+    $default  reduce using rule 54 (exp)
+
+
+State 25
+
+   53 exp: SYMBOL_LIT_CHAR .
+
+    $default  reduce using rule 53 (exp)
+
+
+State 26
+
+   70 exp: '#' . SYMBOL_IDENTIFIER
+
+    SYMBOL_IDENTIFIER  shift, and go to state 40
+
+
+State 27
+
+   62 exp: '(' . exp ')'
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 41
+
+
+State 28
+
+   69 exp: '&' . SYMBOL_IDENTIFIER
+
+    SYMBOL_IDENTIFIER  shift, and go to state 42
+
+
+State 29
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' exp . ']' ':' lit_value_or_initvect ';'
+    9       | vartype SYMBOL_IDENTIFIER '[' exp . ']' ';'
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ']'           shift, and go to state 56
+
+
+State 30
+
+   23 paramdecl: vartype . SYMBOL_IDENTIFIER
+
+    SYMBOL_IDENTIFIER  shift, and go to state 57
+
+
+State 31
+
+   20 fundec: vartype SYMBOL_IDENTIFIER '(' funparaml . ')' block
+
+    ')'  shift, and go to state 58
+
+
+State 32
+
+   21 funparaml: paramdecl . paramrest
+
+    ','  shift, and go to state 59
+
+    $default  reduce using rule 25 (paramrest)
+
+    paramrest  go to state 60
+
+
+State 33
+
+    7 vardec: vartype '#' SYMBOL_IDENTIFIER '=' . lit_value_pointer ';'
+
+    SYMBOL_LIT_INT   shift, and go to state 61
+    SYMBOL_LIT_CHAR  shift, and go to state 62
+
+    $default  reduce using rule 15 (lit_value_pointer)
+
+    lit_value_pointer  go to state 63
+
+
+State 34
+
+   16 lit_value_or_initvect: SYMBOL_LIT_INT lit_value_or_initvect .
+
+    $default  reduce using rule 16 (lit_value_or_initvect)
+
+
+State 35
+
+   17 lit_value_or_initvect: SYMBOL_LIT_REAL lit_value_or_initvect .
+
+    $default  reduce using rule 17 (lit_value_or_initvect)
+
+
+State 36
+
+   18 lit_value_or_initvect: SYMBOL_LIT_CHAR lit_value_or_initvect .
+
+    $default  reduce using rule 18 (lit_value_or_initvect)
+
+
+State 37
+
+    6 vardec: vartype SYMBOL_IDENTIFIER '=' lit_value_or_initvect ';' .
+
+    $default  reduce using rule 6 (vardec)
+
+
+State 38
+
+   71 exp: SYMBOL_IDENTIFIER '[' . exp ']'
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 64
+
+
+State 39
+
+   72 exp: SYMBOL_IDENTIFIER '(' . paraml ')'
+
+    SYMBOL_IDENTIFIER  shift, and go to state 65
+    SYMBOL_LIT_INT     shift, and go to state 66
+    SYMBOL_LIT_REAL    shift, and go to state 67
+    SYMBOL_LIT_CHAR    shift, and go to state 68
+    '#'                shift, and go to state 69
+    '&'                shift, and go to state 70
+
+    $default  reduce using rule 74 (paraml)
+
+    paraml     go to state 71
+    listParam  go to state 72
+
+
+State 40
+
+   70 exp: '#' SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 70 (exp)
+
+
+State 41
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   62    | '(' exp . ')'
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ')'           shift, and go to state 73
+
+
+State 42
+
+   69 exp: '&' SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 69 (exp)
+
+
+State 43
+
+   63 exp: exp OPERATOR_LE . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 74
+
+
+State 44
+
+   64 exp: exp OPERATOR_GE . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 75
+
+
+State 45
+
+   65 exp: exp OPERATOR_EQ . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 76
+
+
+State 46
+
+   66 exp: exp OPERATOR_NE . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 77
+
+
+State 47
+
+   67 exp: exp OPERATOR_AND . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 78
+
+
+State 48
+
+   68 exp: exp OPERATOR_OR . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 79
+
+
+State 49
+
+   61 exp: exp '!' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 80
+
+
+State 50
+
+   59 exp: exp '<' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 81
+
+
+State 51
+
+   60 exp: exp '>' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 82
+
+
+State 52
+
+   55 exp: exp '+' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 83
+
+
+State 53
+
+   56 exp: exp '-' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 84
+
+
+State 54
+
+   57 exp: exp '*' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 85
+
+
+State 55
+
+   58 exp: exp '/' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 86
+
+
+State 56
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' exp ']' . ':' lit_value_or_initvect ';'
+    9       | vartype SYMBOL_IDENTIFIER '[' exp ']' . ';'
+
+    ';'  shift, and go to state 87
+    ':'  shift, and go to state 88
+
+
+State 57
+
+   23 paramdecl: vartype SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 23 (paramdecl)
+
+
+State 58
+
+   20 fundec: vartype SYMBOL_IDENTIFIER '(' funparaml ')' . block
+
+    '{'  shift, and go to state 89
+
+    block  go to state 90
+
+
+State 59
+
+   24 paramrest: ',' . paramdecl paramrest
+
+    KW_CHAR   shift, and go to state 1
+    KW_INT    shift, and go to state 2
+    KW_FLOAT  shift, and go to state 3
+
+    vartype    go to state 30
+    paramdecl  go to state 91
+
+
+State 60
+
+   21 funparaml: paramdecl paramrest .
+
+    $default  reduce using rule 21 (funparaml)
+
+
+State 61
+
+   13 lit_value_pointer: SYMBOL_LIT_INT .
+
+    $default  reduce using rule 13 (lit_value_pointer)
+
+
+State 62
+
+   14 lit_value_pointer: SYMBOL_LIT_CHAR .
+
+    $default  reduce using rule 14 (lit_value_pointer)
+
+
+State 63
+
+    7 vardec: vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer . ';'
+
+    ';'  shift, and go to state 92
+
+
+State 64
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+   71    | SYMBOL_IDENTIFIER '[' exp . ']'
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ']'           shift, and go to state 93
+
+
+State 65
+
+   80 listParam: SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 80 (listParam)
+
+
+State 66
+
+   77 listParam: SYMBOL_LIT_INT .
+
+    $default  reduce using rule 77 (listParam)
+
+
+State 67
+
+   79 listParam: SYMBOL_LIT_REAL .
+
+    $default  reduce using rule 79 (listParam)
+
+
+State 68
+
+   78 listParam: SYMBOL_LIT_CHAR .
+
+    $default  reduce using rule 78 (listParam)
+
+
+State 69
+
+   81 listParam: '#' . SYMBOL_IDENTIFIER
+
+    SYMBOL_IDENTIFIER  shift, and go to state 94
+
+
+State 70
+
+   82 listParam: '&' . SYMBOL_IDENTIFIER
+
+    SYMBOL_IDENTIFIER  shift, and go to state 95
+
+
+State 71
+
+   72 exp: SYMBOL_IDENTIFIER '(' paraml . ')'
+
+    ')'  shift, and go to state 96
+
+
+State 72
+
+   73 paraml: listParam . newparam
+
+    ','  shift, and go to state 97
+
+    $default  reduce using rule 76 (newparam)
+
+    newparam  go to state 98
+
+
+State 73
+
+   62 exp: '(' exp ')' .
+
+    $default  reduce using rule 62 (exp)
+
+
+State 74
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   63    | exp OPERATOR_LE exp .
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 63 (exp)
+
+    Conflict between rule 63 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 63 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 63 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 63 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 63 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < OPERATOR_LE).
+    Conflict between rule 63 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < OPERATOR_LE).
+    Conflict between rule 63 and token '!' resolved as reduce ('!' < OPERATOR_LE).
+    Conflict between rule 63 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 63 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 63 and token '+' resolved as shift (OPERATOR_LE < '+').
+    Conflict between rule 63 and token '-' resolved as shift (OPERATOR_LE < '-').
+    Conflict between rule 63 and token '*' resolved as shift (OPERATOR_LE < '*').
+    Conflict between rule 63 and token '/' resolved as shift (OPERATOR_LE < '/').
+
+
+State 75
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   64    | exp OPERATOR_GE exp .
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 64 (exp)
+
+    Conflict between rule 64 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 64 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 64 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 64 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 64 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < OPERATOR_GE).
+    Conflict between rule 64 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < OPERATOR_GE).
+    Conflict between rule 64 and token '!' resolved as reduce ('!' < OPERATOR_GE).
+    Conflict between rule 64 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 64 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 64 and token '+' resolved as shift (OPERATOR_GE < '+').
+    Conflict between rule 64 and token '-' resolved as shift (OPERATOR_GE < '-').
+    Conflict between rule 64 and token '*' resolved as shift (OPERATOR_GE < '*').
+    Conflict between rule 64 and token '/' resolved as shift (OPERATOR_GE < '/').
+
+
+State 76
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   65    | exp OPERATOR_EQ exp .
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 65 (exp)
+
+    Conflict between rule 65 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 65 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 65 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 65 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 65 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < OPERATOR_EQ).
+    Conflict between rule 65 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < OPERATOR_EQ).
+    Conflict between rule 65 and token '!' resolved as reduce ('!' < OPERATOR_EQ).
+    Conflict between rule 65 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 65 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 65 and token '+' resolved as shift (OPERATOR_EQ < '+').
+    Conflict between rule 65 and token '-' resolved as shift (OPERATOR_EQ < '-').
+    Conflict between rule 65 and token '*' resolved as shift (OPERATOR_EQ < '*').
+    Conflict between rule 65 and token '/' resolved as shift (OPERATOR_EQ < '/').
+
+
+State 77
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   66    | exp OPERATOR_NE exp .
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 66 (exp)
+
+    Conflict between rule 66 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 66 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 66 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 66 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 66 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < OPERATOR_NE).
+    Conflict between rule 66 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < OPERATOR_NE).
+    Conflict between rule 66 and token '!' resolved as reduce ('!' < OPERATOR_NE).
+    Conflict between rule 66 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 66 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 66 and token '+' resolved as shift (OPERATOR_NE < '+').
+    Conflict between rule 66 and token '-' resolved as shift (OPERATOR_NE < '-').
+    Conflict between rule 66 and token '*' resolved as shift (OPERATOR_NE < '*').
+    Conflict between rule 66 and token '/' resolved as shift (OPERATOR_NE < '/').
+
+
+State 78
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   67    | exp OPERATOR_AND exp .
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE  shift, and go to state 43
+    OPERATOR_GE  shift, and go to state 44
+    OPERATOR_EQ  shift, and go to state 45
+    OPERATOR_NE  shift, and go to state 46
+    '<'          shift, and go to state 50
+    '>'          shift, and go to state 51
+    '+'          shift, and go to state 52
+    '-'          shift, and go to state 53
+    '*'          shift, and go to state 54
+    '/'          shift, and go to state 55
+
+    $default  reduce using rule 67 (exp)
+
+    Conflict between rule 67 and token OPERATOR_LE resolved as shift (OPERATOR_AND < OPERATOR_LE).
+    Conflict between rule 67 and token OPERATOR_GE resolved as shift (OPERATOR_AND < OPERATOR_GE).
+    Conflict between rule 67 and token OPERATOR_EQ resolved as shift (OPERATOR_AND < OPERATOR_EQ).
+    Conflict between rule 67 and token OPERATOR_NE resolved as shift (OPERATOR_AND < OPERATOR_NE).
+    Conflict between rule 67 and token OPERATOR_AND resolved as reduce (%left OPERATOR_AND).
+    Conflict between rule 67 and token OPERATOR_OR resolved as reduce (%left OPERATOR_OR).
+    Conflict between rule 67 and token '!' resolved as reduce (%left '!').
+    Conflict between rule 67 and token '<' resolved as shift (OPERATOR_AND < '<').
+    Conflict between rule 67 and token '>' resolved as shift (OPERATOR_AND < '>').
+    Conflict between rule 67 and token '+' resolved as shift (OPERATOR_AND < '+').
+    Conflict between rule 67 and token '-' resolved as shift (OPERATOR_AND < '-').
+    Conflict between rule 67 and token '*' resolved as shift (OPERATOR_AND < '*').
+    Conflict between rule 67 and token '/' resolved as shift (OPERATOR_AND < '/').
+
+
+State 79
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+   68    | exp OPERATOR_OR exp .
+
+    OPERATOR_LE  shift, and go to state 43
+    OPERATOR_GE  shift, and go to state 44
+    OPERATOR_EQ  shift, and go to state 45
+    OPERATOR_NE  shift, and go to state 46
+    '<'          shift, and go to state 50
+    '>'          shift, and go to state 51
+    '+'          shift, and go to state 52
+    '-'          shift, and go to state 53
+    '*'          shift, and go to state 54
+    '/'          shift, and go to state 55
+
+    $default  reduce using rule 68 (exp)
+
+    Conflict between rule 68 and token OPERATOR_LE resolved as shift (OPERATOR_OR < OPERATOR_LE).
+    Conflict between rule 68 and token OPERATOR_GE resolved as shift (OPERATOR_OR < OPERATOR_GE).
+    Conflict between rule 68 and token OPERATOR_EQ resolved as shift (OPERATOR_OR < OPERATOR_EQ).
+    Conflict between rule 68 and token OPERATOR_NE resolved as shift (OPERATOR_OR < OPERATOR_NE).
+    Conflict between rule 68 and token OPERATOR_AND resolved as reduce (%left OPERATOR_AND).
+    Conflict between rule 68 and token OPERATOR_OR resolved as reduce (%left OPERATOR_OR).
+    Conflict between rule 68 and token '!' resolved as reduce (%left '!').
+    Conflict between rule 68 and token '<' resolved as shift (OPERATOR_OR < '<').
+    Conflict between rule 68 and token '>' resolved as shift (OPERATOR_OR < '>').
+    Conflict between rule 68 and token '+' resolved as shift (OPERATOR_OR < '+').
+    Conflict between rule 68 and token '-' resolved as shift (OPERATOR_OR < '-').
+    Conflict between rule 68 and token '*' resolved as shift (OPERATOR_OR < '*').
+    Conflict between rule 68 and token '/' resolved as shift (OPERATOR_OR < '/').
+
+
+State 80
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   61    | exp '!' exp .
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE  shift, and go to state 43
+    OPERATOR_GE  shift, and go to state 44
+    OPERATOR_EQ  shift, and go to state 45
+    OPERATOR_NE  shift, and go to state 46
+    '<'          shift, and go to state 50
+    '>'          shift, and go to state 51
+    '+'          shift, and go to state 52
+    '-'          shift, and go to state 53
+    '*'          shift, and go to state 54
+    '/'          shift, and go to state 55
+
+    $default  reduce using rule 61 (exp)
+
+    Conflict between rule 61 and token OPERATOR_LE resolved as shift ('!' < OPERATOR_LE).
+    Conflict between rule 61 and token OPERATOR_GE resolved as shift ('!' < OPERATOR_GE).
+    Conflict between rule 61 and token OPERATOR_EQ resolved as shift ('!' < OPERATOR_EQ).
+    Conflict between rule 61 and token OPERATOR_NE resolved as shift ('!' < OPERATOR_NE).
+    Conflict between rule 61 and token OPERATOR_AND resolved as reduce (%left OPERATOR_AND).
+    Conflict between rule 61 and token OPERATOR_OR resolved as reduce (%left OPERATOR_OR).
+    Conflict between rule 61 and token '!' resolved as reduce (%left '!').
+    Conflict between rule 61 and token '<' resolved as shift ('!' < '<').
+    Conflict between rule 61 and token '>' resolved as shift ('!' < '>').
+    Conflict between rule 61 and token '+' resolved as shift ('!' < '+').
+    Conflict between rule 61 and token '-' resolved as shift ('!' < '-').
+    Conflict between rule 61 and token '*' resolved as shift ('!' < '*').
+    Conflict between rule 61 and token '/' resolved as shift ('!' < '/').
+
+
+State 81
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   59    | exp '<' exp .
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 59 (exp)
+
+    Conflict between rule 59 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 59 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 59 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 59 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 59 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '<').
+    Conflict between rule 59 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '<').
+    Conflict between rule 59 and token '!' resolved as reduce ('!' < '<').
+    Conflict between rule 59 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 59 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 59 and token '+' resolved as shift ('<' < '+').
+    Conflict between rule 59 and token '-' resolved as shift ('<' < '-').
+    Conflict between rule 59 and token '*' resolved as shift ('<' < '*').
+    Conflict between rule 59 and token '/' resolved as shift ('<' < '/').
+
+
+State 82
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   60    | exp '>' exp .
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '+'  shift, and go to state 52
+    '-'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 60 (exp)
+
+    Conflict between rule 60 and token OPERATOR_LE resolved as reduce (%left OPERATOR_LE).
+    Conflict between rule 60 and token OPERATOR_GE resolved as reduce (%left OPERATOR_GE).
+    Conflict between rule 60 and token OPERATOR_EQ resolved as reduce (%left OPERATOR_EQ).
+    Conflict between rule 60 and token OPERATOR_NE resolved as reduce (%left OPERATOR_NE).
+    Conflict between rule 60 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '>').
+    Conflict between rule 60 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '>').
+    Conflict between rule 60 and token '!' resolved as reduce ('!' < '>').
+    Conflict between rule 60 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 60 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 60 and token '+' resolved as shift ('>' < '+').
+    Conflict between rule 60 and token '-' resolved as shift ('>' < '-').
+    Conflict between rule 60 and token '*' resolved as shift ('>' < '*').
+    Conflict between rule 60 and token '/' resolved as shift ('>' < '/').
+
+
+State 83
+
+   55 exp: exp . '+' exp
+   55    | exp '+' exp .
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 55 (exp)
+
+    Conflict between rule 55 and token OPERATOR_LE resolved as reduce (OPERATOR_LE < '+').
+    Conflict between rule 55 and token OPERATOR_GE resolved as reduce (OPERATOR_GE < '+').
+    Conflict between rule 55 and token OPERATOR_EQ resolved as reduce (OPERATOR_EQ < '+').
+    Conflict between rule 55 and token OPERATOR_NE resolved as reduce (OPERATOR_NE < '+').
+    Conflict between rule 55 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '+').
+    Conflict between rule 55 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '+').
+    Conflict between rule 55 and token '!' resolved as reduce ('!' < '+').
+    Conflict between rule 55 and token '<' resolved as reduce ('<' < '+').
+    Conflict between rule 55 and token '>' resolved as reduce ('>' < '+').
+    Conflict between rule 55 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 55 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 55 and token '*' resolved as shift ('+' < '*').
+    Conflict between rule 55 and token '/' resolved as shift ('+' < '/').
+
+
+State 84
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   56    | exp '-' exp .
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    '*'  shift, and go to state 54
+    '/'  shift, and go to state 55
+
+    $default  reduce using rule 56 (exp)
+
+    Conflict between rule 56 and token OPERATOR_LE resolved as reduce (OPERATOR_LE < '-').
+    Conflict between rule 56 and token OPERATOR_GE resolved as reduce (OPERATOR_GE < '-').
+    Conflict between rule 56 and token OPERATOR_EQ resolved as reduce (OPERATOR_EQ < '-').
+    Conflict between rule 56 and token OPERATOR_NE resolved as reduce (OPERATOR_NE < '-').
+    Conflict between rule 56 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '-').
+    Conflict between rule 56 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '-').
+    Conflict between rule 56 and token '!' resolved as reduce ('!' < '-').
+    Conflict between rule 56 and token '<' resolved as reduce ('<' < '-').
+    Conflict between rule 56 and token '>' resolved as reduce ('>' < '-').
+    Conflict between rule 56 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 56 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 56 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 56 and token '/' resolved as shift ('-' < '/').
+
+
+State 85
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   57    | exp '*' exp .
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    $default  reduce using rule 57 (exp)
+
+    Conflict between rule 57 and token OPERATOR_LE resolved as reduce (OPERATOR_LE < '*').
+    Conflict between rule 57 and token OPERATOR_GE resolved as reduce (OPERATOR_GE < '*').
+    Conflict between rule 57 and token OPERATOR_EQ resolved as reduce (OPERATOR_EQ < '*').
+    Conflict between rule 57 and token OPERATOR_NE resolved as reduce (OPERATOR_NE < '*').
+    Conflict between rule 57 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '*').
+    Conflict between rule 57 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '*').
+    Conflict between rule 57 and token '!' resolved as reduce ('!' < '*').
+    Conflict between rule 57 and token '<' resolved as reduce ('<' < '*').
+    Conflict between rule 57 and token '>' resolved as reduce ('>' < '*').
+    Conflict between rule 57 and token '+' resolved as reduce ('+' < '*').
+    Conflict between rule 57 and token '-' resolved as reduce ('-' < '*').
+    Conflict between rule 57 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 57 and token '/' resolved as reduce (%left '/').
+
+
+State 86
+
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   58    | exp '/' exp .
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    $default  reduce using rule 58 (exp)
+
+    Conflict between rule 58 and token OPERATOR_LE resolved as reduce (OPERATOR_LE < '/').
+    Conflict between rule 58 and token OPERATOR_GE resolved as reduce (OPERATOR_GE < '/').
+    Conflict between rule 58 and token OPERATOR_EQ resolved as reduce (OPERATOR_EQ < '/').
+    Conflict between rule 58 and token OPERATOR_NE resolved as reduce (OPERATOR_NE < '/').
+    Conflict between rule 58 and token OPERATOR_AND resolved as reduce (OPERATOR_AND < '/').
+    Conflict between rule 58 and token OPERATOR_OR resolved as reduce (OPERATOR_OR < '/').
+    Conflict between rule 58 and token '!' resolved as reduce ('!' < '/').
+    Conflict between rule 58 and token '<' resolved as reduce ('<' < '/').
+    Conflict between rule 58 and token '>' resolved as reduce ('>' < '/').
+    Conflict between rule 58 and token '+' resolved as reduce ('+' < '/').
+    Conflict between rule 58 and token '-' resolved as reduce ('-' < '/').
+    Conflict between rule 58 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 58 and token '/' resolved as reduce (%left '/').
+
+
+State 87
+
+    9 vardec: vartype SYMBOL_IDENTIFIER '[' exp ']' ';' .
+
+    $default  reduce using rule 9 (vardec)
+
+
+State 88
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' exp ']' ':' . lit_value_or_initvect ';'
+
+    SYMBOL_LIT_INT   shift, and go to state 18
+    SYMBOL_LIT_REAL  shift, and go to state 19
+    SYMBOL_LIT_CHAR  shift, and go to state 20
+
+    $default  reduce using rule 19 (lit_value_or_initvect)
+
+    lit_value_or_initvect  go to state 99
+
+
+State 89
+
+   26 block: '{' . lcmd '}'
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    lcmd   go to state 109
+    cmd    go to state 110
+
+
+State 90
+
+   20 fundec: vartype SYMBOL_IDENTIFIER '(' funparaml ')' block .
+
+    $default  reduce using rule 20 (fundec)
+
+
+State 91
+
+   24 paramrest: ',' paramdecl . paramrest
+
+    ','  shift, and go to state 59
+
+    $default  reduce using rule 25 (paramrest)
+
+    paramrest  go to state 111
+
+
+State 92
+
+    7 vardec: vartype '#' SYMBOL_IDENTIFIER '=' lit_value_pointer ';' .
+
+    $default  reduce using rule 7 (vardec)
+
+
+State 93
+
+   71 exp: SYMBOL_IDENTIFIER '[' exp ']' .
+
+    $default  reduce using rule 71 (exp)
+
+
+State 94
+
+   81 listParam: '#' SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 81 (listParam)
+
+
+State 95
+
+   82 listParam: '&' SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 82 (listParam)
+
+
+State 96
+
+   72 exp: SYMBOL_IDENTIFIER '(' paraml ')' .
+
+    $default  reduce using rule 72 (exp)
+
+
+State 97
+
+   75 newparam: ',' . listParam newparam
+
+    SYMBOL_IDENTIFIER  shift, and go to state 65
+    SYMBOL_LIT_INT     shift, and go to state 66
+    SYMBOL_LIT_REAL    shift, and go to state 67
+    SYMBOL_LIT_CHAR    shift, and go to state 68
+    '#'                shift, and go to state 69
+    '&'                shift, and go to state 70
+
+    listParam  go to state 112
+
+
+State 98
+
+   73 paraml: listParam newparam .
+
+    $default  reduce using rule 73 (paraml)
+
+
+State 99
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' exp ']' ':' lit_value_or_initvect . ';'
+
+    ';'  shift, and go to state 113
+
+
+State 100
+
+   36 cmd: KW_IF . '(' exp ')' KW_THEN cmd
+   37    | KW_IF . '(' exp ')' KW_THEN cmd KW_ELSE cmd
+
+    '('  shift, and go to state 114
+
+
+State 101
+
+   35 cmd: KW_WHILE . '(' exp ')' cmd
+
+    '('  shift, and go to state 115
+
+
+State 102
+
+   38 cmd: KW_FOR . '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+
+    '('  shift, and go to state 116
+
+
+State 103
+
+   32 cmd: KW_READ . return_read
+
+    SYMBOL_IDENTIFIER  shift, and go to state 117
+    SYMBOL_LIT_INT     shift, and go to state 118
+    SYMBOL_LIT_REAL    shift, and go to state 119
+    SYMBOL_LIT_CHAR    shift, and go to state 120
+    SYMBOL_LIT_STRING  shift, and go to state 121
+
+    return_read  go to state 122
+
+
+State 104
+
+   33 cmd: KW_RETURN . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 123
+
+
+State 105
+
+   34 cmd: KW_PRINT . argprint
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    SYMBOL_LIT_STRING  shift, and go to state 124
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    argprint      go to state 125
+    printelement  go to state 126
+    exp           go to state 127
+
+
+State 106
+
+   29 cmd: SYMBOL_IDENTIFIER . '=' exp
+   30    | SYMBOL_IDENTIFIER . '[' exp ']' '=' exp
+
+    '='  shift, and go to state 128
+    '['  shift, and go to state 129
+
+
+State 107
+
+   31 cmd: '#' . SYMBOL_IDENTIFIER '=' exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 130
+
+
+State 108
+
+   39 cmd: block . cmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    cmd    go to state 131
+
+
+State 109
+
+   26 block: '{' lcmd . '}'
+
+    '}'  shift, and go to state 132
+
+
+State 110
+
+   27 lcmd: cmd . ';' lcmd
+   28     | cmd .
+
+    ';'  shift, and go to state 133
+
+    $default  reduce using rule 28 (lcmd)
+
+
+State 111
+
+   24 paramrest: ',' paramdecl paramrest .
+
+    $default  reduce using rule 24 (paramrest)
+
+
+State 112
+
+   75 newparam: ',' listParam . newparam
+
+    ','  shift, and go to state 97
+
+    $default  reduce using rule 76 (newparam)
+
+    newparam  go to state 134
+
+
+State 113
+
+    8 vardec: vartype SYMBOL_IDENTIFIER '[' exp ']' ':' lit_value_or_initvect ';' .
+
+    $default  reduce using rule 8 (vardec)
+
+
+State 114
+
+   36 cmd: KW_IF '(' . exp ')' KW_THEN cmd
+   37    | KW_IF '(' . exp ')' KW_THEN cmd KW_ELSE cmd
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 135
+
+
+State 115
+
+   35 cmd: KW_WHILE '(' . exp ')' cmd
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 136
+
+
+State 116
+
+   38 cmd: KW_FOR '(' . SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd
+
+    SYMBOL_IDENTIFIER  shift, and go to state 137
+
+
+State 117
+
+   44 return_read: SYMBOL_IDENTIFIER .
+
+    $default  reduce using rule 44 (return_read)
+
+
+State 118
+
+   41 return_read: SYMBOL_LIT_INT .
+
+    $default  reduce using rule 41 (return_read)
+
+
+State 119
+
+   42 return_read: SYMBOL_LIT_REAL .
+
+    $default  reduce using rule 42 (return_read)
+
+
+State 120
+
+   43 return_read: SYMBOL_LIT_CHAR .
+
+    $default  reduce using rule 43 (return_read)
+
+
+State 121
+
+   45 return_read: SYMBOL_LIT_STRING .
+
+    $default  reduce using rule 45 (return_read)
+
+
+State 122
+
+   32 cmd: KW_READ return_read .
+
+    $default  reduce using rule 32 (cmd)
+
+
+State 123
+
+   33 cmd: KW_RETURN exp .
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+    $default  reduce using rule 33 (cmd)
+
+
+State 124
+
+   50 printelement: SYMBOL_LIT_STRING .
+
+    $default  reduce using rule 50 (printelement)
+
+
+State 125
+
+   34 cmd: KW_PRINT argprint .
+
+    $default  reduce using rule 34 (cmd)
+
+
+State 126
+
+   46 argprint: printelement . restprint
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    SYMBOL_LIT_STRING  shift, and go to state 124
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    $default  reduce using rule 48 (restprint)
+
+    restprint     go to state 138
+    printelement  go to state 139
+    exp           go to state 127
+
+
+State 127
+
+   49 printelement: exp .
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+    $default  reduce using rule 49 (printelement)
+
+
+State 128
+
+   29 cmd: SYMBOL_IDENTIFIER '=' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 140
+
+
+State 129
+
+   30 cmd: SYMBOL_IDENTIFIER '[' . exp ']' '=' exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 141
+
+
+State 130
+
+   31 cmd: '#' SYMBOL_IDENTIFIER . '=' exp
+
+    '='  shift, and go to state 142
+
+
+State 131
+
+   39 cmd: block cmd .
+
+    $default  reduce using rule 39 (cmd)
+
+
+State 132
+
+   26 block: '{' lcmd '}' .
+
+    $default  reduce using rule 26 (block)
+
+
+State 133
+
+   27 lcmd: cmd ';' . lcmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    lcmd   go to state 143
+    cmd    go to state 110
+
+
+State 134
+
+   75 newparam: ',' listParam newparam .
+
+    $default  reduce using rule 75 (newparam)
+
+
+State 135
+
+   36 cmd: KW_IF '(' exp . ')' KW_THEN cmd
+   37    | KW_IF '(' exp . ')' KW_THEN cmd KW_ELSE cmd
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ')'           shift, and go to state 144
+
+
+State 136
+
+   35 cmd: KW_WHILE '(' exp . ')' cmd
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ')'           shift, and go to state 145
+
+
+State 137
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER . '=' exp KW_TO exp ')' cmd
+
+    '='  shift, and go to state 146
+
+
+State 138
+
+   46 argprint: printelement restprint .
+
+    $default  reduce using rule 46 (argprint)
+
+
+State 139
+
+   47 restprint: printelement . restprint
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    SYMBOL_LIT_STRING  shift, and go to state 124
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    $default  reduce using rule 48 (restprint)
+
+    restprint     go to state 147
+    printelement  go to state 139
+    exp           go to state 127
+
+
+State 140
+
+   29 cmd: SYMBOL_IDENTIFIER '=' exp .
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+    $default  reduce using rule 29 (cmd)
+
+
+State 141
+
+   30 cmd: SYMBOL_IDENTIFIER '[' exp . ']' '=' exp
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ']'           shift, and go to state 148
+
+
+State 142
+
+   31 cmd: '#' SYMBOL_IDENTIFIER '=' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 149
+
+
+State 143
+
+   27 lcmd: cmd ';' lcmd .
+
+    $default  reduce using rule 27 (lcmd)
+
+
+State 144
+
+   36 cmd: KW_IF '(' exp ')' . KW_THEN cmd
+   37    | KW_IF '(' exp ')' . KW_THEN cmd KW_ELSE cmd
+
+    KW_THEN  shift, and go to state 150
+
+
+State 145
+
+   35 cmd: KW_WHILE '(' exp ')' . cmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    cmd    go to state 151
+
+
+State 146
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' . exp KW_TO exp ')' cmd
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 152
+
+
+State 147
+
+   47 restprint: printelement restprint .
+
+    $default  reduce using rule 47 (restprint)
+
+
+State 148
+
+   30 cmd: SYMBOL_IDENTIFIER '[' exp ']' . '=' exp
+
+    '='  shift, and go to state 153
+
+
+State 149
+
+   31 cmd: '#' SYMBOL_IDENTIFIER '=' exp .
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+    $default  reduce using rule 31 (cmd)
+
+
+State 150
+
+   36 cmd: KW_IF '(' exp ')' KW_THEN . cmd
+   37    | KW_IF '(' exp ')' KW_THEN . cmd KW_ELSE cmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    cmd    go to state 154
+
+
+State 151
+
+   35 cmd: KW_WHILE '(' exp ')' cmd .
+
+    $default  reduce using rule 35 (cmd)
+
+
+State 152
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' exp . KW_TO exp ')' cmd
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    KW_TO         shift, and go to state 155
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+
+State 153
+
+   30 cmd: SYMBOL_IDENTIFIER '[' exp ']' '=' . exp
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 156
+
+
+State 154
+
+   36 cmd: KW_IF '(' exp ')' KW_THEN cmd .
+   37    | KW_IF '(' exp ')' KW_THEN cmd . KW_ELSE cmd
+
+    KW_ELSE  shift, and go to state 157
+
+    KW_ELSE   [reduce using rule 36 (cmd)]
+    $default  reduce using rule 36 (cmd)
+
+
+State 155
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO . exp ')' cmd
+
+    SYMBOL_IDENTIFIER  shift, and go to state 22
+    SYMBOL_LIT_INT     shift, and go to state 23
+    SYMBOL_LIT_REAL    shift, and go to state 24
+    SYMBOL_LIT_CHAR    shift, and go to state 25
+    '#'                shift, and go to state 26
+    '('                shift, and go to state 27
+    '&'                shift, and go to state 28
+
+    exp  go to state 158
+
+
+State 156
+
+   30 cmd: SYMBOL_IDENTIFIER '[' exp ']' '=' exp .
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+
+    $default  reduce using rule 30 (cmd)
+
+
+State 157
+
+   37 cmd: KW_IF '(' exp ')' KW_THEN cmd KW_ELSE . cmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    cmd    go to state 159
+
+
+State 158
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp . ')' cmd
+   55 exp: exp . '+' exp
+   56    | exp . '-' exp
+   57    | exp . '*' exp
+   58    | exp . '/' exp
+   59    | exp . '<' exp
+   60    | exp . '>' exp
+   61    | exp . '!' exp
+   63    | exp . OPERATOR_LE exp
+   64    | exp . OPERATOR_GE exp
+   65    | exp . OPERATOR_EQ exp
+   66    | exp . OPERATOR_NE exp
+   67    | exp . OPERATOR_AND exp
+   68    | exp . OPERATOR_OR exp
+
+    OPERATOR_LE   shift, and go to state 43
+    OPERATOR_GE   shift, and go to state 44
+    OPERATOR_EQ   shift, and go to state 45
+    OPERATOR_NE   shift, and go to state 46
+    OPERATOR_AND  shift, and go to state 47
+    OPERATOR_OR   shift, and go to state 48
+    '!'           shift, and go to state 49
+    '<'           shift, and go to state 50
+    '>'           shift, and go to state 51
+    '+'           shift, and go to state 52
+    '-'           shift, and go to state 53
+    '*'           shift, and go to state 54
+    '/'           shift, and go to state 55
+    ')'           shift, and go to state 160
+
+
+State 159
+
+   37 cmd: KW_IF '(' exp ')' KW_THEN cmd KW_ELSE cmd .
+
+    $default  reduce using rule 37 (cmd)
+
+
+State 160
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' . cmd
+
+    KW_IF              shift, and go to state 100
+    KW_WHILE           shift, and go to state 101
+    KW_FOR             shift, and go to state 102
+    KW_READ            shift, and go to state 103
+    KW_RETURN          shift, and go to state 104
+    KW_PRINT           shift, and go to state 105
+    SYMBOL_IDENTIFIER  shift, and go to state 106
+    '#'                shift, and go to state 107
+    '{'                shift, and go to state 89
+
+    $default  reduce using rule 40 (cmd)
+
+    block  go to state 108
+    cmd    go to state 161
+
+
+State 161
+
+   38 cmd: KW_FOR '(' SYMBOL_IDENTIFIER '=' exp KW_TO exp ')' cmd .
+
+    $default  reduce using rule 38 (cmd)

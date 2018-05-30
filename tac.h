@@ -29,15 +29,21 @@
 #define TAC_OR 14
 
 #define TAC_ASS 15
-#define TAC_READ 16
-#define TAC_PRINT 17
-#define TAC_RET 18
+#define TAC_VEC_ATRIB 16
+#define TAC_VEC_INDEX 17
+#define TAC_READ 18
+#define TAC_PRINT 19
+#define TAC_RET 20
+#define TAC_FUN_START 21
+#define TAC_FUN_END 22
+#define TAC_FUNCALL 23
+#define TAC_FUNARG 24
 
-#define TAC_IFZ		19
-#define TAC_LABEL	20
+#define TAC_IFZ		25
+#define TAC_LABEL	26
 
-#define TAC_JZ 25
-#define TAC_JUMP 26
+#define TAC_JZ 34
+#define TAC_JUMP 35
 
 
 
@@ -58,12 +64,6 @@ TAC* tacCreate(int type, HASH* res, HASH* op1, HASH* op2);
 
 //Function codeGenerator.
 TAC* codeGenerator(AST* node);
-
-//Function makeIfThen.
-TAC* makeIfThen (TAC* code0, TAC* code1);
-
-//Function makeWhile.
-TAC* makeWhile(TAC* code0, TAC* code1);
 
 //Function makeBinOp.
 TAC* makeBinOp(int type, TAC* code0, TAC* code1);
