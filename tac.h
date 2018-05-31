@@ -29,21 +29,27 @@
 #define TAC_OR 14
 
 #define TAC_ASS 15
-#define TAC_VEC_ATRIB 16
-#define TAC_VEC_INDEX 17
-#define TAC_READ 18
-#define TAC_PRINT 19
-#define TAC_RET 20
-#define TAC_FUN_START 21
-#define TAC_FUN_END 22
-#define TAC_FUNCALL 23
-#define TAC_FUNARG 24
+#define TAC_POINTER_ASS 16
+#define TAC_VEC_ATRIB 17
+#define TAC_VEC_INDEX 18
+#define TAC_READ 19
+#define TAC_PRINT 20
+#define TAC_RET 21
+#define TAC_FUN_START 22
+#define TAC_FUN_END 23
+#define TAC_FUNCALL 24
+#define TAC_FUNARG 25
+#define TAC_VARDEC 26
+#define TAC_VECDEC 27
+#define TAC_POINTERDEC 28
 
-#define TAC_IFZ		25
-#define TAC_LABEL	26
+#define TAC_IFZ		30
+#define TAC_LABEL	31
 
 #define TAC_JZ 34
 #define TAC_JUMP 35
+#define TAC_JE 36
+#define TAC_PRINT_ARG 37
 
 
 
