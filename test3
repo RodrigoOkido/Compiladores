@@ -1,8 +1,30 @@
 int a = 0;
 int b = 1;
+float t = 3.2;
+float c = 0.2;
+int #var = 0;
+int #ponteiro = 0;
 
 float c () {
 
 	if (a < b) then print "i" else print "j";
 
+}
+
+int retornaNum (int num)
+{
+	print "a" "b" "adad" t;
+	return num;
+}
+
+
+int incn(int address, int pointer){
+	c = 5.3;
+}
+
+float a() {
+	a = 4;
+	a = retornaNum(5);
+	b = incn(&var, #ponteiro);
+	a = v[48];
 }

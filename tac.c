@@ -114,7 +114,7 @@ TAC* makeIfThenElse (TAC* code0, TAC* code1, TAC* code2) {
 		newLabel = makeLabel();
 		elseLabel = makeLabel();
 
-		newIfTac = tacCreate(TAC_IFZ, newLabel, code0?code0->res:0,0);
+		newIfTac = tacCreate(TAC_JZ, newLabel, code0?code0->res:0,0);
 		ElseJmpTac = tacCreate(TAC_JUMP, elseLabel, code0?code0->res:0,0);
 
 		newLabelTac = tacCreate(TAC_LABEL, newLabel, 0,0);
@@ -123,7 +123,7 @@ TAC* makeIfThenElse (TAC* code0, TAC* code1, TAC* code2) {
 		if(code2 == NULL){
 			return tacJoin(tacJoin(tacJoin (code0, newIfTac), code1), newLabelTac);
 		} else {
-			return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin (code0, newIfTac), code1), newLabelTac), code2), newLabelElseTac);
+			return tacJoin(tacJoin(tacJoin(tacJoin(tacJoin(tacJoin (code0, newIfTac), code1), ElseJmpTac), newLabelTac), code2), newLabelElseTac);
 		}
 }
 
@@ -226,7 +226,7 @@ void tacPrintSingle(TAC* tac) {
 
 		if (!tac) return;
 		if (tac->type == TAC_SYMBOL) return;
-		fprintf(stderr, "TAC(");
+		fprintf(stderr, "  TAC(");
 		switch(tac->type) {
 
 				case TAC_SYMBOL: fprintf(stderr, "TAC_SYMBOL ");	break;

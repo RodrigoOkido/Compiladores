@@ -1,5 +1,5 @@
 int v[10]: 0 0 0 0 0 0 0 0 0 0;
-
+char p[10];
 int i = 0;
 int j = 0;
 int b = 17;
@@ -10,16 +10,6 @@ float c () {
 	if (a < b) then print "i" else print "j";
 
 }
-int t() {
-
-	while (i < 10) {
-		print "aaa";
-	}
-
-
-
-}
-
 
 char acd (int maca, char banana, float pera){
 
@@ -29,9 +19,9 @@ char acd (int maca, char banana, float pera){
 
 	j = maca;
 
-	if (j < 200) then {
+	if (j < 200) then
 		return 1;
-	}
+
 
 	print j;
 	a = 10;
