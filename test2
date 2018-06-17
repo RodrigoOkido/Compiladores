@@ -30,6 +30,20 @@ char acd (int maca, char banana, float pera){
 		print a
 	}
 
+
 	return 0
+
+}
+
+int poo (){
+
+	if((i + j) > 0) then {
+		b = i + j;
+		i = 0
+	} else {
+		return 10;
+	}
+
+	return 4
 
 }

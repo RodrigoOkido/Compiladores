@@ -62,8 +62,8 @@ TAC* codeGenerator(AST* node) {
 				case AST_NE: result = makeBinOp (TAC_NE, code[0], code[1]); break;
 				case AST_AND: result = makeBinOp (TAC_AND, code[0], code[1]); break;
 				case AST_OR: result = makeBinOp (TAC_OR, code[0], code[1]); break;
-				case AST_VAR_ATRIB: tacJoin(code[0],tacCreate(TAC_ASS, node->symbol,code[0]?code[0]->res:0,0));break;
-				case AST_POINTER_ATRIB: tacJoin(code[0],tacCreate(TAC_POINTER_ASS, node->symbol,code[0]?code[0]->res:0,0));break;
+				case AST_VAR_ATRIB: return tacJoin(code[0],tacCreate(TAC_ASS, node->symbol,code[0]?code[0]->res:0,0));break;
+				case AST_POINTER_ATRIB: return tacJoin(code[0],tacCreate(TAC_POINTER_ASS, node->symbol,code[0]?code[0]->res:0,0));break;
 				case AST_VECTOR_ATRIB: return tacJoin(tacJoin(code[0], code[1]), tacCreate(TAC_VEC_ATRIB, node->symbol, code[1]?code[1]->res:0, code[0]?code[0]->res:0)); break;
 				case AST_ARRAY_POS: return tacJoin(code[0], tacCreate(TAC_VEC_INDEX, makeTemp(), node->symbol, code[0]?code[0]->res:0)); break;
 				case AST_KW_READ: return tacCreate(TAC_READ, node->symbol, 0, 0); break;
