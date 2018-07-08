@@ -1,6 +1,6 @@
 /*
   INF01147 Compiladores - Turma A - Marcelo Johann
-  Trabalho : ETAPA 5
+  Trabalho : ETAPA 6
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 
@@ -21,7 +21,7 @@ int main (int argc, char ** argv) {
 
   int tok;
   if (argc < 3) {
-    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa5 file_name output_filename\n");
+    fprintf(stderr, "Please insert a file. Use the following format:\n./etapa6 file_name output_filename\n");
     exit(1);
   }
 

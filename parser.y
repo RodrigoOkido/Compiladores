@@ -7,6 +7,7 @@
 #include "semantic.h"
 #include "hash.h"
 #include "tac.h"
+#include "asm.h"
 
 
 int yylex();
@@ -82,7 +83,9 @@ int yyerror(char *msg);
 
 %%
 
-program : decl			{//astPrint($1,0);
+program : decl			{
+				TAC* code;
+				//astPrint($1,0);
 				astGenerateFile($1, outputfile);
 				set_Declarations($1);
 				check_id_undeclared();
@@ -90,7 +93,9 @@ program : decl			{//astPrint($1,0);
 				check_operands($1);
 				//check_pointer($1);
 				check_returnType($1);
-				tacPrintForward(tacPrintReverse(codeGenerator($1)));
+				//tacPrintForward(tacPrintReverse(codeGenerator($1)));
+				code = tacPrintReverse(codeGenerator($1));
+				asmGenerator("out.s",code);
 
 }
 

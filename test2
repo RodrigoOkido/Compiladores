@@ -27,6 +27,7 @@ char acd (int maca, char banana, float pera){
 	a = 10;
 
 	while (a > 0){
+		a = a + 1;
 		print a
 	}
 
