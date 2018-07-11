@@ -1,30 +1,46 @@
 int a = 0;
 int b = 1;
+int d = 0;
+int e = 0;
+int z[10]: 0 0 0 0 0 0 0 0 0 0;
 float t = 3.2;
 float c = 0.2;
-int #var = 0;
-int #ponteiro = 0;
+char f = 'p';
 
-float c () {
+int operator () {
 
-	if (a < b) then print "i" else print "j";
+	a = 1 + 5;
+	b = 5 - 3;
+	d = a * 5;
+	e = b/2;
+
 
 }
 
-int retornaNum (int num)
+int conditional1 (int num)
 {
-	print "a" "b" "adad" t;
-	return num;
+
+	if (a < b) then a = z[a] else print "j";
+
+}
+
+int conditional2 (){
+	if( d > e ) then return 0;
+	return 1;
 }
 
 
-int incn(int address, int pointer){
+float returntest(int address, int pointer){
 	c = 5.3;
+
+	return c;
 }
 
-float a() {
-	a = 4;
-	a = retornaNum(5);
-	b = incn(&var, #ponteiro);
-	a = v[48];
+
+float while_test() {
+	while (a > 0){
+		a = a + 1;
+		read a
+	}
+	
 }

@@ -40,7 +40,9 @@ int poo (){
 
 	if((i + j) > 0) then {
 		b = i + j;
-		i = 0
+		i = 3 * 4;
+		j = 4 / 2;
+		a = a - 3;
 	} else {
 		return 10;
 	}
