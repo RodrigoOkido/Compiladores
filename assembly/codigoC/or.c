@@ -5,3 +5,11 @@ void main () {
 	int c = a || b;
 
 }
+
+
+int test(){
+	int e = 1;
+	int f =  1;
+	int g = e || f;
+
+}

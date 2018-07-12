@@ -26,12 +26,12 @@ d:
 	.size	e, 4
 e:
 	.zero	4
-	.globl	v
+	.globl	z
 	.data
 	.align 32
-	.type	v, @object
-	.size	v, 36
-v:
+	.type	z, @object
+	.size	z, 36
+z:
 	.long	1
 	.long	2
 	.long	3
@@ -99,20 +99,23 @@ conditional1:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	subq	$16, %rsp
 	movl	%edi, -4(%rbp)
 	movl	a(%rip), %edx
 	movl	b(%rip), %eax
 	cmpl	%eax, %edx
 	jge	.L3
-	movl	$3, a(%rip)
+	movl	-4(%rbp), %eax
+	cltq
+	movl	z(,%rax,4), %eax
+	movl	%eax, a(%rip)
+	movl	z+16(%rip), %eax
+	movl	%eax, b(%rip)
+	movl	$0, %eax
 	jmp	.L4
 .L3:
-	movl	$106, %edi
-	call	putchar
+	movl	$1, %eax
 .L4:
-	nop
-	leave
+	popq	%rbp
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
@@ -131,7 +134,7 @@ conditional2:
 	movl	d(%rip), %edx
 	movl	e(%rip), %eax
 	cmpl	%eax, %edx
-	jle	.L6
+	jl	.L6
 	movl	$0, %eax
 	jmp	.L7
 .L6:
@@ -143,9 +146,13 @@ conditional2:
 	.cfi_endproc
 .LFE2:
 	.size	conditional2, .-conditional2
-	.globl	returntest
-	.type	returntest, @function
-returntest:
+	.section	.rodata
+.LC0:
+	.string	"hello"
+	.text
+	.globl	printest
+	.type	printest, @function
+printest:
 .LFB3:
 	.cfi_startproc
 	pushq	%rbp
@@ -153,17 +160,16 @@ returntest:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	movl	%edi, -4(%rbp)
-	movl	%esi, -8(%rbp)
-	movss	.LC0(%rip), %xmm0
-	movss	%xmm0, c(%rip)
-	movss	c(%rip), %xmm0
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	printf
+	nop
 	popq	%rbp
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
 .LFE3:
-	.size	returntest, .-returntest
+	.size	printest, .-printest
 	.globl	while_test
 	.type	while_test, @function
 while_test:
@@ -174,15 +180,15 @@ while_test:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	jmp	.L11
-.L12:
+	jmp	.L10
+.L11:
 	movl	a(%rip), %eax
 	addl	$1, %eax
 	movl	%eax, a(%rip)
-.L11:
+.L10:
 	movl	a(%rip), %eax
 	testl	%eax, %eax
-	jg	.L12
+	jg	.L11
 	movl	$0, %eax
 	popq	%rbp
 	.cfi_def_cfa 7, 8
@@ -190,9 +196,5 @@ while_test:
 	.cfi_endproc
 .LFE4:
 	.size	while_test, .-while_test
-	.section	.rodata
-	.align 4
-.LC0:
-	.long	1084856730
 	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
 	.section	.note.GNU-stack,"",@progbits

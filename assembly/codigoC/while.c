@@ -4,7 +4,7 @@ int a = 0;
 int b = 1;
 int d = 0;
 int e = 0;
-int v[9] = {1,2,3,4,5,6,7,9};
+int z[9] = {1,2,3,4,5,6,7,9};
 float t = 3.2;
 float c = 0.2;
 char f = 'p';
@@ -22,25 +22,24 @@ int operator () {
 int conditional1 (int num)
 {
 
-	if (a < b)
-	 	a = 3;
-	else
-		printf ("j");
-
+	if (a < b){
+	 	a = z[num];
+		b = z[4];
+		return 0;
+	}else{
+		return 1;
+	}
 }
 
 int conditional2 (){
-	if( d > e )
+	if( d >= e )
 	 	return 0;
 
 	return 1;
 }
 
-
-float returntest(int address, int pointer){
-	c = 5.3;
-
-	return c;
+void printest (){
+	printf("hello");
 }
 
 

@@ -20,27 +20,29 @@ int operator () {
 int conditional1 (int num)
 {
 
-	if (a < b) then a = z[a] else print "j";
+	if (a < b) then {
+			a = z[num];
+			b = z[4];
+			return 0;
+	} else {
+		return 1;
+	}
 
 }
 
 int conditional2 (){
-	if( d > e ) then return 0;
-	return 1;
+	if( d >= e ) then return 0;
 }
 
 
-float returntest(int address, int pointer){
-	c = 5.3;
-
-	return c;
+float print_test(){
+	print "hello";
 }
 
 
 float while_test() {
 	while (a > 0){
 		a = a + 1;
-		read a
 	}
-	
+
 }

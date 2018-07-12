@@ -16,23 +16,30 @@ e = b / 2;
 
 int conditional1(int  num){
 if (a < b) then
-	a = z[a]
-else
-	print "j";
+	{
+a = z[num];
+b = z[4];
+return 0;
 
 }
 
-int conditional2(){
-if (d > e) then
-	return 0
-;
+else
+	{
 return 1;
 
 }
 
-float returntest(int  address, int  pointer){
-c = 5.3;
-return c;
+}
+
+int conditional2(){
+if (d >= e) then
+	return 0
+;
+
+}
+
+float print_test(){
+print "hello";
 
 }
 
@@ -40,7 +47,7 @@ float while_test(){
 while ( a > 0)
 	{
 a = a + 1;
-read a
+
 }
 
 }
