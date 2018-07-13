@@ -63,7 +63,7 @@ void asmGenerator(char *filename, TAC* code){
           if(n->type == SYMBOL_SCALAR)
             fprintf(fout,".comm %s,4,4\n",n->text);
           if(n->type == SYMBOL_LIT_STRING){
-            fprintf(fout,"\nLC%d:\n"
+            fprintf(fout,"\n.LC%d:\n"
                           "\t.string %s\n\n", str_count, n->text);
             strcpy(strings[str_count], n->text);
             str_count++;
@@ -181,6 +181,15 @@ void asmGenerator(char *filename, TAC* code){
       									 "\tmovl	%%eax, %s(%%rip)\n",tac->op2->text, tac->op1->text, tac->res->text );
                           break;
 
+    case TAC_READ: fprintf(fout,"\n### CMD READ ###\n");
+
+            fprintf(fout, "\tmovl	$v, %%esi\n"
+                          "\tmovl	$string_integer, %%edi\n"
+                         "\tmovl $0, %%eax\n"
+                        "\tcall	__isoc99_scanf \n"
+                        "\tmovl	$0, %%eax\n");
+
+          break;
     case TAC_RET:fprintf(fout,"\n### CMD RETURN ###\n");
 					if(tac->res->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n", tac->res->text);
                     else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n", tac->res->text);
@@ -216,7 +225,7 @@ void asmGenerator(char *filename, TAC* code){
     case TAC_PRINT:
                     fprintf(fout,"## cmd PRINT\n");
                     if(tac->res->type == SYMBOL_LIT_STRING){
-                    fprintf(fout,"\tmovl	$LC%d, %%edi\n"
+                    fprintf(fout,"\tmovl	$.LC%d, %%edi\n"
                                  "\tmovl $0, %%eax\n"
                               	 "\tcall	printf\n", findString(tac->res->text));
                     } else {

@@ -1,7 +1,7 @@
 .data
 .comm _tMpComP9860,4,4
 
-LC0:
+.LC0:
 	.string "\n"
 
 
@@ -82,7 +82,7 @@ main:
 	movl	$0, %eax
 	call	printf
 ## cmd PRINT
-	movl	$LC0, %edi
+	movl	$.LC0, %edi
 	movl $0, %eax
 	call	printf
 	popq	%rbp

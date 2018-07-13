@@ -1,0 +1,13 @@
+int a = 1;
+int b = 1;
+int v = 0;
+
+int main(){
+  print "Digite um numero \n";
+  read v;
+	while(a < 10){
+	 	v = v + b;
+	 	print v "\n";
+	 	a = a + 1;
+	}
+}
