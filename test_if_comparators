@@ -23,8 +23,13 @@ else
 
 
 if (c >= d ) then
-	print "igual" "\n"
+	print "igual \n"
 else
 	print c "\n";
+
+
+if (c == d) then
+  print "valores iguais \n";
+
 
 }

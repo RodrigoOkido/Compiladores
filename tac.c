@@ -91,10 +91,7 @@ TAC* codeGenerator(AST* node) {
 TAC* makePrint(TAC* code0, TAC* code1){
 
 	if(code0){
-		if (code0->res->type == SYMBOL_LIT_STRING)
-			return tacJoin(code1, tacCreate(TAC_PRINT, code0?code0->res:0, 0, 0));
-		else
-			return tacJoin(tacJoin(code0, tacCreate(TAC_PRINT_ARG, code0?code0->res:0, 0, 0)), code1);
+			return tacJoin(tacJoin(code0, tacCreate(TAC_PRINT, code0?code0->res:0, 0, 0)), code1);
 	}
 	return NULL;
 
