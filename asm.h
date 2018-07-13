@@ -4,20 +4,19 @@
   Componentes : Lisiane Aguiar e Rodrigo Okido
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "hash.h"
 #include "tac.h"
 #include "y.tab.h"
 
-#define NUMBER_OF_STRINGS 30
-#define STRING_LENGTH 200
+#define STRING_LENGTH 300
+#define STRING_NUMBER 50
+
 #define MAX_PRINT_ARGS 5
 
-char strings[NUMBER_OF_STRINGS][STRING_LENGTH+1];
+char strings[STRING_NUMBER][STRING_LENGTH+1];
 
 int findString(char *stringName);
 

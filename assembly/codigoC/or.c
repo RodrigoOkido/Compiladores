@@ -1,15 +1,17 @@
-void main () {
-
-	int a = 1;
-	int b =  1;
-	int c = a || b;
-
-}
+#include <stdio.h>
 
 
-int test(){
-	int e = 1;
-	int f =  1;
-	int g = e || f;
+int a = 0;
+int b = 0;
+
+
+int main () {
+
+a = 0;
+b = 1;
+if (a || b)
+  printf("%d", a);
+else
+  printf("%d",b);
 
 }

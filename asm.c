@@ -11,12 +11,12 @@
 int findString(char *stringName){
     int i, found = 0;
 
-    for(i = 0; i < NUMBER_OF_STRINGS; i++){
+    for(i = 0; i < STRING_NUMBER; i++){
         if(strcmp(strings[i],stringName) == 0)
             return i;
     }
 
-    return NUMBER_OF_STRINGS + 1;
+    return STRING_NUMBER + 1;
 }
 
 void fprint_print_argument(FILE *fout, TAC *arg_tac, int print_arg_count){
@@ -72,7 +72,7 @@ void asmGenerator(char *filename, TAC* code){
   }
 
   // //to print integers directly
-  // fprintf(fout,"\nstring_integer:\n\t.string \"%%d\"");
+  fprintf(fout,"\nstring_integer:\n\t.string \"%%d\"");
 
   //print arguments TACs
   int print_arg_count = 0;
@@ -80,24 +80,8 @@ void asmGenerator(char *filename, TAC* code){
   str_count = 0;
   for (tac=code; tac ; tac=tac->next){
     switch(tac->type){
-      case TAC_VARDEC: fprintf(fout,"\n.globl	%s\n"
-                                    "\t.align 4\n"
-                                    "\t.type	%s, @object\n"
-                                    "\t.size	%s, 4\n"
-                                    "%s:\n"
-                                    "\t.long	%s\n", tac->res->text, tac->res->text, tac->res->text, tac->res->text, tac->op1->text);
-                    break;
-	  case TAC_VECDEC: fprintf(fout,"\n.globl	%s\n"
-                                    ".align 32\n"
-                                    ".type	%s, @object\n"
-                                    ".size	%s, %d\n"
-                                    "%s:\n"
-                                    "\t.long	%s\n", tac->res->text, tac->res->text, tac->res->text, atoi(tac->op1->text) * 4, tac->res->text, tac->op1->text);
-
-                    break;
-
       case TAC_ADD: fprintf(fout,"\n### CMD ADD ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%edx\n",tac->op1->text);
+					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
                     else fprintf(fout,"\tmovl %s(%%rip), %%edx\n", tac->op1->text);
                     if(tac->op2->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n",tac->op2->text);
                     else fprintf(fout, "\tmovl %s(%%rip), %%eax\n", tac->op2->text);
@@ -105,7 +89,7 @@ void asmGenerator(char *filename, TAC* code){
                                   "\tmovl %%eax, %s(%%rip)\n", tac->res->text);
                     break;
 	  case TAC_SUB: fprintf(fout,"\n### CMD SUB ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%edx\n",tac->op1->text);
+					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
                     else fprintf(fout,"\tmovl %s(%%rip), %%edx\n", tac->op1->text);
                     if(tac->op2->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n",tac->op2->text);
                     else fprintf(fout, "\tmovl %s(%%rip), %%eax\n", tac->op2->text);
@@ -113,15 +97,15 @@ void asmGenerator(char *filename, TAC* code){
                                   "\tmovl %%edx, %s(%%rip)\n", tac->res->text);
                     break;
       case TAC_MUL: fprintf(fout,"\n### CMD MUL ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%edx\n",tac->op1->text);
-                    else fprintf(fout,"\tovl %s(%%rip), %%edx\n", tac->op1->text);
+					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
+                    else fprintf(fout,"\tmovl %s(%%rip), %%edx\n", tac->op1->text);
                     if(tac->op2->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n",tac->op2->text);
                     else fprintf(fout, "\tmovl %s(%%rip), %%eax\n", tac->op2->text);
                     fprintf(fout, "\timull %%edx, %%eax\n"
                                   "\tmovl %%eax, %s(%%rip)\n", tac->res->text);
                     break;
 	  case TAC_DIV: fprintf(fout,"\n### CMD DIV ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\n\tmovl	$%s, %%eax\n",tac->op1->text);
+					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\n\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
                     else fprintf(fout,"\n\tmovl %s(%%rip), %%eax\n", tac->op1->text);
                     if(tac->op2->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%ecx\n",tac->op2->text);
                     else fprintf(fout, "\tmovl %s(%%rip), %%ecx\n", tac->op2->text);
@@ -150,7 +134,7 @@ void asmGenerator(char *filename, TAC* code){
                   else fprintf(fout,"\tmovl %s(%%rip), %%edx\n", tac->op1->text);
                   if(tac->op2->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n",tac->op2->text);
                   else fprintf(fout, "\tmovl %s(%%rip), %%eax\n", tac->op2->text);
-				  fprintf(fout, "\tmpl %%eax, %%edx\n"
+				  fprintf(fout, "\tcmpl %%eax, %%edx\n"
 								"\tjle");
 				  break;
 	  case TAC_LE:fprintf(fout,"\n### CMD LE ###\n");
@@ -177,25 +161,47 @@ void asmGenerator(char *filename, TAC* code){
 				  fprintf(fout, "\tcmpl %%eax, %%edx\n"
 								"\tje");
 				  break;
-	  case TAC_JZ: fprintf(fout, "\t .%s\n", tac->res->text); //Sendo utilizado apenas para escrever o label
+
+    case TAC_ASS: fprintf(fout,"\n### CMD ASS ###\n");
+      					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
+                          else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n"
+                                            "\tmovl %%eax, %s(%%rip)\n", tac->op1->text, tac->res->text);
+                          break;
+    case TAC_VEC_ATRIB: fprintf(fout,"\n### CMD VEC ATRIB ###\n");
+      					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s+%d(%%rip)\n",tac->op1->text, tac->res->text, atoi(tac->op2->text) * 4);
+                          else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n"
+                                            "\tmovl	%%eax, %s+20(%%rip)\n", tac->op1->text, tac->res->text);
+                          break;
+    case TAC_VEC_INDEX: fprintf(fout,"\n### CMD VEC_INDEX ###\n");
+      						fprintf(fout,"\tmovl	%s+%d(%%rip), %%eax\n"
+      									 "\tmovl	%%eax, %s(%%rip)\n", tac->op1->text, atoi(tac->op2->text) * 4, tac->res->text );
+                          break;
+
+    case TAC_RET:fprintf(fout,"\n### CMD RETURN ###\n");
+					if(tac->res->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n", tac->res->text);
+                    else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n", tac->res->text);
+					break;
+    case TAC_JZ: fprintf(fout, "\t .%s\n", tac->res->text); //Sendo utilizado apenas para escrever o label
 				  break;
 	  case TAC_JUMP: fprintf(fout, "\tjmp .%s\n", tac->res->text);
 				  break;
 	  case TAC_LABEL: fprintf(fout, "\t\n.%s:\n", tac->res->text);
 				  break;
-	  case TAC_ASS: fprintf(fout,"\n### CMD ASS ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s(%%rip)\n",tac->op1->text, tac->res->text);
-                    else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n"
-                                      "\tmovl %%eax, %s(%%rip)\n", tac->op1->text, tac->res->text);
+    case TAC_FUN_START: fprintf(fout,"\n.text\n"
+      	                              ".globl	%s\n"
+      	                              ".type	%s, @function\n"
+                                      "%s:\n"
+                                      "\n.cfi_startproc\n"
+      	                              "\tpushq %%rbp\n"
+                                      // "\t.cfi_def_cfa_offset 16\n"
+                                      // "\t.cfi_offset 6, -16\n"
+      	                              "\tmovq	%%rsp, %%rbp\n", tac->res->text, tac->res->text, tac->res->text);
+                                      //"\t.cfi_def_cfa_register 6\n"
                     break;
-	  case TAC_VEC_ATRIB: fprintf(fout,"\n### CMD VEC ATRIB ###\n");
-					if(tac->op1->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %s+%d(%%rip)\n",tac->op1->text, tac->res->text, atoi(tac->op2->text) * 4);
-                    else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n"
-                                      "\tmovl	%%eax, %s+20(%%rip)\n", tac->op1->text, tac->res->text);
-                    break;
-	  case TAC_VEC_INDEX: fprintf(fout,"\n### CMD VEC_INDEX ###\n");
-						fprintf(fout,"\tmovl	%s+%d(%%rip), %%eax\n"
-									 "\tmovl	%%eax, %s(%%rip)\n", tac->op1->text, atoi(tac->op2->text) * 4, tac->res->text );
+    case TAC_FUN_END:fprintf(fout,  "\tpopq	%%rbp\n"
+                                    // "\t.cfi_def_cfa 7, 8\n"
+    	                             "\tret\n"
+                                    "\t.cfi_endproc\n");
                     break;
 	  case TAC_FUNCALL: fprintf(fout,"\n### CMD CALL FUNCTION ### \n"
 								  "\tmovl	$0, %%eax\n"
@@ -207,6 +213,7 @@ void asmGenerator(char *filename, TAC* code){
                     if(tac->res->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%esi\n",tac->res->text);
                     else fprintf(fout,"\tmovl	%s(%%rip), %%esi\n", tac->res->text);
                     fprintf(fout,"\tmovl	$string_integer, %%edi\n"
+                                  "\tmovl	$0, %%eax\n"
                               	 "\tcall	printf\n");
                     break;
     case TAC_PRINT:
@@ -215,26 +222,22 @@ void asmGenerator(char *filename, TAC* code){
                                  "\tmovl $0, %%eax\n"
                               	 "\tcall	printf\n", findString(tac->res->text));
                     break;
-    case TAC_FUN_START: fprintf(fout,"\n.text\n"
-      	                              ".globl	%s\n"
-      	                              ".type	%s, @function\n"
-                                      "%s:\n"
-                                      "\n.cfi_startproc\n"
-      	                              "\tpushq %%rbp\n"
-                                      "\t.cfi_def_cfa_offset 16\n"
-                                      "\t.cfi_offset 6, -16\n"
-      	                              "\tmovq	%%rsp, %%rbp\n"
-                                      "\t.cfi_def_cfa_register 6\n", tac->res->text, tac->res->text, tac->res->text);
-                    break;
-    case TAC_FUN_END:fprintf(fout,  "\tpopq	%%rbp\n"
-                                    "\t.cfi_def_cfa 7, 8\n"
-    	                             "\tret\n"
-                                    "\t.cfi_endproc\n");
-                    break;
-	  case TAC_RET:fprintf(fout,"\n### CMD RETURN ###\n");
-					if(tac->res->type == SYMBOL_LIT_INT) fprintf(fout,"\tmovl	$%s, %%eax\n", tac->res->text);
-                    else fprintf(fout,"\tmovl	%s(%%rip), %%eax\n", tac->res->text);
-					break;
+    case TAC_VARDEC: fprintf(fout,"\n.globl	%s\n"
+                                  "\t.align 4\n"
+                                  "\t.type	%s, @object\n"
+                                  "\t.size	%s, 4\n"
+                                  "%s:\n"
+                                  "\t.long	%s\n", tac->res->text, tac->res->text, tac->res->text, tac->res->text, tac->op1->text);
+                  break;
+    case TAC_VECDEC: fprintf(fout,"\n.globl	%s\n"
+                                  ".align 32\n"
+                                  ".type	%s, @object\n"
+                                  ".size	%s, %d\n"
+                                  "%s:\n"
+                                  "\t.long	%s\n", tac->res->text, tac->res->text, tac->res->text, atoi(tac->op1->text) * 4, tac->res->text, tac->op1->text);
+
+                  break;
+
     }
   }
 

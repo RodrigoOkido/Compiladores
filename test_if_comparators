@@ -1,0 +1,30 @@
+int a = 0;
+int b = 0;
+int c = 0;
+int d = 0;
+
+int main () {
+
+a = 8;
+b = 5;
+c = 7;
+d = 7;
+
+if (a > b) then
+  print a "\n"
+else
+  print b "\n";
+
+
+if (a < b) then
+	print a "\n"
+else
+	print b "\n";
+
+
+if (c >= d ) then
+	print "igual" "\n"
+else
+	print c "\n";
+
+}

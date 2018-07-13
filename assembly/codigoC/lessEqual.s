@@ -1,4 +1,4 @@
-	.file	"mult.c"
+	.file	"lessEqual.c"
 	.comm	a,4,4
 	.comm	b,4,4
 	.section	.rodata
@@ -19,13 +19,21 @@ main:
 	movl	$1, b(%rip)
 	movl	a(%rip), %edx
 	movl	b(%rip), %eax
-	imull	%edx, %eax
-	movl	%eax, a(%rip)
+	cmpl	%eax, %edx
+	jg	.L2
 	movl	a(%rip), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, %eax
 	call	printf
+	jmp	.L4
+.L2:
+	movl	b(%rip), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	printf
+.L4:
 	nop
 	popq	%rbp
 	.cfi_def_cfa 7, 8

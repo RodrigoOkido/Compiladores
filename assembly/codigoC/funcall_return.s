@@ -1,0 +1,106 @@
+	.file	"funcall_return.c"
+	.globl	a
+	.bss
+	.align 4
+	.type	a, @object
+	.size	a, 4
+a:
+	.zero	4
+	.globl	b
+	.align 4
+	.type	b, @object
+	.size	b, 4
+b:
+	.zero	4
+	.globl	c
+	.data
+	.align 4
+	.type	c, @object
+	.size	c, 4
+c:
+	.long	4
+	.globl	x
+	.align 4
+	.type	x, @object
+	.size	x, 4
+x:
+	.long	5
+	.globl	y
+	.align 4
+	.type	y, @object
+	.size	y, 4
+y:
+	.long	8
+	.globl	v
+	.align 32
+	.type	v, @object
+	.size	v, 40
+v:
+	.long	1
+	.long	2
+	.long	3
+	.long	4
+	.long	5
+	.long	6
+	.long	7
+	.long	8
+	.long	9
+	.long	10
+	.text
+	.globl	soma
+	.type	soma, @function
+soma:
+.LFB0:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+	movl	-4(%rbp), %edx
+	movl	-8(%rbp), %eax
+	addl	%edx, %eax
+	movl	%eax, a(%rip)
+	movl	a(%rip), %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	soma, .-soma
+	.section	.rodata
+.LC0:
+	.string	"%d"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB1:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	v+8(%rip), %edx
+	movl	c(%rip), %eax
+	movl	%edx, %esi
+	movl	%eax, %edi
+	call	soma
+	movl	%eax, b(%rip)
+	movl	b(%rip), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, %eax
+	call	printf
+	movl	$0, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.10) 5.4.0 20160609"
+	.section	.note.GNU-stack,"",@progbits

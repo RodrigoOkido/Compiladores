@@ -1,4 +1,4 @@
-	.file	"mult.c"
+	.file	"sub.c"
 	.comm	a,4,4
 	.comm	b,4,4
 	.section	.rodata
@@ -19,7 +19,8 @@ main:
 	movl	$1, b(%rip)
 	movl	a(%rip), %edx
 	movl	b(%rip), %eax
-	imull	%edx, %eax
+	subl	%eax, %edx
+	movl	%edx, %eax
 	movl	%eax, a(%rip)
 	movl	a(%rip), %eax
 	movl	%eax, %esi

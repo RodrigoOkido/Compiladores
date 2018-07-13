@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-void main () {
+int main () {
 
-printf("oi");
+  printf("oi");
 
 }

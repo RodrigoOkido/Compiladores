@@ -1,4 +1,9 @@
-	.file	"and.c"
+	.file	"div.c"
+	.comm	a,4,4
+	.comm	b,4,4
+	.section	.rodata
+.LC0:
+	.string	"%d"
 	.text
 	.globl	main
 	.type	main, @function
@@ -10,18 +15,18 @@ main:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	movl	$6, -12(%rbp)
-	movl	$8, -8(%rbp)
-	cmpl	$0, -12(%rbp)
-	je	.L2
-	cmpl	$0, -8(%rbp)
-	je	.L2
-	movl	$1, %eax
-	jmp	.L3
-.L2:
+	movl	$2, a(%rip)
+	movl	$1, b(%rip)
+	movl	a(%rip), %eax
+	movl	b(%rip), %ecx
+	cltd
+	idivl	%ecx
+	movl	%eax, a(%rip)
+	movl	a(%rip), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
 	movl	$0, %eax
-.L3:
-	movl	%eax, -4(%rbp)
+	call	printf
 	nop
 	popq	%rbp
 	.cfi_def_cfa 7, 8

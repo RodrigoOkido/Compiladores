@@ -1,7 +1,15 @@
+#include <stdio.h>
+
+int a = 0;
+int b = 0;
+
 void main () {
 
-	int a = 6;
-	int b =  8;
-	int c = a && b;
+a = 0;
+b = 1;
+if (a && b)
+  printf("%d", a);
+else
+  printf("%d",b);
 
 }

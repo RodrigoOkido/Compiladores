@@ -1,7 +1,13 @@
-void main () {
+#include <stdio.h>
+int a,b;
 
-	int a = 6;
-	int b =  8;
-	int c = a + b;
+
+int main () {
+
+a = 2;
+b = 1;
+a = a - b;
+printf("%d", a);
+
 
 }
