@@ -1,0 +1,49 @@
+int v[10]: 0 0 0 0 0 0 0 0 0 0;
+char p[10];
+int i = 0;
+int j = 0;
+int b = 17;
+int a = 10;
+
+float c () {
+
+	if (a < b) then print "i" else print "j";
+
+}
+
+char acd (int maca, char banana, float pera){
+
+	for (i = 0 to 100) {
+		print i
+	}
+
+	j = maca;
+
+	if (j < 200) then
+		return 1;
+
+
+	print j;
+	a = 10;
+
+	while (a > 0){
+		print a
+	}
+
+
+	return 0
+
+}
+
+int poo (){
+
+	if((i + j) > 0) then {
+		b = i + j;
+		i = 0
+	} else {
+		return 10;
+	}
+
+	return 4
+
+}

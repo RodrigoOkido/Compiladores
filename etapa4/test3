@@ -1,0 +1,6 @@
+float c () {
+
+	if (a < b) then print "i" else print "j";
+
+}
+

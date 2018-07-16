@@ -1,0 +1,12 @@
+int retornaNum(int  num){
+return num;
+
+}
+
+float a(){
+a = retornaNum(5);
+b = incn(&var, #ponteiro);
+a = v[48];
+
+}
+
