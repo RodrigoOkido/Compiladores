@@ -1,6 +1,6 @@
 # Compiladores
 Compiler work developed in the '(INF01033) Compiladores B' discipline in UFRGS (2018-1).
-This work was divided in 6 phases on this semester (normally is 7).
+This work was divided in 6 phases in this semester (normally is 7).
 <br/>
 <br/>
 Teacher: Marcelo Johann
